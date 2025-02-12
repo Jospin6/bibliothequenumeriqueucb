@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { db, storage } from "@/lib/firebase";
-import { collection, addDoc, serverTimestamp, query, where, getDocs, CollectionReference, Query, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, getDocs, Query, doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import multer from "multer";
 import { promisify } from "util";
@@ -40,10 +40,22 @@ const addBook = async (req: NextApiRequest & { file?: Express.Multer.File }, res
 };
 
 const getBooks = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { filter, faculteId } = req.query;
-    let booksQuery: CollectionReference | Query = collection(db, "livres");
+    const { bookId, filter, faculteId } = req.query;
 
     try {
+        if (bookId) {
+            const bookRef = doc(db, "livres", bookId as string); 
+            const docSnapshot = await getDoc(bookRef);
+
+            if (docSnapshot.exists()) {
+                return res.status(200).json({ id: docSnapshot.id, ...docSnapshot.data() });
+            } else {
+                return res.status(404).json({ error: "Livre non trouvé" });
+            }
+        }
+
+        let booksQuery: Query = collection(db, "livres");
+
         // Filtre par semaine courante
         if (filter === "week") {
             const now = new Date();
@@ -60,6 +72,7 @@ const getBooks = async (req: NextApiRequest, res: NextApiResponse) => {
         const querySnapshot = await getDocs(booksQuery);
         const books = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         res.status(200).json(books);
+
     } catch (error) {
         res.status(500).json({ error: "Erreur lors de la récupération des livres" });
     }

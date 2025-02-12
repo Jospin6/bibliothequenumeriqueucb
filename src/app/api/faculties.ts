@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { db, storage } from "@/lib/firebase";
-import { collection, addDoc, serverTimestamp, doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, doc, updateDoc, deleteDoc, getDoc, Query, getDocs } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 
 const addFac = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,16 +23,23 @@ const getFacs = async (req: NextApiRequest, res: NextApiResponse) => {
     const { faculteId } = req.query;
 
     try {
-        if (!faculteId) {
-            return res.status(400).json({ error: "FaculteId est requis" });
+        if (faculteId) {
+            const facRef = doc(db, "facultes", faculteId as string); // Référence au livre par son ID
+            const docSnapshot = await getDoc(facRef);
+
+            if (docSnapshot.exists()) {
+                return res.status(200).json({ id: docSnapshot.id, ...docSnapshot.data() }); // Si le livre existe, on le renvoie
+            } else {
+                return res.status(404).json({ error: "Matière non trouvé" }); // Si le livre n'existe pas
+            }
         }
-        const facRef = doc(db, "facultes", faculteId as string);
-        const docSnapshot = await getDoc(facRef);
-        if (docSnapshot.exists()) {
-            res.status(200).json({ id: docSnapshot.id, ...docSnapshot.data() });
-        } else {
-            res.status(404).json({ error: "Faculté non trouvée" });
-        }
+
+        let facQuery: Query = collection(db, "facultes");
+
+        const querySnapshot = await getDocs(facQuery);
+        const faculties = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        res.status(200).json(faculties);
+
     } catch (error) {
         res.status(500).json({ error: "Erreur lors de la récupération de la faculté" });
     }
