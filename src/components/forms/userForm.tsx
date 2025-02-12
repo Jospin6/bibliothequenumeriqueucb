@@ -4,6 +4,10 @@ import { userSchema } from "@/lib/validationSchema"
 import { UserFormValues } from "@/types/validation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
+import { InputField } from "../ui/inputField";
+import { SelectField } from "../ui/selectField";
+import { addUser } from "@/redux/user/userSlice";
+
 
 export const UserForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<UserFormValues>({
@@ -12,44 +16,60 @@ export const UserForm = () => {
     const dispatch = useDispatch<AppDispatch>()
 
     const onSubmit = async (data: UserFormValues) => {
-        
+        const formData = new FormData();
+        formData.append("nom", data.nom);
+        formData.append("postnom", data.postnom);
+        formData.append("email", data.email);
+        formData.append("role", data.role);
+        formData.append("faculteId", data.faculteId);
+        formData.append("password", data.password);
+        dispatch(addUser(formData))
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <input {...register("name")} placeholder="Nom" />
-                {errors.name && <span>{errors.name.message}</span>}
-            </div>
-
-            <div>
-                <input {...register("postnom")} placeholder="Postnom" />
-                {errors.postnom && <span>{errors.postnom.message}</span>}
-            </div>
-
-            <div>
-                <input {...register("email")} type="email" placeholder="Email" />
-                {errors.email && <span>{errors.email.message}</span>}
-            </div>
-
-            <div>
-                <input {...register("faculteId")} placeholder="Faculté ID" />
-                {errors.faculteId && <span>{errors.faculteId.message}</span>}
-            </div>
-
-            <div>
-                <select {...register("role")}>
-                    <option value="admin">Admin</option>
-                    <option value="etudiant">Étudiant</option>
-                    <option value="professeur">Professeur</option>
-                </select>
-                {errors.role && <span>{errors.role.message}</span>}
-            </div>
-
-            <div>
-                <input {...register("password")} type="password" placeholder="Mot de passe" />
-                {errors.password && <span>{errors.password.message}</span>}
-            </div>
+            <InputField
+                name={"name"}
+                placeholder={"Nom"}
+                register={register}
+                errors={errors} />
+            <InputField
+                name={"postnom"}
+                placeholder={"Postnom"}
+                register={register}
+                errors={errors} />
+            <InputField
+                name={"email"}
+                placeholder={"Email"}
+                register={register}
+                errors={errors} />
+            <SelectField
+                name="faculteId"
+                label="Faculté"
+                options={[
+                    { value: "science", label: "Sciences" },
+                    { value: "droit", label: "Droit" },
+                    { value: "medecine", label: "Medecine" }
+                ]}
+                register={register}
+                errors={errors}
+            />
+            <SelectField
+                name="role"
+                label="Rôle"
+                options={[
+                    { value: "admin", label: "Admin" },
+                    { value: "etudiant", label: "Étudiant" },
+                    { value: "professeur", label: "Professeur" }
+                ]}
+                register={register}
+                errors={errors}
+            />
+            <InputField
+                name={"password"}
+                placeholder={"Mot de passe"}
+                register={register}
+                errors={errors} />
 
             <button type="submit">Ajouter</button>
         </form>

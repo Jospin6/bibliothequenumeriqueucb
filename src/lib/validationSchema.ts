@@ -2,13 +2,12 @@ import * as z from "zod";
 
 // Utilisateur Schema
 export const userSchema = z.object({
-    name: z.string().min(1, "Le nom est requis"),
+    nom: z.string().min(1, "Le nom est requis"),
     postnom: z.string().min(1, "Le postnom est requis"),
     email: z.string().email("Email invalide"),
     faculteId: z.string().min(1, "Faculté requise"),
     role: z.enum(["admin", "etudiant", "professeur"]),
     password: z.string().min(6, "Mot de passe trop court"),
-    created_at: z.date().default(() => new Date()),
 });
 
 // Livre Schema
