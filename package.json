@@ -10,10 +10,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@hookform/resolvers": "^4.0.0",
     "@reduxjs/toolkit": "^2.5.1",
     "@types/jspdf": "^2.0.0",
     "axios": "^1.7.9",
     "chart.js": "^4.4.7",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "firebase": "^11.3.0",
     "firebase-admin": "^13.1.0",
@@ -23,6 +25,7 @@
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
     "lucide-react": "^0.475.0",
+    "multer": "^1.4.5-lts.1",
     "next": "15.1.7",
     "next-auth": "^4.24.11",
     "nookies": "^2.5.2",
@@ -42,6 +45,7 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.14",
+    "@types/multer": "^1.4.12",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
