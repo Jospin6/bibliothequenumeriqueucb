@@ -8,6 +8,7 @@ import { BookFormValues } from "@/types/validation"
 import { InputField } from "@/components/ui/inputField"
 import { ImageField } from "@/components/ui/imageField"
 import { SelectField } from "../ui/selectField";
+import { Button } from "../ui/Button";
 
 
 export const BookForm = () => {
@@ -62,7 +63,7 @@ export const BookForm = () => {
         register={register}
         setValue={setValue}
         errors={errors} />
-      <button type="submit">Ajouter</button>
+      <Button label={"Ajouter"} />
     </form>
   );
 };

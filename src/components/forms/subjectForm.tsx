@@ -1,31 +1,32 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import * as z from "zod";
-
-// Matière Schema
-const subjectSchema = z.object({
-    name: z.string().min(1, "Le nom est requis"),
-    description: z.string().optional(),
-});
-
-type SubjectFormValues = z.infer<typeof subjectSchema>;
+import { InputField } from "../ui/inputField";
+import { TextAreaField } from "../ui/textAreaField";
+import { Button } from "../ui/Button";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { subjectAndFacultySchema } from "@/lib/validationSchema"
+import { SubjectAndFacutlyFormValues } from "@/types/validation"
+import { addSubject } from "@/redux/subject/subjectSlice";
 
 export const SubjectForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<SubjectFormValues>({
-        resolver: zodResolver(subjectSchema),
+    const { register, handleSubmit, formState: { errors } } = useForm<SubjectAndFacutlyFormValues>({
+        resolver: zodResolver(subjectAndFacultySchema),
     });
+    const dispatch = useDispatch<AppDispatch>()
 
-    const onSubmit = async (data: SubjectFormValues) => {
-        //   await addDoc(collection(db, "matieres"), data);
+    const onSubmit = async (data: SubjectAndFacutlyFormValues) => {
+        const formData = new FormData();
+        formData.append("nom", data.nom);
+        formData.append("description", data.description || "");
+        dispatch(addSubject(formData))
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <input {...register("name")} placeholder="Nom de la matière" />
-            <textarea {...register("description")} placeholder="Description" />
-            <button type="submit">Ajouter</button>
+            <InputField name={"nom"} placeholder={"Nom de la matière"} register={register} errors={errors} />
+            <TextAreaField name={"description"} placeholder={"Description"} label={"Description"} register={register} errors={errors} />
+            <Button label={"Ajouter"} />
         </form>
     );
 };

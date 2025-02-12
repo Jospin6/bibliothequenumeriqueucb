@@ -1,33 +1,33 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 import * as z from "zod";
-
-
-// Faculté Schema
-const facultySchema = z.object({
-  name: z.string().min(1, "Le nom est requis"),
-  description: z.string().optional(),
-});
-
-type FacultyFormValues = z.infer<typeof facultySchema>;
+import { addFaculty } from "@/redux/faculty/facultySlice";
+import { InputField } from "../ui/inputField";
+import { TextAreaField } from "../ui/textAreaField";
+import { Button } from "../ui/Button";
+import { subjectAndFacultySchema } from "@/lib/validationSchema"
+import { SubjectAndFacutlyFormValues } from "@/types/validation"
 
 export const FacultyForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<FacultyFormValues>({
-    resolver: zodResolver(facultySchema),
+  const { register, handleSubmit, formState: { errors } } = useForm<SubjectAndFacutlyFormValues>({
+    resolver: zodResolver(subjectAndFacultySchema),
   });
+  const dispatch = useDispatch<AppDispatch>()
 
-  const onSubmit = async (data: FacultyFormValues) => {
-    //   await addDoc(collection(db, "facultes"), data);
+  const onSubmit = async (data: SubjectAndFacutlyFormValues) => {
+    const formData = new FormData();
+    formData.append("nom", data.nom);
+    formData.append("description", data.description || "");
+    dispatch(addFaculty(formData))
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("name")} placeholder="Nom de la faculté" />
-      {errors.name && <p>{errors.name.message}</p>}
-      <textarea {...register("description")} placeholder="Description" />
-      <button type="submit">Ajouter</button>
+      <InputField name={"name"} placeholder={"Nom de la faculté"} register={register} errors={errors} />
+      <TextAreaField name={"description"} placeholder={"Description"} label={"Description"} register={register} errors={errors} />
+      <Button label={"Ajouter"} />
     </form>
   );
 };

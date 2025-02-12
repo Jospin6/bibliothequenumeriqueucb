@@ -7,6 +7,7 @@ import { AppDispatch } from "@/redux/store";
 import { InputField } from "../ui/inputField";
 import { SelectField } from "../ui/selectField";
 import { addUser } from "@/redux/user/userSlice";
+import { Button } from "../ui/Button";
 
 
 export const UserForm = () => {
@@ -29,7 +30,7 @@ export const UserForm = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <InputField
-                name={"name"}
+                name={"nom"}
                 placeholder={"Nom"}
                 register={register}
                 errors={errors} />
@@ -71,7 +72,7 @@ export const UserForm = () => {
                 register={register}
                 errors={errors} />
 
-            <button type="submit">Ajouter</button>
+            <Button label={"Ajouter"} />
         </form>
     );
 };
