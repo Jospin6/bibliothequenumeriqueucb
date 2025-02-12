@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {userSchema} from "@/lib/validationSchema"
+import { userSchema } from "@/lib/validationSchema"
 import { UserFormValues } from "@/types/validation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -9,7 +9,7 @@ export const UserForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<UserFormValues>({
         resolver: zodResolver(userSchema),
     });
-    const disatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch<AppDispatch>()
 
     const onSubmit = async (data: UserFormValues) => {
         
