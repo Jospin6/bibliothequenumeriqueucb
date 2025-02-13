@@ -4,6 +4,6 @@ type ButtonProps = {
 
 export const Button: React.FC<ButtonProps> = ({ label }) => {
     return (
-        <button type="submit"> {label} </button>
+        <button type="submit" className="px-[20px] py-[5px] rounded-lg bg-gray-800 text-white"> {label} </button>
     );
 };

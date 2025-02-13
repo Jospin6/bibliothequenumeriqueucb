@@ -27,7 +27,9 @@ export const FacultyForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <InputField name={"name"} placeholder={"Nom de la faculté"} register={register} errors={errors} />
       <TextAreaField name={"description"} placeholder={"Description"} label={"Description"} register={register} errors={errors} />
-      <Button label={"Ajouter"} />
+      <div className="flex justify-end">
+        <Button label={"Ajouter"} />
+      </div>
     </form>
   );
 };

@@ -12,7 +12,7 @@ import { Button } from "../ui/Button";
 
 
 export const BookForm = () => {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<BookFormValues>({
+  const { register, handleSubmit, setValue, watch, trigger, formState: { errors } } = useForm<BookFormValues>({
     resolver: zodResolver(bookSchema),
   });
   const dispatch = useDispatch<AppDispatch>();
@@ -57,13 +57,17 @@ export const BookForm = () => {
         register={register}
         errors={errors}
       />
-      <ImageField
-        name={"file"}
-        accept={".pdf,.doc,.docx,.ppt,.pptx"}
-        register={register}
-        setValue={setValue}
+      <ImageField 
+        name="file" 
+        accept=".pdf,.doc,.docx,.ppt,.pptx" 
+        register={register} 
+        setValue={setValue} 
+        trigger={trigger} 
+        watch={watch}
         errors={errors} />
-      <Button label={"Ajouter"} />
+      <div className="flex justify-end">
+        <Button label={"Ajouter"} />
+      </div>
     </form>
   );
 };

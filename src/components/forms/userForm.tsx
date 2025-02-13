@@ -44,35 +44,39 @@ export const UserForm = () => {
                 placeholder={"Email"}
                 register={register}
                 errors={errors} />
-            <SelectField
-                name="faculteId"
-                label="Faculté"
-                options={[
-                    { value: "science", label: "Sciences" },
-                    { value: "droit", label: "Droit" },
-                    { value: "medecine", label: "Medecine" }
-                ]}
-                register={register}
-                errors={errors}
-            />
-            <SelectField
-                name="role"
-                label="Rôle"
-                options={[
-                    { value: "admin", label: "Admin" },
-                    { value: "etudiant", label: "Étudiant" },
-                    { value: "professeur", label: "Professeur" }
-                ]}
-                register={register}
-                errors={errors}
-            />
+            <div className="grid grid-cols-2 gap-4">
+                <SelectField
+                    name="faculteId"
+                    label="Faculté"
+                    options={[
+                        { value: "science", label: "Sciences" },
+                        { value: "droit", label: "Droit" },
+                        { value: "medecine", label: "Medecine" }
+                    ]}
+                    register={register}
+                    errors={errors}
+                />
+                <SelectField
+                    name="role"
+                    label="Rôle"
+                    options={[
+                        { value: "admin", label: "Admin" },
+                        { value: "etudiant", label: "Étudiant" },
+                        { value: "professeur", label: "Professeur" }
+                    ]}
+                    register={register}
+                    errors={errors}
+                />
+            </div>
             <InputField
                 name={"password"}
                 placeholder={"Mot de passe"}
                 register={register}
                 errors={errors} />
 
-            <Button label={"Ajouter"} />
+            <div className="flex justify-end">
+                <Button label={"Ajouter"} />
+            </div>
         </form>
     );
 };

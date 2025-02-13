@@ -26,7 +26,9 @@ export const SubjectForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <InputField name={"nom"} placeholder={"Nom de la matière"} register={register} errors={errors} />
             <TextAreaField name={"description"} placeholder={"Description"} label={"Description"} register={register} errors={errors} />
-            <Button label={"Ajouter"} />
+            <div className="flex justify-end">
+                <Button label={"Ajouter"} />
+            </div>
         </form>
     );
 };
