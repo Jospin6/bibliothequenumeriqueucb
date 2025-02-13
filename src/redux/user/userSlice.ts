@@ -28,6 +28,7 @@ export const addUser = createAsyncThunk(
     async (formData: FormData, { rejectWithValue }) => {
         try {
             const response = await axios.post("/api/users", formData);
+            console.log(response.data);
             return response.data;
         } catch (error) {
             return rejectWithValue("Erreur lors de l'ajout du livre");

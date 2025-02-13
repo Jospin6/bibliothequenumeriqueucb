@@ -3,12 +3,12 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA43_J-6ebswWcOF52IYnDJ3Dxw1Zaz4Q0",
-    authDomain: "bibliothequenumeriqueucb-b2813.firebaseapp.com",
-    projectId: "bibliothequenumeriqueucb-b2813",
-    storageBucket: "bibliothequenumeriqueucb-b2813.appspot.com",
-    messagingSenderId: "1020815074696",
-    appId: "1:1020815074696:web:fa258efeb7f30d85e2463d"
+    apiKey: "AIzaSyAYIxZkfF2LASP3FYhocElT59ujW_0TrpY",
+    authDomain: "bibliothequenumeriqueucb-369f6.firebaseapp.com",
+    projectId: "bibliothequenumeriqueucb-369f6",
+    storageBucket: "bibliothequenumeriqueucb-369f6.firebasestorage.app",
+    messagingSenderId: "120475997005",
+    appId: "1:120475997005:web:1b405d9d7c4fde60bbdd04"
 };
 
 // Initialize Firebase

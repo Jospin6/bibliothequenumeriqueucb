@@ -12,7 +12,7 @@ import { Button } from "../ui/Button";
 
 
 export const BookForm = () => {
-  const { register, handleSubmit, setValue, watch, trigger, formState: { errors } } = useForm<BookFormValues>({
+  const { register, handleSubmit, setValue, reset, watch, trigger, formState: { errors } } = useForm<BookFormValues>({
     resolver: zodResolver(bookSchema),
   });
   const dispatch = useDispatch<AppDispatch>();
@@ -30,6 +30,7 @@ export const BookForm = () => {
     }
 
     dispatch(addBook(formData));
+    reset();
   };
 
   return (

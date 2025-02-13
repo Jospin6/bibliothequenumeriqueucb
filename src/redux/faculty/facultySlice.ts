@@ -20,10 +20,12 @@ const initialState: FacultyState = {
 };
 
 export const addFaculty = createAsyncThunk(
-    "faculty/addUser",
+    "faculty/addFaculty",
     async (formData: FormData, { rejectWithValue }) => {
         try {
-            const response = await axios.post("/api/faculties", formData);
+            const response = await axios.post("/api/faculties", formData,  {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
             return response.data;
         } catch (error) {
             return rejectWithValue("Erreur lors de l'ajout du livre");

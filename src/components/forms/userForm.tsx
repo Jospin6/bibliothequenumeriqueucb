@@ -11,7 +11,7 @@ import { Button } from "../ui/Button";
 
 
 export const UserForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<UserFormValues>({
+    const { register, handleSubmit,reset, formState: { errors } } = useForm<UserFormValues>({
         resolver: zodResolver(userSchema),
     });
     const dispatch = useDispatch<AppDispatch>()
@@ -25,6 +25,7 @@ export const UserForm = () => {
         formData.append("faculteId", data.faculteId);
         formData.append("password", data.password);
         dispatch(addUser(formData))
+        reset()
     };
 
     return (
@@ -49,6 +50,7 @@ export const UserForm = () => {
                     name="faculteId"
                     label="Faculté"
                     options={[
+                        { value: "", label: "Choisir une fac" },
                         { value: "science", label: "Sciences" },
                         { value: "droit", label: "Droit" },
                         { value: "medecine", label: "Medecine" }
@@ -60,6 +62,7 @@ export const UserForm = () => {
                     name="role"
                     label="Rôle"
                     options={[
+                        { value: "", label: "Rôle de l'utilisateur" },
                         { value: "admin", label: "Admin" },
                         { value: "etudiant", label: "Étudiant" },
                         { value: "professeur", label: "Professeur" }

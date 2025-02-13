@@ -10,7 +10,7 @@ import { SubjectAndFacutlyFormValues } from "@/types/validation"
 import { addSubject } from "@/redux/subject/subjectSlice";
 
 export const SubjectForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<SubjectAndFacutlyFormValues>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<SubjectAndFacutlyFormValues>({
         resolver: zodResolver(subjectAndFacultySchema),
     });
     const dispatch = useDispatch<AppDispatch>()
@@ -20,6 +20,7 @@ export const SubjectForm = () => {
         formData.append("nom", data.nom);
         formData.append("description", data.description || "");
         dispatch(addSubject(formData))
+        reset()
     };
 
     return (

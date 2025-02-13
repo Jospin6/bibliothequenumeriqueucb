@@ -11,7 +11,7 @@ import { subjectAndFacultySchema } from "@/lib/validationSchema"
 import { SubjectAndFacutlyFormValues } from "@/types/validation"
 
 export const FacultyForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<SubjectAndFacutlyFormValues>({
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<SubjectAndFacutlyFormValues>({
     resolver: zodResolver(subjectAndFacultySchema),
   });
   const dispatch = useDispatch<AppDispatch>()
@@ -21,11 +21,12 @@ export const FacultyForm = () => {
     formData.append("nom", data.nom);
     formData.append("description", data.description || "");
     dispatch(addFaculty(formData))
+    reset()
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <InputField name={"name"} placeholder={"Nom de la faculté"} register={register} errors={errors} />
+      <InputField name={"nom"} placeholder={"Nom de la faculté"} register={register} errors={errors} />
       <TextAreaField name={"description"} placeholder={"Description"} label={"Description"} register={register} errors={errors} />
       <div className="flex justify-end">
         <Button label={"Ajouter"} />
