@@ -27,7 +27,7 @@ const SubNavbar: React.FC<SubNavbarProps> = ({ items }) => {
   };  
 
   return (  
-    <div className="relative w-full">  
+    <div className="relative w-full mb-6">  
       <div className="flex items-center">  
         <button  
           onClick={scrollLeft}  

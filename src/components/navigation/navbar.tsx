@@ -10,11 +10,11 @@ export const Navbar = () => {
             </div>
         </div>
         <div className="flex text-gray-400">
-            <HomeIcon className="ml-4"/>
-            <Book className="ml-4"/>
-            <LucideNewspaper className="ml-4"/>
-            <Bell className="ml-4"/>
-            <UserCircle className="ml-4"/>
+            <HomeIcon className="ml-4 text-black hover:text-black cursor-pointer"/>
+            <Book className="ml-4 hover:text-black cursor-pointer"/>
+            <LucideNewspaper className="ml-4 hover:text-black cursor-pointer"/>
+            <Bell className="ml-4 hover:text-black cursor-pointer"/>
+            <UserCircle className="ml-4 hover:text-black cursor-pointer"/>
         </div>
     </div>
 }

@@ -12,6 +12,10 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {  
+        verdana: ['Verdana', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif']
+      },
     },
   },
   plugins: [],

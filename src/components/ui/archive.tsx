@@ -46,7 +46,7 @@ export default function Home() {
 
       <Popup isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <h2 className="text-lg font-semibold mb-4">{formTitle}</h2>
-        <div className="mt-2">
+        <div className="mt-2 bg-[#F7F7F7]">
           {activeForm}
         </div>
       </Popup>
