@@ -44,7 +44,7 @@ export default function Dashboard() {
         </div>
         {
             isOpen && (<Popup isOpen={isOpen} onClose={handleAddDocPopup}>
-                   {handleForms(formName!)} 
+                {handleForms(formName!)}
             </Popup>)
         }
     </>
