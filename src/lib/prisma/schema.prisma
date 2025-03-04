@@ -24,3 +24,24 @@ model User {
   password  String
   createdAt DateTime @default(now())
 }
+
+model Faculty {
+  id Int @id @default(autoincrement())
+  name String
+}
+
+model Subject {
+  id Int @id @default(autoincrement())
+  name String
+}
+
+
+model Book {
+  id Int @id @default(autoincrement())
+  titre String
+  auteurId Int
+  auteurNom String
+  faculteId Int
+  matiereId Int
+  file Bytes
+}
