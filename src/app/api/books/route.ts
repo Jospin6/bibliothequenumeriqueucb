@@ -21,8 +21,6 @@ export async function POST(req: NextRequest) {
         console.error('Error creating book:', error);
         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
-
-
 }
 
 export async function GET(req: NextRequest) {
