@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  postnom   String
+  password  String
+  createdAt DateTime @default(now())
+  role      UserRole @default(USER)
+  faculteId Int?
+  faculty   Faculty? @relation(fields: [faculteId], references: [id], onDelete: Cascade)
+  books     Book[]
+  loans     Loan[]
+  reviews   Review[]
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPERADMIN
+}
+
+model Faculty {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  subjects Subject[]
+  users User[]
+  books Book[]
+}
+
+model Subject {
+  id        Int    @id @default(autoincrement())
+  name      String @unique
+  faculteId Int
+  faculty   Faculty @relation(fields: [faculteId], references: [id], onDelete: Cascade)
+  books     Book[]
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  books Book[]
+}
+
+model Book {
+  id          Int    @id @default(autoincrement())
+  title       String
+  auteurId    Int
+  faculteId   Int?
+  subjectId   Int?
+  categoryId  Int?
+  file        Bytes
+  createdAt   DateTime @default(now())
+  auteur      User @relation(fields: [auteurId], references: [id], onDelete: Cascade)
+  faculty     Faculty? @relation(fields: [faculteId], references: [id], onDelete: Cascade)
+  subject     Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  loans       Loan[]
+  reviews     Review[]
+}
+
+model Loan {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  bookId      Int
+  borrowedAt  DateTime @default(now())
+  dueDate     DateTime
+  returnedAt  DateTime?
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book        Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bookId    Int
+  rating    Int      @default(5) 
+  comment   String?
+  createdAt DateTime @default(now())
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book      Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+}

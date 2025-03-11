@@ -19,7 +19,7 @@ export const UserForm = () => {
 
     const onSubmit = async (data: UserFormValues) => {
         const formData = new FormData();
-        formData.append("nom", data.nom);
+        formData.append("name", data.nom);
         formData.append("postnom", data.postnom);
         formData.append("email", data.email);
         formData.append("role", data.role);

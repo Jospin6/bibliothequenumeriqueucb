@@ -1,22 +1,16 @@
 import { NextResponse, NextRequest } from "next/server";
-import prisma from "../../../lib/prisma/prisma"
+import prisma from "../../../../prisma/prisma"
 
 
 export async function POST(req: NextRequest) {
     const { titre, auteurId, auteurNom, faculteId, matiereId, file } = await req.json()
 
     try {
-        const book = await prisma.book.create({
-            data: {
-                titre,
-                auteurId,
-                auteurNom,
-                faculteId,
-                matiereId,
-                file,
-            }
-        })
-        return NextResponse.json(book, { status: 201 });
+        // const book = await prisma.book.create({
+        //     data: {
+        //     }
+        // })
+        // return NextResponse.json(book, { status: 201 });
     } catch (error) {
         console.error('Error creating book:', error);
         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });

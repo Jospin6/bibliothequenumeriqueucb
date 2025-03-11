@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../../lib/prisma/prisma"
+import prisma from "../../../../../prisma/prisma"
 
 
 export async function GET(req: Request) {
@@ -23,11 +23,8 @@ export async function PUT(req: Request) {
     const book = await prisma.book.update({
         where: { id: parseInt(id) },
         data: {
-            titre,
             auteurId,
-            auteurNom,
             faculteId,
-            matiereId,
             file,
         },
       });
