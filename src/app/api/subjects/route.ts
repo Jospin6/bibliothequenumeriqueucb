@@ -3,12 +3,13 @@ import prisma from "../../../../prisma/prisma"
 
 
 export async function POST(req: Request) {
-    const {name} = await req.json()
+    const {name, faculteId } = await req.json()
     
     try {
         const subject = await prisma.subject.create({
             data: {
-                name
+                name,
+                faculteId
             }
         })
         return NextResponse.json(subject)

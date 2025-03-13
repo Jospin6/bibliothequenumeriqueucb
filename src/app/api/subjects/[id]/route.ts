@@ -5,8 +5,8 @@ import prisma from "../../../../../prisma/prisma"
 export async function GET(req: Request) {
     const url = new URL(req.url)
     const id = url.pathname.split('/').pop() as string
-    const subject = await prisma.findUnique({
-        where: parseInt(id)
+    const subject = await prisma.subject.findFirst({
+        where: { id: parseInt(id) }
     })
     if (!subject) {
         NextResponse.json({message: "Subject not found"})

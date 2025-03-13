@@ -57,9 +57,9 @@ export const UserForm = () => {
                         label="Faculté"
                         options={[
                             { value: "", label: "Choisir une fac" },
-                            { value: "science", label: "Sciences" },
-                            { value: "droit", label: "Droit" },
-                            { value: "medecine", label: "Medecine" }
+                            { value: "1", label: "Sciences" },
+                            { value: "2", label: "Droit" },
+                            { value: "3", label: "Medecine" }
                         ]}
                         register={register}
                         errors={errors}
