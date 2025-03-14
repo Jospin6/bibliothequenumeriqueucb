@@ -5,21 +5,18 @@ import { TextAreaField } from "../ui/textAreaField";
 import { Button } from "../ui/Button";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { subjectAndFacultySchema } from "@/lib/validationSchema"
-import { SubjectAndFacutlyFormValues } from "@/types/validation"
+import { subjectSchema } from "@/lib/validationSchema"
+import { SubjectFormValues } from "@/types/validation"
 import { addSubject } from "@/redux/subject/subjectSlice";
 
 export const SubjectForm = () => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<SubjectAndFacutlyFormValues>({
-        resolver: zodResolver(subjectAndFacultySchema),
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<SubjectFormValues>({
+        resolver: zodResolver(subjectSchema),
     });
     const dispatch = useDispatch<AppDispatch>()
 
-    const onSubmit = async (data: SubjectAndFacutlyFormValues) => {
-        const formData = new FormData();
-        formData.append("nom", data.nom);
-        formData.append("description", data.description || "");
-        dispatch(addSubject(formData))
+    const onSubmit = async (data: SubjectFormValues) => {
+        dispatch(addSubject({name: data.name, faculteId: data.faculteId}))
         reset()
     };
 

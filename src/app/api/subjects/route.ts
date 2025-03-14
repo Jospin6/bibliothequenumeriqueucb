@@ -21,6 +21,14 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const faculteId = searchParams.get("faculteId");
+    if (faculteId) {
+        const subject = await prisma.subject.findMany({
+            where: {faculteId: +faculteId}
+        })
+        return NextResponse.json(subject)
+    }
     const subject = await prisma.subject.findMany()
     return NextResponse.json(subject)
 }

@@ -7,20 +7,17 @@ import { addFaculty } from "@/redux/faculty/facultySlice";
 import { InputField } from "../ui/inputField";
 import { TextAreaField } from "../ui/textAreaField";
 import { Button } from "../ui/Button";
-import { subjectAndFacultySchema } from "@/lib/validationSchema"
-import { SubjectAndFacutlyFormValues } from "@/types/validation"
+import { facultySchema } from "@/lib/validationSchema"
+import { faculteFormValues } from "@/types/validation"
 
 export const FacultyForm = () => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<SubjectAndFacutlyFormValues>({
-    resolver: zodResolver(subjectAndFacultySchema),
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<faculteFormValues>({
+    resolver: zodResolver(facultySchema),
   });
   const dispatch = useDispatch<AppDispatch>()
 
-  const onSubmit = async (data: SubjectAndFacutlyFormValues) => {
-    const formData = new FormData();
-    formData.append("nom", data.nom);
-    formData.append("description", data.description || "");
-    dispatch(addFaculty(formData))
+  const onSubmit = async (data: faculteFormValues) => {
+    dispatch(addFaculty({name: data.name}))
     reset()
   };
 

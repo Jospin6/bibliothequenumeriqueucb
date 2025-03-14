@@ -1,10 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "../store";
 
 interface Faculty {
     id?: number;
-    nom: string;
-    description: string;
+    name: string;
 }
 
 interface FacultyState {
@@ -21,9 +21,11 @@ const initialState: FacultyState = {
 
 export const addFaculty = createAsyncThunk(
     "faculty/addFaculty",
-    async (formData: FormData, { rejectWithValue }) => {
+    async (formData: Faculty, { rejectWithValue }) => {
         try {
-            const response = await axios.post("/api/faculties", formData,  {
+            const response = await axios.post("/api/faculties", {
+                name: formData.name
+            },  {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             return response.data;
@@ -33,11 +35,35 @@ export const addFaculty = createAsyncThunk(
     }
 );
 
+export const fetchFaculties = createAsyncThunk("faculty/fetchFaculties", async () => {
+    try {
+        const response = await axios.get("/api/faculties")
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
 const facultySlice = createSlice({
     name: "faculty",
     initialState,
     reducers: {},
-    extraReducers: (builder) => { },
+    extraReducers: (builder) => { 
+        builder
+            .addCase(fetchFaculties.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(fetchFaculties.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.faculties = action.payload
+            })
+            .addCase(fetchFaculties.rejected, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.error = action.payload
+            })
+    },
 });
+
+export const selectFaculties = (state: RootState) => state.faculty.faculties
 
 export default facultySlice.reducer;

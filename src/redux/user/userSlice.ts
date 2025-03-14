@@ -61,12 +61,38 @@ export const postLogin = createAsyncThunk("user/postLogin", async ({ email, pass
     }
 })
 
+export const postUser = createAsyncThunk(
+    "user/register",
+    async (data: User, { rejectWithValue }) => {
+        try {
+            const response = await axios.post("/api/registration",
+                {
+                    name: data.name,
+                    email: data.email,
+                    password: data.password,
+                    postnom: data.postom, 
+                    role: data.role, 
+                    faculteId: data.faculte
+                }
+                , {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+            return response.data;
+        } catch (error: any) {
+            console.error("Erreur Axios :", error.response?.data || error.message);
+            return rejectWithValue(error.response?.data || "Erreur inconnue");
+        }
+    }
+);
+
 export const addUser = createAsyncThunk(
     "user/addUser",
     async (formData: FormData, { rejectWithValue }) => {
         try {
             const response = await axios.post("/api/users", formData);
-            console.log(response.data);
             return response.data;
         } catch (error) {
             return rejectWithValue("Erreur lors de l'ajout du livre");

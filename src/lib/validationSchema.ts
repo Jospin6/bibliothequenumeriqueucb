@@ -21,7 +21,11 @@ export const bookSchema = z.object({
 });
 
 // Matière et faculté Schema
-export const subjectAndFacultySchema = z.object({
-    nom: z.string().min(1, "Le nom est requis"),
-    description: z.string().optional(),
+export const facultySchema = z.object({
+    name: z.string().min(1, "Le nom est requis"),
 });
+
+export const subjectSchema = z.object({
+    name: z.string().min(1, "name are required !"),
+    faculteId: z.number()
+})

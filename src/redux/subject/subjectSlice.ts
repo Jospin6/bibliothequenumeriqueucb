@@ -1,10 +1,11 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "../store";
 
 interface Subject {
     id?: number;
-    nom: string;
-    description: string;
+    name: string;
+    faculteId: number;
 }
 
 interface BookState {
@@ -21,9 +22,12 @@ const initialState: BookState = {
 
 export const addSubject = createAsyncThunk(
     "subject/addUser",
-    async (formData: FormData, { rejectWithValue }) => {
+    async (formData: Subject, { rejectWithValue }) => {
         try {
-            const response = await axios.post("/api/subjects", formData,  {
+            const response = await axios.post("/api/subjects", {
+                name: formData.name,
+                faculteId: formData.faculteId
+            },  {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             return response.data;
@@ -33,11 +37,35 @@ export const addSubject = createAsyncThunk(
     }
 );
 
+export const fetchSubjects = createAsyncThunk("subject/fetchSubjects", async (faculteId?: number) => {
+    try {
+        const response = await axios.get(`/api/subjects?faculteId=${faculteId}`)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
 const userSlice = createSlice({
     name: "subject",
     initialState,
     reducers: {},
-    extraReducers: (builder) => {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchSubjects.pending, state => {
+                state.loading = true
+            })
+            .addCase(fetchSubjects.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.subjects = action.payload
+            })
+            .addCase(fetchSubjects.rejected, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.error = action.payload
+            })
+    },
 });
+
+export const selectSubject = (state: RootState) => state.subject.subjects
 
 export default userSlice.reducer;
