@@ -70,9 +70,7 @@ export const postUser = createAsyncThunk(
                     name: data.name,
                     email: data.email,
                     password: data.password,
-                    postnom: data.postom, 
-                    role: data.role, 
-                    faculteId: data.faculte
+                    postnom: data.postom,
                 }
                 , {
                     headers: {

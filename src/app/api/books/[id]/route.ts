@@ -1,41 +1,19 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../../prisma/prisma"
 
-
-export async function GET(req: Request) {
-    const url = new URL(req.url);
-    const id = url.pathname.split('/').pop() as string;
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  try {
     const book = await prisma.book.findUnique({
-        where: { id: parseInt(id) },
+      where: { id: Number(params.id) },
     });
 
-    if (!book) {
-        return NextResponse.json({ message: 'Book Not Found' }, { status: 404 });
-    }
-    return NextResponse.json(book);
-    
-}
+    if (!book) return NextResponse.json({ error: "Book not found" }, { status: 404 });
 
-export async function PUT(req: Request) {
-    const url = new URL(req.url);
-    const id = url.pathname.split('/').pop() as string;
-    const { titre, auteurId, auteurNom, faculteId, matiereId, file } = await req.json();
-    const book = await prisma.book.update({
-        where: { id: parseInt(id) },
-        data: {
-            auteurId,
-            faculteId,
-            file,
-        },
-      });
-      return NextResponse.json(book);
-}
-
-export async function DELETE(req: Request) {
-    const url = new URL(req.url);
-    const id = url.pathname.split('/').pop() as string;
-    await prisma.book.delete({
-        where: { id: parseInt(id) },
+    return NextResponse.json({
+      ...book,
+      file: Buffer.from(book.file).toString("base64"),
     });
-    return NextResponse.json({ message : 'Book deleted' });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }

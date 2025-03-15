@@ -64,32 +64,6 @@ export default function RegisterForm() {
           placeholder={"Email"}
           register={register}
           errors={errors} />
-        <div className="grid grid-cols-2 gap-4">
-          <SelectField
-            name="faculteId"
-            label="Faculté"
-            options={[
-              { value: "", label: "Choisir une fac" },
-              { value: "1", label: "Sciences" },
-              { value: "2", label: "Droit" },
-              { value: "3", label: "Medecine" }
-            ]}
-            register={register}
-            errors={errors}
-          />
-          <SelectField
-            name="role"
-            label="Rôle"
-            options={[
-              { value: "", label: "Rôle de l'utilisateur" },
-              { value: "admin", label: "Admin" },
-              { value: "etudiant", label: "Étudiant" },
-              { value: "professeur", label: "Professeur" }
-            ]}
-            register={register}
-            errors={errors}
-          />
-        </div>
         <InputField
           name={"password"}
           placeholder={"Mot de passe"}

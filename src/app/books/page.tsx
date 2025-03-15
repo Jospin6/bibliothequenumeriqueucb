@@ -1,12 +1,49 @@
 import { Navbar } from "@/components/navigation/navbar";
 import IASection from "@/components/ui/iaSection";
 import { Eye, Heart, Notebook, UserPen } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function Lecture() {
+    const [books, setBooks] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    let faculteId = 1
+
+    useEffect(() => {
+        const fetchBooks = async () => {
+            const url = faculteId ? `/api/books?faculteId=${faculteId}` : "/api/books";
+            const res = await fetch(url);
+            const data = await res.json();
+            setBooks(data);
+            setLoading(false);
+        };
+
+        fetchBooks();
+    }, [faculteId]);
+
+    if (loading) return <p>Loading books...</p>;
     return <div className="pb-6">
         <Navbar />
         <div className="w-2/4 m-auto">
-            <div className="h-[auto] pb-2 pl-2 mt-4 border-b-[1px] border-gray-200">
+
+            <div className="max-w-2xl mx-auto mt-10">
+                <h2 className="text-2xl font-bold mb-5">Books {faculteId ? `of Faculty ${faculteId}` : ""}</h2>
+                {books.length === 0 ? (
+                    <p>No books found.</p>
+                ) : (
+                    <ul className="space-y-4">
+                        {books.map((book) => (
+                            <li key={book.id} className="p-4 bg-white rounded shadow">
+                                <h3 className="text-lg font-semibold">{book.title}</h3>
+                                <p className="text-gray-500">Author: {book.auteur.name}</p>
+                                {book.faculty && <p className="text-gray-500">Faculty: {book.faculty.name}</p>}
+                                <p className="text-sm text-gray-400">Added on: {new Date(book.createdAt).toLocaleDateString()}</p>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
+
+            {/* <div className="h-[auto] pb-2 pl-2 mt-4 border-b-[1px] border-gray-200">
                 <div className="flex items-center text-gray-500">
                     <Notebook size={20} className="mr-2 text-teal-400" />
                     <span className="text-gray-800 font-[500]">Histoire</span>
@@ -54,7 +91,7 @@ export default function Lecture() {
 
             <div className="mt-6">
                 <IASection/>
-            </div>
+            </div> */}
         </div>
     </div>
 }

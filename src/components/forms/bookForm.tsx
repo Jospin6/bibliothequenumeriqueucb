@@ -9,66 +9,60 @@ import { InputField } from "@/components/ui/inputField"
 import { ImageField } from "@/components/ui/imageField"
 import { SelectField } from "../ui/selectField";
 import { Button } from "../ui/Button";
+import { useState } from "react";
+import { z } from "zod";
+
+const schema = z.object({
+  title: z.string().min(3, "Title is required"),
+  auteurId: z.string().min(1, "Author ID is required"),
+  faculteId: z.string().optional(),
+  subjectId: z.string().optional(),
+  categoryId: z.string().optional(),
+  file: z.instanceof(File),
+});
 
 
 export const BookForm = () => {
-  const { register, handleSubmit, setValue, reset, watch, trigger, formState: { errors } } = useForm<BookFormValues>({
-    resolver: zodResolver(bookSchema),
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(schema),
   });
-  const dispatch = useDispatch<AppDispatch>();
 
-  const onSubmit = async (data: BookFormValues) => {
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (data: any) => {
+    setLoading(true);
     const formData = new FormData();
-    formData.append("titre", data.titre);
-    formData.append("auteurId", "1");
-    formData.append("auteurNom", "Auteur");
-    formData.append("faculteId", data.faculteId);
-    formData.append("matiereId", data.matiereId);
+    formData.append("title", data.title);
+    formData.append("auteurId", data.auteurId);
+    if (data.faculteId) formData.append("faculteId", data.faculteId);
+    if (data.subjectId) formData.append("subjectId", data.subjectId);
+    if (data.categoryId) formData.append("categoryId", data.categoryId);
+    formData.append("file", data.file[0]);
 
-    if (data.file) {
-      formData.append("file", data.file);
-    }
+    const res = await fetch("/api/books", { method: "POST", body: formData });
 
-    dispatch(addBook(formData));
-    reset();
+    setLoading(false);
+    if (!res.ok) alert("Error while adding book!");
+    else alert("Book added successfully!");
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <InputField name={"titre"} placeholder={"Entrer le titre"} register={register} errors={errors} />
-      <SelectField
-        name="faculteId"
-        label="Faculté"
-        options={[
-          { value: "sciences", label: "Sciences" },
-          { value: "droit", label: "Droit" },
-          { value: "medecine", label: "Medecine" }
-        ]}
-        register={register}
-        errors={errors}
-      />
-      <SelectField
-        name="matiereId"
-        label="Matière"
-        options={[
-          { value: "math", label: "Math" },
-          { value: "biologie", label: "Biologie" },
-          { value: "chimie", label: "Chimie" }
-        ]}
-        register={register}
-        errors={errors}
-      />
-      <ImageField 
-        name="file" 
-        accept=".pdf,.doc,.docx,.ppt,.pptx" 
-        register={register} 
-        setValue={setValue} 
-        trigger={trigger} 
-        watch={watch}
-        errors={errors} />
-      <div className="flex justify-end">
-        <Button label={"Ajouter"} />
+    <div className="max-w-xl mx-auto mt-10 p-5 bg-white rounded-lg shadow">
+        <h2 className="text-2xl font-bold mb-5">Add a New Book</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <input {...register("title")} placeholder="Title" className="w-full p-2 border rounded" />
+          {errors.title && <p className="text-red-500">{String(errors.title.message)}</p>}
+
+          <input {...register("auteurId")} placeholder="Author ID" className="w-full p-2 border rounded" />
+          {errors.auteurId && <p className="text-red-500">{String(errors.auteurId.message)}</p>}
+
+          <input {...register("file")} type="file" accept=".pdf,.docx" className="w-full p-2 border rounded" />
+          {errors.file && <p className="text-red-500">{String(errors.file.message)}</p>}
+
+          <button type="submit" disabled={loading} className="w-full p-2 bg-blue-600 text-white rounded">
+            {loading ? "Uploading..." : "Add Book"}
+          </button>
+        </form>
       </div>
-    </form>
   );
 };
