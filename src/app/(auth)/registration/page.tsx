@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/Button";
 const schema = z.object({
   name: z.string().min(2, "Nom trop court"),
   email: z.string().email("Email invalide"),
+  postnom: z.string().min(2, "Post nom trop court"),
   password: z.string().min(6, "Mot de passe trop court"),
 });
 
@@ -33,10 +34,8 @@ export default function RegisterForm() {
 
   const onSubmit = async (data: User) => {
     setError("");
-
     try {
-      const response = await dispatch(postUser(data)).unwrap();
-      console.log(response)
+      await dispatch(postUser(data)).unwrap();
 
     } catch (error) {
       console.error("Erreur de connexion :", error);
@@ -50,7 +49,7 @@ export default function RegisterForm() {
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
-          name={"nom"}
+          name={"name"}
           placeholder={"Nom"}
           register={register}
           errors={errors} />

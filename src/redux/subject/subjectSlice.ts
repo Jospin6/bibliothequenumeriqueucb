@@ -28,7 +28,7 @@ export const addSubject = createAsyncThunk(
                 name: formData.name,
                 faculteId: formData.faculteId
             },  {
-                headers: { "Content-Type": "multipart/form-data" },
+                headers: { "Content-Type": "application/json", },
             });
             return response.data;
         } catch (error) {

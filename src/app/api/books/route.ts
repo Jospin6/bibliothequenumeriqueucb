@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../prisma/prisma"
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
         const formData = await req.formData();
+
         const title = formData.get("title") as string;
         const auteurId = Number(formData.get("auteurId"));
         const faculteId = formData.get("faculteId") ? Number(formData.get("faculteId")) : null;
@@ -11,12 +12,23 @@ export async function POST(req: Request) {
         const categoryId = formData.get("categoryId") ? Number(formData.get("categoryId")) : null;
         const file = formData.get("file") as File;
 
-        if (!file) return NextResponse.json({ error: "File is required" }, { status: 400 });
+        if (!file) {
+            return NextResponse.json({ error: "File is required" }, { status: 400 });
+        }
 
+        // Convertir le fichier en Buffer
         const buffer = Buffer.from(await file.arrayBuffer());
 
+        // Enregistrer dans la base de données (Postgres avec Prisma)
         const book = await prisma.book.create({
-            data: { title, auteurId, faculteId, subjectId, categoryId, file: buffer },
+            data: {
+                title,
+                auteurId,
+                faculteId,
+                subjectId,
+                categoryId,
+                file: buffer, // Stocker en BLOB ou Base64 selon la DB
+            },
         });
 
         return NextResponse.json(book, { status: 201 });
@@ -24,6 +36,9 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
+
+export const config = { api: { bodyParser: false } }; // Désactiver le bodyParser de Next.js pour `formidable`
+
 
 export async function GET(req: NextRequest) {
     try {

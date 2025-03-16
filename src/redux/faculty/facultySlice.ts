@@ -26,7 +26,7 @@ export const addFaculty = createAsyncThunk(
             const response = await axios.post("/api/faculties", {
                 name: formData.name
             },  {
-                headers: { "Content-Type": "multipart/form-data" },
+                headers: { "Content-Type": "application/json", },
             });
             return response.data;
         } catch (error) {

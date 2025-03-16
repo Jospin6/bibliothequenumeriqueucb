@@ -24,19 +24,19 @@ export const SubjectForm = () => {
     }, [])
 
     const onSubmit = async (data: SubjectFormValues) => {
-        dispatch(addSubject({ name: data.name, faculteId: data.faculteId }))
+        dispatch(addSubject({ name: data.name, faculteId: Number(data.faculteId) }))
         reset()
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <InputField name={"nom"} placeholder={"Nom de la matière"} register={register} errors={errors} />
+            <InputField name={"name"} placeholder={"Nom de la matière"} register={register} errors={errors} />
             <SelectField
                 name="faculteId"
                 label="Faculté"
                 options={[ 
                     {value: "", label: "Choisi une faculté"},
-                    ...(faculties ? faculties.map(fac => ({ value: fac.id?.toString(), label: fac.name })) : []),
+                    ...(faculties ? faculties.map(fac => ({ value: fac.id!.toString(), label: fac.name })) : []),
                 ]}
                 register={register}
                 errors={errors}

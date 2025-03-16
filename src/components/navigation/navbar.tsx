@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { Searchbar } from "../ui/searchbar"
 import { Bell, Book, HomeIcon, LucideNewspaper, UserCircle } from "lucide-react"
+import Link from "next/link"
 export const Navbar = () => {
     return <div className="w-full px-[5%] h-[50px] border-b-[1px] border-gray-200 flex items-center justify-between">
         <div>
@@ -14,7 +15,10 @@ export const Navbar = () => {
             <Book className="ml-4 hover:text-black cursor-pointer"/>
             <LucideNewspaper className="ml-4 hover:text-black cursor-pointer"/>
             <Bell className="ml-4 hover:text-black cursor-pointer"/>
-            <UserCircle className="ml-4 hover:text-black cursor-pointer"/>
+            <Link href={"/account"} className="ml-4">
+            <UserCircle className="hover:text-black cursor-pointer"/>
+            </Link>
+            
         </div>
     </div>
 }

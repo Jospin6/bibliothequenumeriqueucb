@@ -25,7 +25,7 @@ export default function AuthLayout({
     <div
       className={`bg-white fixed left-0 top-0 z-50 w-full h-screen`}
     >
-      <div className="px-28 h-[60px] flex justify-start items-center text-3xl">YouGen</div>
+      <div className="px-28 h-[60px] flex justify-start items-center text-3xl">UCB</div>
 
       {children}
     </div>

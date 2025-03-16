@@ -5,6 +5,7 @@ interface Book {
     id?: number;
     title: string;
     author: string;
+    file: File
     // Add other book properties as needed
 }
 
@@ -23,10 +24,9 @@ const initialState: BookState = {
 export const addBook = createAsyncThunk(
     "book/addBook",
     async (formData: FormData, { rejectWithValue }) => {
+        console.log("putain: ",formData)
         try {
-            const response = await axios.post("/api/books", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
+            const response = await axios.post("/api/books", formData);
             return response.data;
         } catch (error) {
             return rejectWithValue("Erreur lors de l'ajout du livre");

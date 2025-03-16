@@ -5,7 +5,7 @@ import { RootState } from "../store";
 interface User {
     id?: number;
     name: string;
-    postom: string;
+    postnom: string;
     email: string;
     role?: string;
     faculte?: number;
@@ -70,30 +70,18 @@ export const postUser = createAsyncThunk(
                     name: data.name,
                     email: data.email,
                     password: data.password,
-                    postnom: data.postom,
+                    postnom: data.postnom,
                 }
                 , {
                     headers: {
                         "Content-Type": "application/json",
                     },
                 });
-
+            console.log(response.data)
             return response.data;
         } catch (error: any) {
             console.error("Erreur Axios :", error.response?.data || error.message);
             return rejectWithValue(error.response?.data || "Erreur inconnue");
-        }
-    }
-);
-
-export const addUser = createAsyncThunk(
-    "user/addUser",
-    async (formData: FormData, { rejectWithValue }) => {
-        try {
-            const response = await axios.post("/api/users", formData);
-            return response.data;
-        } catch (error) {
-            return rejectWithValue("Erreur lors de l'ajout du livre");
         }
     }
 );

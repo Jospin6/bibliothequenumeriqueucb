@@ -1,15 +1,18 @@
+"use client"
 import { Navbar } from "@/components/navigation/navbar";
 import { BigTitle } from "@/components/ui/bigTitle";
 import { Card } from "@/components/ui/card";
 import { SecondTitle } from "@/components/ui/secondTitle";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 
 export default function Account() {
+    const user = useCurrentUser()
     return <div className="">
         <Navbar />
         <div className="m-auto w-2/3 py-6">
             <div className="mb-4 flex justify-between items-center">
-                <BigTitle title={"Vos stats"} />
+                <BigTitle title={user?.name!} />
                 <span className="text-blue-700 text-[15px]">Modifier vos informations</span>
             </div>
             <div className="mb-4">

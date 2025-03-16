@@ -1,7 +1,7 @@
 type SelectFieldProps = {
     name: string;
     label: string;
-    options: { value: any; label: string }[];
+    options: { value: string; label: string }[];
     register: any;
     errors: any; 
 };

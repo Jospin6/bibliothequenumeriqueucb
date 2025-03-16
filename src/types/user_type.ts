@@ -1,7 +1,7 @@
 export interface User {
     id?: number;
     name: string;
-    postom: string;
+    postnom: string;
     email: string;
     role?: string;
     faculte?: number;
