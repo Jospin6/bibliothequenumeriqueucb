@@ -42,7 +42,8 @@ export const BookForm = () => {
     if (data.categoryId) formData.append("categoryId", data.categoryId);
 
     if (data.file) {
-      formData.append("file", data.file[0]); // Assurez-vous qu'on envoie bien un fichier
+      formData.append("file", data.file); // Assurez-vous qu'on envoie bien un fichier
+      console.log("file: ", data.file)
     } else {
       console.error("Aucun fichier sélectionné !");
       alert("Veuillez sélectionner un fichier.");

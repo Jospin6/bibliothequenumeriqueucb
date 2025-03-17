@@ -19,6 +19,8 @@ export async function POST(req: NextRequest) {
         // Convertir le fichier en Buffer
         const buffer = Buffer.from(await file.arrayBuffer());
 
+        console.log("le buffer: ",buffer)
+
         // Enregistrer dans la base de données (Postgres avec Prisma)
         const book = await prisma.book.create({
             data: {

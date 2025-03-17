@@ -1,3 +1,4 @@
+"use client"
 import { Navbar } from "@/components/navigation/navbar";
 import IASection from "@/components/ui/iaSection";
 import { Eye, Heart, Notebook, UserPen } from "lucide-react";
@@ -10,7 +11,7 @@ export default function Lecture() {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const url = faculteId ? `/api/books?faculteId=${faculteId}` : "/api/books";
+            const url = "http://localhost:3000/api/books";
             const res = await fetch(url);
             const data = await res.json();
             setBooks(data);
