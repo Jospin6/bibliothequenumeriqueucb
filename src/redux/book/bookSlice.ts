@@ -1,5 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "../store";
 
 interface Book {
     id?: number;
@@ -24,7 +25,6 @@ const initialState: BookState = {
 export const addBook = createAsyncThunk(
     "book/addBook",
     async (formData: FormData, { rejectWithValue }) => {
-        console.log("putain: ",formData)
         try {
             const response = await axios.post("/api/books", formData);
             return response.data;
@@ -34,11 +34,36 @@ export const addBook = createAsyncThunk(
     }
 );
 
+export const fetchBooks = createAsyncThunk("book/fetchBooks", async (faculteId?: number) => {
+    let url = faculteId ? `/api/books?faculteId=${faculteId}` : "/api/books"
+    try {
+        const response = await axios.get(url)
+        return response.data
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+})
+
 const bookSlice = createSlice({
     name: "book",
     initialState,
     reducers: {},
-    extraReducers: (builder) => {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchBooks.pending, state => {
+                state.loading = true
+            })
+            .addCase(fetchBooks.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.books = action.payload
+            })
+            .addCase(fetchBooks.rejected, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.error = action.payload as string
+            })
+    },
 });
+
+export const selectBooks = (state: RootState) => state.book
 
 export default bookSlice.reducer;

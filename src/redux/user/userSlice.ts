@@ -1,6 +1,11 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
+
+interface Faculty {
+    id: number
+    name: string
+}
 
 interface User {
     id?: number;
@@ -8,19 +13,21 @@ interface User {
     postnom: string;
     email: string;
     role?: string;
-    faculte?: number;
+    faculty?: Faculty;
     password?: string
 }
 
 interface UserState {
     loading: boolean;
     users: User[];
+    user: User | null
     currentUser: User | null
     error: string | null;
 }
 
 const initialState: UserState = {
     loading: false,
+    user: null,
     users: [],
     currentUser: null,
     error: null,
@@ -77,7 +84,6 @@ export const postUser = createAsyncThunk(
                         "Content-Type": "application/json",
                     },
                 });
-            console.log(response.data)
             return response.data;
         } catch (error: any) {
             console.error("Erreur Axios :", error.response?.data || error.message);
@@ -85,6 +91,16 @@ export const postUser = createAsyncThunk(
         }
     }
 );
+
+export const fetchUser = createAsyncThunk("user/fetchUser", async (userId: number) => {
+    try {
+        let url =`/api/users/${userId}`
+        const response = await axios.get(url)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
 
 const userSlice = createSlice({
     name: "user",
@@ -103,9 +119,14 @@ const userSlice = createSlice({
                 state.loading = false
                 state.error = "An error occured"
             })
+
+            .addCase(fetchUser.fulfilled, (state, action: PayloadAction<any>) => {
+                state.user = action.payload
+            })
     },
 });
 
 export const selectCurrentUser = (state: RootState) => state.user.currentUser
+export const selectUser = (state: RootState) => state.user.user
 
 export default userSlice.reducer;

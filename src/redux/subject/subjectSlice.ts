@@ -39,7 +39,8 @@ export const addSubject = createAsyncThunk(
 
 export const fetchSubjects = createAsyncThunk("subject/fetchSubjects", async (faculteId?: number) => {
     try {
-        const response = await axios.get(`/api/subjects?faculteId=${faculteId}`)
+        let url = faculteId ? `/api/subjects?faculteId=${faculteId}`: "/api/subjects"
+        const response = await axios.get(url)
         return response.data
     } catch (error) {
         throw new Error(error as string)

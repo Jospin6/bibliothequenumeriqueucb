@@ -43,7 +43,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ bookId }) => {
   return (
     <div>
       {pdfUrl ? (
-        <iframe src={pdfUrl} width="100%" height="600px" />
+        <iframe src={pdfUrl} width="100%" height="100vh" className="h-screen" />
       ) : (
         <p>Aucun document disponible.</p>
       )}

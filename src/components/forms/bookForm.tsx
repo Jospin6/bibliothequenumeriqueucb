@@ -1,20 +1,17 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { addBook } from "@/redux/book/bookSlice";
-import { bookSchema } from "@/lib/validationSchema"
-import { BookFormValues } from "@/types/validation"
-import { InputField } from "@/components/ui/inputField"
-import { ImageField } from "@/components/ui/imageField"
-import { SelectField } from "../ui/selectField";
-import { Button } from "../ui/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
+import { fetchSubjects, selectSubject } from "@/redux/subject/subjectSlice";
+import { fetchFaculties, selectFaculties } from "@/redux/faculty/facultySlice";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const schema = z.object({
   title: z.string().min(3, "Title is required"),
-  auteurId: z.string().min(1, "Author ID is required"),
+  auteurId: z.string().optional(),
   faculteId: z.string().optional(),
   subjectId: z.string().optional(),
   categoryId: z.string().optional(),
@@ -23,57 +20,72 @@ const schema = z.object({
 
 
 export const BookForm = () => {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
   });
-  // dispatch(addBook(formData))
+  const subjects = useSelector(selectSubject)
+  const faculties = useSelector(selectFaculties)
+  const user = useCurrentUser()
+  console.log(user?.faculty)
 
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(() => {
+    dispatch(fetchSubjects())
+    dispatch(fetchFaculties())
+  }, [dispatch]);
 
   const onSubmit = async (data: any) => {
     setLoading(true);
 
     const formData = new FormData();
     formData.append("title", data.title);
-    formData.append("auteurId", data.auteurId);
+    formData.append("auteurId", `${user!.id!}`);
     if (data.faculteId) formData.append("faculteId", data.faculteId);
     if (data.subjectId) formData.append("subjectId", data.subjectId);
     if (data.categoryId) formData.append("categoryId", data.categoryId);
 
     if (data.file) {
-      formData.append("file", data.file); // Assurez-vous qu'on envoie bien un fichier
-      console.log("file: ", data.file)
+      formData.append("file", data.file);
     } else {
       console.error("Aucun fichier sélectionné !");
       alert("Veuillez sélectionner un fichier.");
       return;
     }
-
-    // Vérifier le contenu de formData
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
-    const res = await fetch("/api/books", {
-      method: "POST",
-      body: formData,
-    });
+    dispatch(addBook(formData))
+    reset()
 
     setLoading(false);
-    if (!res.ok) alert("Error while adding book!");
-    else alert("Book added successfully!");
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-5 bg-white rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-5">Add a New Book</h2>
+    <div className=" mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <input {...register("title")} placeholder="Title" className="w-full p-2 border rounded" />
         {errors.title && <p className="text-red-500">{String(errors.title.message)}</p>}
 
-        <input {...register("auteurId")} placeholder="Author ID" className="w-full p-2 border rounded" />
-        {errors.auteurId && <p className="text-red-500">{String(errors.auteurId.message)}</p>}
+        <div className="w-full">
+
+          <select {...register("subjectId")} id="" className="w-full p-2 border rounded">
+            <option value="">Choisi la matière</option>
+            {
+              subjects.map(subject => <option key={subject.id} value={subject.id} >{subject.name}</option>)
+            }
+          </select>
+
+        </div>
+
+        <div className="w-full">
+
+          <select {...register("faculteId")} id="" className="w-full p-2 border rounded">
+            <option value="" className="text-gray-400">Choisi la fac</option>
+            {
+              faculties.map(fac => <option key={fac.id} value={fac.id} >{fac.name}</option>)
+            }
+          </select>
+
+        </div>
 
         <input
           type="file"

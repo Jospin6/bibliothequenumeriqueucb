@@ -4,7 +4,12 @@ import prisma from "../../../../../prisma/prisma"
 export async function GET(req: Request) {
     const url = new URL(req.url)
     const id = url.pathname.split('/').pop() as string
-    const user = await prisma.user.findUnique({where: {id: parseInt(id)}})
+    const user = await prisma.user.findUnique({
+        where: {id: parseInt(id)},
+        include: {
+            faculty: true,
+        }
+    })
     if (!user) {
         return NextResponse.json({message: "User not found"})
     }

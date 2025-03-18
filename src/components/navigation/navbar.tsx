@@ -11,7 +11,9 @@ export const Navbar = () => {
             </div>
         </div>
         <div className="flex text-gray-400">
-            <HomeIcon className="ml-4 text-black hover:text-black cursor-pointer"/>
+            <Link href={"/"}>
+                <HomeIcon className="ml-4 text-black hover:text-black cursor-pointer"/>
+            </Link>
             <Book className="ml-4 hover:text-black cursor-pointer"/>
             <LucideNewspaper className="ml-4 hover:text-black cursor-pointer"/>
             <Bell className="ml-4 hover:text-black cursor-pointer"/>
