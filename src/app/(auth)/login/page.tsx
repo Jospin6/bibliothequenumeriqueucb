@@ -30,6 +30,10 @@ export default function Login() {
 
     try {
       const response = await dispatch(postLogin(data)).unwrap();
+      if (response.data.message) {
+        setError(response.data.message);
+        return
+      }
     } catch (error) {
       console.error("Erreur de connexion :", error);
     }

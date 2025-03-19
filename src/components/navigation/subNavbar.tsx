@@ -1,17 +1,30 @@
 "use client";  
+import { setSubject } from '@/redux/book/bookSlice';
+import { AppDispatch } from '@/redux/store';
+import { Subject } from '@/redux/subject/subjectSlice';
 import React, { useState, useRef } from 'react';  
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';  
+import { useDispatch } from 'react-redux';
+
 
 interface SubNavbarProps {  
-  items: string[];  
+  items: Subject[];  
 }  
 
 const SubNavbar: React.FC<SubNavbarProps> = ({ items }) => {  
   const [selectedIndex, setSelectedIndex] = useState<number>(0);  
-  const scrollContainerRef = useRef<HTMLDivElement>(null);  
+  const scrollContainerRef = useRef<HTMLDivElement>(null); 
+  const dispatch = useDispatch<AppDispatch>() 
 
-  const handleItemClick = (index: number) => {  
-    setSelectedIndex(index);  
+  const itemsToDisplay = [
+    {id: null, name: "Tout"},
+    ...items
+  ]
+
+
+  const handleItemClick = (index: number, subjectId: number) => {  
+    setSelectedIndex(index);
+    dispatch(setSubject(subjectId))
   };  
 
   const scrollLeft = () => {  
@@ -41,7 +54,7 @@ const SubNavbar: React.FC<SubNavbarProps> = ({ items }) => {
           style={{ scrollBehavior: 'smooth' }}  
         >  
           <div className="flex">  
-            {items.map((item, index) => (  
+            {itemsToDisplay.map((item, index) => (  
               <div  
                 key={index}  
                 className={`cursor-pointer whitespace-nowrap relative ${  
@@ -49,10 +62,10 @@ const SubNavbar: React.FC<SubNavbarProps> = ({ items }) => {
                     ? 'text-black'  
                     : 'text-gray-500 hover:text-black'  
                 }`}  
-                onClick={() => handleItemClick(index)}  
+                onClick={() => handleItemClick(index, item.id!)}  
               >  
                 <span className={`block py-2 px-4 ${index === selectedIndex ? 'bg-white' : 'bg-transparent'}`}>  
-                  {item}  
+                  {item.name}  
                 </span>  
                 {index === selectedIndex && (  
                   <div className="absolute left-0 right-0 bottom-0 border-b-2 border-black" style={{ marginLeft: '20px', marginRight: '20px' }} />  

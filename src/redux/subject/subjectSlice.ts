@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
 
-interface Subject {
+export interface Subject {
     id?: number;
     name: string;
     faculteId: number;

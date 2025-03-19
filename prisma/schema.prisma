@@ -25,8 +25,17 @@ model User {
   faculteId Int?
   faculty   Faculty? @relation(fields: [faculteId], references: [id], onDelete: Cascade)
   books     Book[]
-  loans     Loan[]
-  reviews   Review[]
+
+  FavoriteBook FavoriteBook[]
+}
+
+model AuthorisedUser {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  faculteId Int
+  faculty   Faculty? @relation(fields: [faculteId], references: [id], onDelete: Cascade)
 }
 
 enum UserRole {
@@ -41,6 +50,8 @@ model Faculty {
   subjects Subject[]
   users User[]
   books Book[]
+
+  AuthorisedUser AuthorisedUser[]
 }
 
 model Subject {
@@ -51,47 +62,26 @@ model Subject {
   books     Book[]
 }
 
-model Category {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  books Book[]
-}
-
 model Book {
   id          Int    @id @default(autoincrement())
   title       String
   auteurId    Int
   faculteId   Int?
   subjectId   Int?
-  categoryId  Int?
   file        Bytes
   createdAt   DateTime @default(now())
   auteur      User @relation(fields: [auteurId], references: [id], onDelete: Cascade)
   faculty     Faculty? @relation(fields: [faculteId], references: [id], onDelete: Cascade)
   subject     Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  category    Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  loans       Loan[]
-  reviews     Review[]
+
+  FavoriteBook FavoriteBook[]
 }
 
-model Loan {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  bookId      Int
-  borrowedAt  DateTime @default(now())
-  dueDate     DateTime
-  returnedAt  DateTime?
-  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  book        Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
-}
+model FavoriteBook {
+  userId  Int
+  bookId  Int
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book    Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
-model Review {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  bookId    Int
-  rating    Int      @default(5) 
-  comment   String?
-  createdAt DateTime @default(now())
-  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  book      Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  @@id([userId, bookId]) 
 }

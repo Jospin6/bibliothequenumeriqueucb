@@ -10,9 +10,29 @@ export async function POST(req: NextRequest) {
   const { email, name, postnom, password } = await req.json();
 
   try {
+    const authorisedUser = await prisma.authorisedUser.findUnique({
+      where: {
+        email: email,
+      },
+      select: {
+        email: true,
+        isActive: true,
+        faculteId: true,
+      }
+    });
+
+    if (!authorisedUser) {
+      return NextResponse.json({ message: "Email non autorisé. L'email doit être enregistré dans la liste des utilisateurs autorisés." }, { status: 404 });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { name, email, postnom, password: hashedPassword },
+      data: { 
+        name, 
+        email, 
+        postnom, 
+        password: hashedPassword,
+        faculteId: authorisedUser.faculteId,},
     });
 
     const token = jwt.sign({ id: user.id, email: user.email, name: user.name, postnom: user.postnom }, SECRET_KEY, {

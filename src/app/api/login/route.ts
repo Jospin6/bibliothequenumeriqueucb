@@ -16,6 +16,21 @@ export async function POST(req: NextRequest) {
     throw new Error('Utilisateur non trouvé')
   }
 
+  const authorisedUser = await prisma.authorisedUser.findUnique({
+    where: {
+      email: email,
+    },
+    select: {
+      email: true,
+      isActive: true,
+      faculteId: true,
+    }
+  });
+
+  if (!authorisedUser) {
+    return NextResponse.json({ message: "Email non autorisé. L'email doit être enregistré dans la liste des utilisateurs autorisés." }, { status: 404 });
+  }
+
   const isPasswordValid = await bcrypt.compare(password, user.password)
 
   if (!isPasswordValid) {

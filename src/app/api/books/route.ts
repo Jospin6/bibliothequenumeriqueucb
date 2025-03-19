@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         // Convertir le fichier en Buffer
         const buffer = Buffer.from(await file.arrayBuffer());
 
-        console.log("le buffer: ",buffer)
+        console.log("le buffer: ", buffer)
 
         // Enregistrer dans la base de données (Postgres avec Prisma)
         const book = await prisma.book.create({
@@ -28,7 +28,6 @@ export async function POST(req: NextRequest) {
                 auteurId,
                 faculteId,
                 subjectId,
-                categoryId,
                 file: buffer, // Stocker en BLOB ou Base64 selon la DB
             },
         });
@@ -46,14 +45,17 @@ export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);
         const faculteId = searchParams.get("faculteId");
+        const subjectId = searchParams.get("subjectId");
 
         const books = await prisma.book.findMany({
-            where: faculteId ? { faculteId: Number(faculteId) } : {},
+            where: {
+                ...(faculteId ? { faculteId: Number(faculteId) } : {}),
+                ...(subjectId ? { subjectId: Number(subjectId) } : {}),
+            },
             include: {
                 auteur: true,
                 faculty: true,
                 subject: true,
-                category: true,
             },
             orderBy: { createdAt: "desc" },
         });

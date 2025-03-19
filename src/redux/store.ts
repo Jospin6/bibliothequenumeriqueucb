@@ -3,13 +3,15 @@ import bookReducer from './book/bookSlice'
 import userReducer from './user/userSlice'
 import subjectReducer from './subject/subjectSlice'
 import facultyReducer from './faculty/facultySlice'
+import favoritesReducer from "./favories/favoritesSlice"
 
 export const store = configureStore({
     reducer: {
         book: bookReducer,
         user: userReducer,
         subject: subjectReducer,
-        faculty: facultyReducer
+        faculty: facultyReducer,
+        favorites: favoritesReducer
     }
 })
 

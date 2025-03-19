@@ -13,12 +13,14 @@ interface Book {
 interface BookState {
     loading: boolean;
     books: Book[];
+    subjectId: number | null
     error: string | null;
 }
 
 const initialState: BookState = {
     loading: false,
     books: [],
+    subjectId: null,
     error: null,
 };
 
@@ -34,20 +36,37 @@ export const addBook = createAsyncThunk(
     }
 );
 
-export const fetchBooks = createAsyncThunk("book/fetchBooks", async (faculteId?: number) => {
-    let url = faculteId ? `/api/books?faculteId=${faculteId}` : "/api/books"
-    try {
-        const response = await axios.get(url)
-        return response.data
-    } catch (error: any) {
-        throw new Error(error.message)
+export const fetchBooks = createAsyncThunk(
+    "book/fetchBooks",
+    async ({ faculteId, subjectId }: { faculteId?: number; subjectId?: number | null }) => {
+        let url = "/api/books";
+
+        const params = new URLSearchParams();
+        if (faculteId) params.append("faculteId", String(faculteId));
+        if (subjectId) params.append("subjectId", String(subjectId));
+
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+
+        try {
+            const response = await axios.get(url);
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
     }
-})
+);
+
 
 const bookSlice = createSlice({
     name: "book",
     initialState,
-    reducers: {},
+    reducers: {
+        setSubject: (state, action) => {
+            state.subjectId = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchBooks.pending, state => {
@@ -65,5 +84,7 @@ const bookSlice = createSlice({
 });
 
 export const selectBooks = (state: RootState) => state.book
+export const selectSubjectId = (state: RootState) => state.book.subjectId
 
+export const { setSubject } = bookSlice.actions
 export default bookSlice.reducer;
