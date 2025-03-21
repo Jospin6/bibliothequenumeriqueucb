@@ -1,16 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-export const fetchFavorites = createAsyncThunk("favorites/fetch", async () => {
-    const res = await fetch("/api/favorites");
-    return res.json();
+export const fetchFavorites = createAsyncThunk("favorites/fetch", async (userId: number) => {
+    const res = await axios.get(`/api/favorites/${userId}`);
+    return res.data;
 });
 
 export const addFavorite = createAsyncThunk("favorites/add", async ({bookId, userId}: {bookId: string, userId: string}) => {
-    await fetch("/api/favorites", {
-        method: "POST",
-        body: JSON.stringify({ bookId, userId }),
-        headers: { "Content-Type": "application/json" },
-    });
+    await axios.post("/api/favorites", { bookId, userId });
     return bookId;
 });
 

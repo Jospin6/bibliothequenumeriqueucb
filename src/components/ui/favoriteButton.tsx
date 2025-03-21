@@ -14,7 +14,6 @@ export default function FavoriteButton({ bookId }: { bookId: string }) {
     const user = useCurrentUser()
 
     useEffect(() => {
-        dispatch(fetchFavorites());
     }, [dispatch]);
 
     const toggleFavorite = () => {

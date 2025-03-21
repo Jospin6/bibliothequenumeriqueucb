@@ -4,6 +4,7 @@ import userReducer from './user/userSlice'
 import subjectReducer from './subject/subjectSlice'
 import facultyReducer from './faculty/facultySlice'
 import favoritesReducer from "./favories/favoritesSlice"
+import authorisedUserReducer from "./user/authorisedUserSlice"
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
         user: userReducer,
         subject: subjectReducer,
         faculty: facultyReducer,
-        favorites: favoritesReducer
+        favorites: favoritesReducer,
+        authorisedUser: authorisedUserReducer
     }
 })
 
