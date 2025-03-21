@@ -7,7 +7,8 @@ export const fetchFavorites = createAsyncThunk("favorites/fetch", async (userId:
 });
 
 export const addFavorite = createAsyncThunk("favorites/add", async ({bookId, userId}: {bookId: string, userId: string}) => {
-    await axios.post("/api/favorites", { bookId, userId });
+    const response = await axios.post("/api/favorites", { bookId, userId });
+    console.log(response.data)
     return bookId;
 });
 

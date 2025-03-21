@@ -2,17 +2,22 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
 
-interface Book {
+export interface FavoriteBook {
+    userId: number;
+    bookId: number;
+}
+export interface BookProps {
     id?: number;
     title: string;
     author: string;
-    file: File
+    file: File,
+    FavoriteBook: FavoriteBook[]
     // Add other book properties as needed
 }
 
 interface BookState {
     loading: boolean;
-    books: Book[];
+    books: BookProps[];
     subjectId: number | null
     error: string | null;
 }

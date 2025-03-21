@@ -6,8 +6,8 @@ export async function POST(req: Request) {
     try {
         const favory = await prisma.favoriteBook.create({
             data: {
-                bookId,
-                userId
+                bookId: +bookId,
+                userId: +userId
             }
         })
         return NextResponse.json(favory, { status: 201 });

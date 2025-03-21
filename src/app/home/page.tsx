@@ -43,7 +43,7 @@ export default function Home() {
 
           {loading
             ? (<div className="text-black">Loading...</div>)
-            : books.map(book => <MainItem key={book.id} title={book.title} id={book.id} />)
+            : books.map(book => <MainItem key={book.id} book={book} />)
           }
         </div>
         <div className="h-[80px] w-[40%] px-[30px]">
