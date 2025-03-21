@@ -57,6 +57,7 @@ export async function GET(req: NextRequest) {
                 faculty: true,
                 subject: true,
                 FavoriteBook: true,
+                View: true
             },
             orderBy: { createdAt: "desc" },
         });

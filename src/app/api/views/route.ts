@@ -5,32 +5,25 @@ export async function POST(req: Request) {
     const { bookId, userId } = await req.json();
 
     try {
-        const existingFavorite = await prisma.favoriteBook.findFirst({
+        const existingView = await prisma.view.findFirst({
             where: {
                 bookId: +bookId,
                 userId: +userId
             }
         });
 
-        if (existingFavorite) {
-            await prisma.favoriteBook.delete({
-                where: {
-                    userId_bookId: {
-                        bookId: +bookId,
-                        userId: +userId
-                    }
+        if (!existingView) {
+            const view = await prisma.view.create({
+                data: {
+                    bookId: +bookId,
+                    userId: +userId
                 }
             });
-            return NextResponse.json({ message: 'Favorite removed' }, { status: 200 });
+            return NextResponse.json(view, { status: 201 });
         }
-        const favory = await prisma.favoriteBook.create({
-            data: {
-                bookId: +bookId,
-                userId: +userId
-            }
-        });
+        
 
-        return NextResponse.json(favory, { status: 201 });
+        return NextResponse.json({message: "existing view"}, { status: 201 });
 
     } catch (error) {
         console.error('Error handling favorite book:', error);
@@ -38,11 +31,10 @@ export async function POST(req: Request) {
     }
 }
 
-
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get("userId");
-    const favories = await prisma.favoriteBook.findMany(
+    const views = await prisma.view.findMany(
         {
             where: {
                 userId: +userId!
@@ -53,5 +45,5 @@ export async function GET(req: Request) {
             }
         }
     )
-    return NextResponse.json(favories)
+    return NextResponse.json(views)
 }

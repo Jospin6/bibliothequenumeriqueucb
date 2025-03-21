@@ -27,6 +27,8 @@ model User {
   books     Book[]
 
   FavoriteBook FavoriteBook[]
+
+  View View[]
 }
 
 model AuthorisedUser {
@@ -36,6 +38,15 @@ model AuthorisedUser {
   createdAt DateTime @default(now())
   faculteId Int
   faculty   Faculty? @relation(fields: [faculteId], references: [id], onDelete: Cascade)
+}
+
+model View {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bookId    Int
+  createdAt DateTime @default(now())
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book      Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
 }
 
 enum UserRole {
@@ -75,6 +86,8 @@ model Book {
   subject     Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
 
   FavoriteBook FavoriteBook[]
+
+  View View[]
 }
 
 model FavoriteBook {

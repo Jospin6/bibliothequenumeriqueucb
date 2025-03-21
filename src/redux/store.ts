@@ -4,6 +4,7 @@ import userReducer from './user/userSlice'
 import subjectReducer from './subject/subjectSlice'
 import facultyReducer from './faculty/facultySlice'
 import favoritesReducer from "./favories/favoritesSlice"
+import viewReducer from "./view/viewSlice"
 import authorisedUserReducer from "./user/authorisedUserSlice"
 
 export const store = configureStore({
@@ -13,7 +14,8 @@ export const store = configureStore({
         subject: subjectReducer,
         faculty: facultyReducer,
         favorites: favoritesReducer,
-        authorisedUser: authorisedUserReducer
+        authorisedUser: authorisedUserReducer,
+        view: viewReducer
     }
 })
 

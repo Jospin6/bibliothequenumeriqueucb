@@ -1,18 +1,25 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
+import { Subject } from "../subject/subjectSlice";
 
 export interface FavoriteBook {
     userId: number;
     bookId: number;
 }
+export interface ViewProps {
+    userId: number;
+    bookId: number;
+}
+
 export interface BookProps {
     id?: number;
     title: string;
     author: string;
     file: File,
     FavoriteBook: FavoriteBook[]
-    // Add other book properties as needed
+    View: ViewProps[]
+    subject: Subject
 }
 
 interface BookState {
