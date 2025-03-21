@@ -24,6 +24,7 @@ interface User {
     faculty?: Faculty;
     password?: string
     FavoriteBook: FavoriteBookProps[]
+    View: ViewProps[]
 }
 
 interface UserState {
@@ -103,8 +104,36 @@ export const postUser = createAsyncThunk(
 
 export const fetchUser = createAsyncThunk("user/fetchUser", async (userId: number) => {
     try {
-        let url =`/api/users/${userId}`
+        let url = `/api/users/${userId}`
         const response = await axios.get(url)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
+export const updateUser = createAsyncThunk("user/updateUser", async (data: { id: string, name: string, postnom: string }) => {
+    try {
+        let url = `/api/users/${data.id}`
+        const response = await axios.put(url, data)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
+export const updatePassword = createAsyncThunk("user/updatePassword", async (data: { id: string, oldPassword: string, newPassword: string }) => {
+    try {
+        let url = `/api/users/${data.id}/password`
+        const response = await axios.put(url, data)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+export const logoutUser = createAsyncThunk("user/logoutUser", async () => {
+    try {
+        const response = await axios.delete("/api/logout")
         return response.data
     } catch (error) {
         throw new Error(error as string)

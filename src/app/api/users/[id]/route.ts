@@ -8,7 +8,8 @@ export async function GET(req: Request) {
         where: {id: parseInt(id)},
         include: {
             faculty: true,
-            // books: true,
+            // books: tru
+            View: true,
             FavoriteBook: {
                 include: {
                     book: {
@@ -32,16 +33,12 @@ export async function GET(req: Request) {
 export async function PUT(req: Request) {
     const url = new URL(req.url)
     const id = url.pathname.split('/').pop() as string
-    const {email, name, postnom, role, faculteId, password} = await req.json()
+    const {name, postnom} = await req.json()
     const user = await prisma.user.update({
         where: {id: parseInt(id)},
         data: {
-            email, 
             name, 
-            postnom, 
-            role, 
-            faculteId, 
-            password
+            postnom
         }
     })
     return NextResponse.json(user)
