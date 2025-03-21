@@ -20,6 +20,7 @@ export interface BookProps {
     FavoriteBook: FavoriteBook[]
     View: ViewProps[]
     subject: Subject
+    createdAt?: string;
 }
 
 interface BookState {
