@@ -14,8 +14,9 @@ export const Navbar = () => {
             <Link href={"/"}>
                 <HomeIcon className="ml-4 text-black hover:text-black cursor-pointer"/>
             </Link>
+            <Link href={"/favories"}>
             <Heart className="ml-4 hover:text-black cursor-pointer"/>
-            <Book className="ml-4 hover:text-black cursor-pointer"/>
+            </Link>
             <Link href={"/account"} className="ml-4">
             <UserCircle className="hover:text-black cursor-pointer"/>
             </Link>

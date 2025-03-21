@@ -8,6 +8,19 @@ export async function GET(req: Request) {
         where: {id: parseInt(id)},
         include: {
             faculty: true,
+            // books: true,
+            FavoriteBook: {
+                include: {
+                    book: {
+                        include: {
+                            FavoriteBook: true,
+                            faculty: true,
+                            subject: true,
+                            View: true
+                        }
+                    }
+                }
+            }
         }
     })
     if (!user) {

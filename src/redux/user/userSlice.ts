@@ -1,10 +1,18 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
+import { BookProps, ViewProps } from "../book/bookSlice";
+import { Subject } from "../subject/subjectSlice";
 
 interface Faculty {
     id: number
     name: string
+}
+
+interface FavoriteBookProps {
+    userId: number;
+    bookId: number;
+    book: BookProps
 }
 
 interface User {
@@ -15,6 +23,7 @@ interface User {
     role?: string;
     faculty?: Faculty;
     password?: string
+    FavoriteBook: FavoriteBookProps[]
 }
 
 interface UserState {
@@ -120,8 +129,15 @@ const userSlice = createSlice({
                 state.error = "An error occured"
             })
 
+            .addCase(fetchUser.pending, state => {
+                state.loading = true
+            })
             .addCase(fetchUser.fulfilled, (state, action: PayloadAction<any>) => {
                 state.user = action.payload
+            })
+            .addCase(fetchUser.rejected, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.error = action.payload as string
             })
     },
 });
