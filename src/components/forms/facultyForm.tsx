@@ -17,16 +17,19 @@ export const FacultyForm = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const onSubmit = async (data: faculteFormValues) => {
-    dispatch(addFaculty({name: data.name}))
+    dispatch(addFaculty({ name: data.name }))
     reset()
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <InputField name={"name"} placeholder={"Nom de la faculté"} register={register} errors={errors} />
-      <div className="flex justify-end">
-        <Button label={"Ajouter"} />
-      </div>
-    </form>
+    <div>
+      <div className="text-xl my-3">Ajouter une faculté</div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <InputField name={"name"} placeholder={"Nom de la faculté"} register={register} errors={errors} />
+        <div className="flex justify-end">
+          <Button label={"Ajouter"} />
+        </div>
+      </form>
+    </div>
   );
 };

@@ -9,7 +9,7 @@ import { subjectSchema } from "@/lib/validationSchema"
 import { SubjectFormValues } from "@/types/validation"
 import { addSubject } from "@/redux/subject/subjectSlice";
 import { SelectField } from "../ui/selectField";
-import {fetchFaculties, selectFaculties} from "@/redux/faculty/facultySlice"
+import { fetchFaculties, selectFaculties } from "@/redux/faculty/facultySlice"
 import { useEffect } from "react";
 
 export const SubjectForm = () => {
@@ -29,21 +29,24 @@ export const SubjectForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <InputField name={"name"} placeholder={"Nom de la matière"} register={register} errors={errors} />
-            <SelectField
-                name="faculteId"
-                label="Faculté"
-                options={[ 
-                    {value: "", label: "Choisi une faculté"},
-                    ...(faculties ? faculties.map(fac => ({ value: fac.id!.toString(), label: fac.name })) : []),
-                ]}
-                register={register}
-                errors={errors}
-            />
-            <div className="flex justify-end">
-                <Button label={"Ajouter"} />
-            </div>
-        </form>
+        <>
+            <div className="text-xl my-3">Ajouter une matière</div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <InputField name={"name"} placeholder={"Nom de la matière"} register={register} errors={errors} />
+                <SelectField
+                    name="faculteId"
+                    label="Faculté"
+                    options={[
+                        { value: "", label: "Choisi une faculté" },
+                        ...(faculties ? faculties.map(fac => ({ value: fac.id!.toString(), label: fac.name })) : []),
+                    ]}
+                    register={register}
+                    errors={errors}
+                />
+                <div className="flex justify-end">
+                    <Button label={"Ajouter"} />
+                </div>
+            </form>
+        </>
     );
 };
