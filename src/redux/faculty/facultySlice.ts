@@ -1,21 +1,29 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
+import { User } from "@/types/user_type";
+import { Subject } from "../subject/subjectSlice";
+import { BookProps } from "../book/bookSlice";
 
 interface Faculty {
     id?: number;
     name: string;
+    users?: User[];
+    subjects?: Subject[];
+    books?: BookProps[];
 }
 
 interface FacultyState {
     loading: boolean;
     faculties: Faculty[];
+    faculty: Faculty | null;
     error: string | null;
 }
 
 const initialState: FacultyState = {
     loading: false,
     faculties: [],
+    faculty: null,
     error: null,
 };
 
@@ -44,6 +52,15 @@ export const fetchFaculties = createAsyncThunk("faculty/fetchFaculties", async (
     }
 })
 
+export const fetchFaculty = createAsyncThunk("faculty/fetchFaculty", async (id: number) => {
+    try {
+        const response = await axios.get(`/api/faculties/${id}`)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
 const facultySlice = createSlice({
     name: "faculty",
     initialState,
@@ -61,9 +78,22 @@ const facultySlice = createSlice({
                 state.loading = false
                 state.error = action.payload
             })
+
+            .addCase(fetchFaculty.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(fetchFaculty.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.faculty = action.payload
+            })
+            .addCase(fetchFaculty.rejected, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.error = action.payload
+            })
     },
 });
 
 export const selectFaculties = (state: RootState) => state.faculty.faculties
+export const selectFaculty = (state: RootState) => state.faculty.faculty
 
 export default facultySlice.reducer;

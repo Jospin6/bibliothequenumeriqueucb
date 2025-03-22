@@ -27,5 +27,4 @@ export const facultySchema = z.object({
 
 export const subjectSchema = z.object({
     name: z.string().min(1, "name are required !"),
-    faculteId: z.string()
 })

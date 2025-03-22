@@ -7,11 +7,23 @@ export async function GET(req: Request) {
     const id = url.pathname.split("/").pop() as string
 
     const faculty = await prisma.faculty.findUnique({
-        where: {id: parseInt(id)}
+        where: { id: parseInt(id) },
+        include: {
+            users: true,
+            subjects: true,
+            books: {
+                include: {
+                    subject: true,
+                    FavoriteBook: true,
+                    View: true
+                }
+            },
+            AuthorisedUser: true
+        }
     })
 
     if (!faculty) {
-        NextResponse.json({message: "Fac not found"}, {status: 404})
+        NextResponse.json({ message: "Fac not found" }, { status: 404 })
     }
     return NextResponse.json(faculty)
 }
@@ -22,8 +34,8 @@ export async function PUT(req: Request) {
     const { name } = await req.json()
 
     const faculty = await prisma.faculty.update({
-        where: {id: parseInt(id)},
-        data: {name}
+        where: { id: parseInt(id) },
+        data: { name }
     })
     return NextResponse.json(faculty)
 }
@@ -31,6 +43,6 @@ export async function PUT(req: Request) {
 export async function DELETE(req: Request) {
     const url = new URL(req.url)
     const id = url.pathname.split("/").pop() as string
-    await prisma.faculty.delete({where: {id: parseInt(id)}})
-    return NextResponse.json({message: "Fac deleted"})   
+    await prisma.faculty.delete({ where: { id: parseInt(id) } })
+    return NextResponse.json({ message: "Fac deleted" })
 }
