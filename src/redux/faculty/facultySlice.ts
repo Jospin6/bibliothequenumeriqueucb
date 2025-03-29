@@ -5,7 +5,7 @@ import { User } from "@/types/user_type";
 import { Subject } from "../subject/subjectSlice";
 import { BookProps } from "../book/bookSlice";
 
-interface Faculty {
+export interface Faculty {
     id?: number;
     name: string;
     users?: User[];

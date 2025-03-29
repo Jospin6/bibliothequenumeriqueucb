@@ -20,7 +20,21 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-    const faculties = await prisma.faculty.findMany()
+    const faculties = await prisma.faculty.findMany({
+        include: {
+            users: true,
+            subjects: true,
+            books: {
+                include: {
+                    auteur: true,
+                    subject: true,
+                    FavoriteBook: true,
+                    View: true
+                }
+            },
+            AuthorisedUser: true
+        }
+    })
     return NextResponse.json(faculties)
 }
 

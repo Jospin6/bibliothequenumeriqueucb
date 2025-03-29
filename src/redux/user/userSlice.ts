@@ -23,8 +23,8 @@ interface User {
     role?: string;
     faculty?: Faculty;
     password?: string
-    FavoriteBook: FavoriteBookProps[]
-    View: ViewProps[]
+    FavoriteBook?: FavoriteBookProps[]
+    View?: ViewProps[]
 }
 
 interface UserState {

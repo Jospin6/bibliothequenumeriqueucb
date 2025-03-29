@@ -37,9 +37,11 @@ export async function POST(req: NextRequest) {
     throw new Error('Mot de passe incorrect')
   }
 
-  const token = jwt.sign({ id: user.id, email: user.email, name: user.name, postnom: user.postnom }, SECRET_KEY, {
-    expiresIn: "7d", 
-  });
+  const token = jwt.sign({ 
+    id: user.id, 
+    email: user.email, 
+    name: user.name, 
+    postnom: user.postnom }, SECRET_KEY);
 
   
   const response = NextResponse.json({ message: "Connexion réussie" }, { status: 200 });
@@ -49,7 +51,7 @@ export async function POST(req: NextRequest) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     path: "/",
-    maxAge: 7 * 24 * 60 * 60, 
+    maxAge: 100 * 365 * 24 * 60 * 60, 
   });
   return response;
 }

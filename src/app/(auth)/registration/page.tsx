@@ -22,17 +22,19 @@ const schema = z.object({
   password: z.string().min(6, "Mot de passe trop court"),
 });
 
+type registrationFormData = z.infer<typeof schema>;
+
 export default function RegisterForm() {
   const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<User>({ resolver: zodResolver(schema) });
+  } = useForm<registrationFormData>({ resolver: zodResolver(schema) });
 
   const [error, setError] = useState("");
 
-  const onSubmit = async (data: User) => {
+  const onSubmit = async (data: registrationFormData) => {
     setError("");
     try {
       await dispatch(postUser(data)).unwrap();
