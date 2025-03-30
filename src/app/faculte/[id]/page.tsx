@@ -31,7 +31,7 @@ export default function App() {
             case "subject":
                 return <SubjectForm id={+id!} />
             case "book":
-                return <BookForm facId= {+id!} />
+                return <BookForm facId={+id!} />
             default:
                 return
         }
