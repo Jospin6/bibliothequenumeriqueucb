@@ -19,7 +19,7 @@ const schema = z.object({
 });
 
 
-export const BookForm = () => {
+export const BookForm = ({ facId }: { facId?: number }) => {
   const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
   });
@@ -42,7 +42,11 @@ export const BookForm = () => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("auteurId", `${user!.id!}`);
-    if (data.faculteId) formData.append("faculteId", data.faculteId);
+    if (data.faculteId) {
+      formData.append("faculteId", data.faculteId)
+    } else {
+      formData.append("faculteId", String(facId!))
+    };
     if (data.subjectId) formData.append("subjectId", data.subjectId);
     if (data.categoryId) formData.append("categoryId", data.categoryId);
 
@@ -61,31 +65,30 @@ export const BookForm = () => {
 
   return (
     <div className=" mx-auto">
+      <h1 className="text-xl my-4">Ajouter un document</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <input {...register("title")} placeholder="Title" className="w-full p-2 border rounded" />
         {errors.title && <p className="text-red-500">{String(errors.title.message)}</p>}
 
         <div className="w-full">
-
           <select {...register("subjectId")} id="" className="w-full p-2 border rounded">
             <option value="">Choisi la matière</option>
             {
               subjects.map(subject => <option key={subject.id} value={subject.id} >{subject.name}</option>)
             }
           </select>
-
         </div>
 
-        <div className="w-full">
-
-          <select {...register("faculteId")} id="" className="w-full p-2 border rounded">
-            <option value="" className="text-gray-400">Choisi la fac</option>
-            {
-              faculties.map(fac => <option key={fac.id} value={fac.id} >{fac.name}</option>)
-            }
-          </select>
-
-        </div>
+        {!facId && (
+          <div className="w-full">
+            <select {...register("faculteId")} id="" className="w-full p-2 border rounded">
+              <option value="" className="text-gray-400">Choisi la fac</option>
+              {
+                faculties.map(fac => <option key={fac.id} value={fac.id} >{fac.name}</option>)
+              }
+            </select>
+          </div>
+        )}
 
         <input
           type="file"

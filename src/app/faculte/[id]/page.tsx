@@ -1,4 +1,5 @@
 "use client"
+import { BookForm } from "@/components/forms/bookForm";
 import { FacultyForm } from "@/components/forms/facultyForm";
 import { SubjectForm } from "@/components/forms/subjectForm";
 import { Navbar } from "@/components/navigation/navbar";
@@ -29,6 +30,8 @@ export default function App() {
         switch (title) {
             case "subject":
                 return <SubjectForm id={+id!} />
+            case "book":
+                return <BookForm facId= {+id!} />
             default:
                 return
         }
@@ -42,7 +45,10 @@ export default function App() {
         <>
             <Navbar />
             <div className="w-8/12 m-auto">
-                <div className="text-2xl py-4">Faculté de {faculty?.name}</div>
+                <div className="text-2xl py-4 flex justify-between">
+                    <span>Faculté de {faculty?.name}</span>
+                    <div onClick={() => handleAddDocPopup("book")}>Add Book</div>
+                </div>
                 <div className="grid grid-cols-6 gap-4">
                     <div className="col-span-2 flex items-center p-3 rounded-xl shadow-md">
                         <Book size={30} className="text-green-500" />
