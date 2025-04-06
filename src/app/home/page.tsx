@@ -4,7 +4,7 @@ import SubNavbar from "@/components/navigation/subNavbar";
 import { MainItem } from "@/components/ui/mainItem";
 import { SideItem } from "@/components/ui/sideItem";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { fetchBooks, selectBooks, selectSubjectId } from "@/redux/book/bookSlice";
+import { fetchBooks, fetchForYou, selectBooks, selectForYou, selectSubjectId } from "@/redux/book/bookSlice";
 import { AppDispatch } from "@/redux/store";
 import { fetchSubjects, selectSubject } from "@/redux/subject/subjectSlice";
 import { fetchUser, selectUser } from "@/redux/user/userSlice";
@@ -18,8 +18,11 @@ export default function Home() {
   const user = useSelector(selectUser)
   const subjects = useSelector(selectSubject)
   const subjectId = useSelector(selectSubjectId)
-  console.log("user: ", user?.faculty)
-  console.log("mes subjctes: ", subjects)
+  const getForYou = useSelector(selectForYou)
+
+  useEffect(() => {
+    dispatch(fetchForYou())
+  }, [dispatch])
 
   useEffect(() => {
     if (currentUser?.id) {
@@ -48,8 +51,7 @@ export default function Home() {
         </div>
         <div className="h-[80px] w-[40%] px-[30px]">
           <h1 className="mt-6 mb-4 font-semibold text-xl font-verdana">Pour toi</h1>
-          <SideItem />
-          <SideItem />
+          {getForYou.map(book => (<SideItem book={book} key={book.id} />))}
         </div>
 
       </div>

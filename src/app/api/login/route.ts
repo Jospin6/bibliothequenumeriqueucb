@@ -1,10 +1,28 @@
 import bcrypt from "bcryptjs";
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "../../../../prisma/prisma";
-import jwt from "jsonwebtoken";
+import { SignJWT } from "jose";
 import { cookies } from "next/headers";
 
-const SECRET_KEY = process.env.JWT_SECRET || "secret_key";
+const SECRET_KEY = "secret_key";
+
+const secret = new TextEncoder().encode("secret_key");
+
+async function generateToken(user: any) {
+  const token = await new SignJWT({
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+    postnom: user.postnom,
+  })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("2h")
+    .sign(secret);
+
+  return token;
+}
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
@@ -37,15 +55,10 @@ export async function POST(req: NextRequest) {
     throw new Error('Mot de passe incorrect')
   }
 
-  const token = jwt.sign({ 
-    id: user.id, 
-    email: user.email, 
-    name: user.name, 
-    postnom: user.postnom }, SECRET_KEY);
-
+  const token = await generateToken(user);
   
   const response = NextResponse.json({ message: "Connexion réussie" }, { status: 200 });
-
+  
   (await cookies()).set("token_ucb", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

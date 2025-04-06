@@ -35,7 +35,7 @@ export default function Account() {
                         <BigTitle title={user?.postnom!} />
                     </div>
                     <div className="text-blue-700 text-[15px]">{user?.email}</div>
-                    <div> {user?.role === "USER" && "Etudiant"} </div>
+                    <div> {user?.role === "USER" && "Etudiant"}</div>
                     <div > Faculté: {user?.faculty?.name} </div>
                 </div>
                 <span className="text-blue-700 text-[15px]"></span>
@@ -47,14 +47,14 @@ export default function Account() {
                     <BookIcon size={30} className="text-green-500" />
                     <div className="ml-4">
                         <div className="text-md">Nombre de livres consultés</div>
-                        <div className="font-semibold">{user?.View.length}</div>
+                        <div className="font-semibold">{user?.View?.length ?? 0}</div>
                     </div>
                 </div>
                 <div className="col-span-2 flex items-center p-3 rounded-xl shadow-md">
                     <Star size={30} className="text-yellow-500" />
                     <div className="ml-4">
                         <div className="text-md">Nombre de livres en favoris</div>
-                        <div className="font-semibold">{user?.FavoriteBook.length}</div>
+                        <div className="font-semibold">{user?.FavoriteBook?.length ?? 0}</div>
                     </div>
                 </div>
             </div>

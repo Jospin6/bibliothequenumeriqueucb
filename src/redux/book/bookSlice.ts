@@ -26,6 +26,7 @@ export interface BookProps {
 interface BookState {
     loading: boolean;
     books: BookProps[];
+    forYou: BookProps[];
     subjectId: number | null
     error: string | null;
 }
@@ -33,6 +34,7 @@ interface BookState {
 const initialState: BookState = {
     loading: false,
     books: [],
+    forYou: [],
     subjectId: null,
     error: null,
 };
@@ -71,6 +73,24 @@ export const fetchBooks = createAsyncThunk(
     }
 );
 
+export const fetchForYou = createAsyncThunk("", async (faculteId?: number) => {
+    let url = "/api/books/forYou";
+    const params = new URLSearchParams();
+    if (faculteId) params.append("faculteId", String(faculteId));
+
+    if (params.toString()) {
+        url += `?${params.toString()}`;
+    }
+
+    try {
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }    
+
+})
+
 
 const bookSlice = createSlice({
     name: "book",
@@ -93,11 +113,24 @@ const bookSlice = createSlice({
                 state.loading = false
                 state.error = action.payload as string
             })
+
+            .addCase(fetchForYou.pending, state => {
+                state.loading = true
+            })
+            .addCase(fetchForYou.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.forYou = action.payload
+            })
+            .addCase(fetchForYou.rejected, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.error = action.payload as string
+            })
     },
 });
 
 export const selectBooks = (state: RootState) => state.book
 export const selectSubjectId = (state: RootState) => state.book.subjectId
+export const selectForYou = (state: RootState) => state.book.forYou
 
 export const { setSubject } = bookSlice.actions
 export default bookSlice.reducer;
