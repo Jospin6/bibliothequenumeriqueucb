@@ -29,10 +29,11 @@ export default function FavoriteButton({ favorite, bookId }: FavoriteButtonProps
 
     return (
         <>
-            {isFavorite || favorites ? (
-                <Heart size={15} fill="currentColor" onClick={toggleFavorite} className={`mr-[5px] cursor-pointer text-red-500`} />
-            ) : (
-                <Heart size={15} onClick={toggleFavorite} className={`mr-[5px] cursor-pointer`} />
+            {favorites && (
+                <>
+                    {isFavorite ? (<Heart size={15} fill="currentColor" onClick={toggleFavorite} className={`mr-[5px] cursor-pointer text-red-500`} />)
+                    : (<Heart size={15} onClick={toggleFavorite} className={`mr-[5px] cursor-pointer`} />)}
+                </>
             )}
         </>
     );

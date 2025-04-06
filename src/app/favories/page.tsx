@@ -23,7 +23,7 @@ export default function App() {
             <Navbar />
             <div className="w-2/4 m-auto">
                 <h2 className="text-2xl font-bold mb-5">Favories</h2>
-                {user && user.FavoriteBook.map((favorite) => (
+                {user && user.FavoriteBook?.map((favorite) => (
                     <MainItem book={favorite.book} key={favorite.book.id}/>
                 ))}
             </div>

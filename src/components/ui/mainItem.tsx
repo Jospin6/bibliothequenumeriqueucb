@@ -18,7 +18,7 @@ export const MainItem = ({ book }: MainItemProps) => {
 
     const handleView = () => dispatch(addView({ bookId: book.id!.toString(), userId: user!.id!.toString() }))
 
-    return <div className="flex h-[auto] border-b-[1px] border-gray-200 mt-2">
+    return <div className="flex h-[auto] border-b-[1px] bg-white border-gray-200 mt-2">
         <div className="w-[75%] h-[auto] pb-2 pl-2">
             <div className="flex items-center text-gray-500">
                 <Notebook size={20} className="mr-2 text-teal-400" />

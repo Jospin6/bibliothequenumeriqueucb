@@ -21,6 +21,7 @@ interface User {
     postnom: string;
     email: string;
     role?: string;
+    faculteId?: number,
     faculty?: Faculty;
     password?: string
     FavoriteBook?: FavoriteBookProps[]
