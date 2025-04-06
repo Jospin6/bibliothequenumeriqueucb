@@ -73,16 +73,16 @@ export default function App() {
                     </Card>
                 </div>
                 <div className="grid grid-cols-6 gap-4 mt-8 mb-4">
-                    <div className="col-span-3">
+                    <div className="col-span-3 border p-3 min-h-[300px] shadow rounded-md">
                         <h1 className="text-xl font-semibold mb-3">Matières</h1>
                         <div>
-                            {faculty?.subjects?.map(subject => (<div key={subject.id}>{subject.name}</div>))}
+                            {faculty?.subjects?.map(subject => (<div className="py-2 border-b" key={subject.id}>{subject.name}</div>))}
                         </div>
                     </div>
-                    <div className="col-span-3">
+                    <div className="col-span-3 border p-3 shadow rounded-md">
                         <h1 className="text-xl font-semibold mb-3">Livres</h1>
                         <div>
-                            {faculty?.books?.map(book => (<div key={book.id}>{book.title}</div>))}
+                            {faculty?.books?.map(book => (<div className="py-2 border-b" key={book.id}>{book.title}</div>))}
                         </div>
                     </div>
                 </div>

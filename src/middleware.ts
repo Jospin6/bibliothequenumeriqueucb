@@ -20,7 +20,7 @@ const routePermissions: Record<string, ("USER" | "ADMIN" | "SUPERADMIN")[]> = {
     "/account": ["USER", "ADMIN", "SUPERADMIN"],
     "/books": ["USER", "ADMIN", "SUPERADMIN"],
     "/posts": ["ADMIN", "SUPERADMIN"],
-    "/faculte": ["ADMIN", "SUPERADMIN"],
+    "/faculte": ["USER","ADMIN", "SUPERADMIN"],
     "/favories": ["USER", "ADMIN", "SUPERADMIN"],
     "/home": ["USER", "ADMIN", "SUPERADMIN"],
     "/": ["USER", "ADMIN", "SUPERADMIN"],
