@@ -103,6 +103,16 @@ export const postUser = createAsyncThunk(
     }
 );
 
+export const changeUserRole = createAsyncThunk("", async (data: {userId: number, role: string}) => {
+    try {
+        let url = `/api/users/changeUserRole`
+        const response = await axios.post(url, data)
+        return response.data 
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
 export const fetchUser = createAsyncThunk("user/fetchUser", async (userId: number) => {
     try {
         let url = `/api/users/${userId}`
