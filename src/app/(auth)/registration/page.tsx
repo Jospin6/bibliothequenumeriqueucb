@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { InputField } from "@/components/ui/inputField";
 import { SelectField } from "@/components/ui/selectField";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 const schema = z.object({
   name: z.string().min(2, "Nom trop court"),

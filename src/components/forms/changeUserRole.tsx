@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import * as z from "zod";
 import { fetchFaculty, selectFaculty } from "@/redux/faculty/facultySlice";
-import { Button } from "../ui/Button";
+import { Button } from "../ui/button";
 import { changeUserRole } from "@/redux/user/userSlice";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";

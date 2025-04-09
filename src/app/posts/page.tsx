@@ -1,7 +1,7 @@
 "use client"
 import { BookForm } from "@/components/forms/bookForm";
 import { Navbar } from "@/components/navigation/navbar";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import Popup from "@/components/ui/popup";
 import { useState } from "react";
 

@@ -43,8 +43,7 @@ export default function App() {
 
     return (
         <>
-            <Navbar />
-            <div className="w-8/12 m-auto">
+            <div className="w-full px-4 m-auto">
                 <div className="text-2xl py-4 flex justify-between">
                     <span>Faculté de {faculty?.name}</span>
                     <div onClick={() => handleAddDocPopup("book")}>Add Book</div>
