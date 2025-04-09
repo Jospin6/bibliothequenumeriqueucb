@@ -47,7 +47,7 @@ export const Navbar = () => {
             />
              <NavbarItem 
                 label={"Admin"} 
-                href={"/dashboard"} 
+                href={"/admin"} 
                 icon={<LayoutDashboard size={18} />}
             />
             <NavbarItem 

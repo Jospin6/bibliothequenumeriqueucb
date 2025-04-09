@@ -37,7 +37,7 @@ export default function Dashboard() {
         <Navbar />
         <div className="w-8/12 mx-auto">
             <div className="flex justify-end my-6">
-                <Button label={"Nouvelle Faculté"} onClick={() => handleAddDocPopup("fac")} className="mr-4" />
+                <Button onClick={() => handleAddDocPopup("fac")} className="mr-4">Nouvelle Faculté</Button>
             </div>
             <div>
                 {loading ? "Chargement..." : faculties.map((fac) => (<Expansion faculty={fac} key={fac.id} />))}

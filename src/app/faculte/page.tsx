@@ -54,8 +54,8 @@ export default function App() {
                 <div className="mt-4 mb-6 flex justify-between items-center">
                     <h1 className="text-2xl font-bold">{faculty?.name}</h1>
                     <div className="flex">
-                        <Button label={"Nouveau Livre"} onClick={() => handleAddDocPopup("book")} className="mr-4" />
-                        <Button label={"Nouveau Matière"} onClick={() => handleAddDocPopup("subject")} className="" />
+                        <Button onClick={() => handleAddDocPopup("book")} className="mr-4">Nouveau Livre</Button>
+                        <Button onClick={() => handleAddDocPopup("subject")} className="">Nouveau Matière</Button>
                     </div>
                 </div>
                 <div className="grid grid-cols-6 gap-4">

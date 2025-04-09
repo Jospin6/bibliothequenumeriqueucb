@@ -49,7 +49,7 @@ export default function Roles() {
                                 <div className="flex justify-between">
                                     <div className="text-[20px]">Gestionnaires de la faculté</div>
                                     <div>
-                                        <Button onClick={() => handleAddDocPopup(fac.id, "geschangeUserRoletRole")} label={"Add Gestionnaire"} />
+                                        <Button onClick={() => handleAddDocPopup(fac.id, "geschangeUserRoletRole")}>Add Gestionnaire</Button>
                                     </div>
                                 </div>
                                 {fac.users!.filter(user => user.role === "ADMIN").length > 0 ? (

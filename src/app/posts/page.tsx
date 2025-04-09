@@ -16,7 +16,7 @@ export default function Posts() {
             </div>
             <div className="w-[40%] py-6 px-[30px]">
                 <div className="flex justify-end">
-                    <Button label={"Ajouter un document"} onClick={handleAddDocPopup} />
+                    <Button onClick={handleAddDocPopup}>Ajouter un document</Button>
                 </div>
 
             </div>
