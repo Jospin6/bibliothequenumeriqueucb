@@ -27,7 +27,7 @@ export default function Account() {
 
     return <div className="">
         <Navbar />
-        <div className="m-auto w-2/4 py-6">
+        <div className="md:m-auto w-full px-2 md:w-10/12 py-6">
             <div className="mb-4 flex justify-between items-center shadow-md p-3 rounded-lg">
                 <div>
                     <div className="flex">
@@ -42,7 +42,7 @@ export default function Account() {
             </div>
 
 
-            <div className="grid grid-cols-4 gap-4 my-4">
+            <div className="md:grid md:grid-cols-4 md:gap-4 my-4">
                 <div className="col-span-2 flex items-center p-3 rounded-xl shadow-md">
                     <BookIcon size={30} className="text-green-500" />
                     <div className="ml-4">

@@ -37,8 +37,8 @@ export const Searchbar = ({ facId }: { facId: number }) => {
     }
 
     return (
-        <div className="relative w-[300px]">
-            <div className="h-[40px] rounded-full flex items-center bg-gray-100 px-3">
+        <div className="relative w-full">
+            <div className="h-[40px] rounded-full shadow-md md:shadow-white flex items-center bg-gray-100 px-3">
                 <Search size={20} className="text-gray-400" />
                 <input
                     type="text"

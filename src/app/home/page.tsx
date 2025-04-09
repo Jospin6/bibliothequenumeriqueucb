@@ -40,8 +40,8 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <div className="mx-[5%] flex">
-        <div className="h-auto w-[60%] border-r-[1px] border-gray-200 px-[50px]">
+      <div className="md:mx-[5%] mx-2 flex">
+        <div className="h-auto md:w-[60%] w-full min-h-[calc(100vh-50px)] md:border-r-[1px] md:border-gray-200 md:px-[50px]">
           <SubNavbar items={subjects} />
 
           {loading
@@ -49,7 +49,7 @@ export default function Home() {
             : books.map(book => <MainItem key={book.id} book={book} />)
           }
         </div>
-        <div className="h-[80px] w-[40%] px-[30px]">
+        <div className="h-[80px] w-[40%] hidden md:block px-[30px]">
           <h1 className="mt-6 mb-4 font-semibold text-xl font-verdana">Pour toi</h1>
           {getForYou.map(book => (<SideItem book={book} key={book.id} />))}
         </div>
