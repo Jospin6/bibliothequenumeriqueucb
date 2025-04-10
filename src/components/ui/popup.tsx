@@ -6,9 +6,10 @@ interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  className?: string;
 }
 
-const Popup: React.FC<PopupProps> = ({ isOpen, onClose, children }) => {
+const Popup: React.FC<PopupProps> = ({ isOpen, onClose, children, className }) => {
   if (!isOpen) return null;
 
   return (
@@ -17,7 +18,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, children }) => {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
-        className="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full relative"
+        className={`bg-white p-6 rounded-2xl shadow-lg max-w-md w-full relative ${className}`}
       >
         <button 
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"

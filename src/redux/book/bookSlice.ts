@@ -26,6 +26,7 @@ export interface BookProps {
 interface BookState {
     loading: boolean;
     books: BookProps[];
+    book: BookProps | null;
     forYou: BookProps[];
     subjectId: number | null
     error: string | null;
@@ -34,6 +35,7 @@ interface BookState {
 const initialState: BookState = {
     loading: false,
     books: [],
+    book: null,
     forYou: [],
     subjectId: null,
     error: null,
@@ -73,7 +75,7 @@ export const fetchBooks = createAsyncThunk(
     }
 );
 
-export const fetchForYou = createAsyncThunk("", async (faculteId?: number) => {
+export const fetchForYou = createAsyncThunk("book/fetchForYou", async (faculteId?: number) => {
     let url = "/api/books/forYou";
     const params = new URLSearchParams();
     if (faculteId) params.append("faculteId", String(faculteId));
@@ -87,8 +89,27 @@ export const fetchForYou = createAsyncThunk("", async (faculteId?: number) => {
         return response.data;
     } catch (error: any) {
         throw new Error(error.message);
-    }    
+    }
 
+})
+
+export const getBook = createAsyncThunk("book/getBook", async (bookId: number) => {
+    try {
+        const response = await axios.get(`/api/books/${bookId}`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+})
+
+export const updateBook = createAsyncThunk("book/updateBook", async (
+    { bookId, formData }: { bookId: number, formData: FormData }) => {
+    try {
+        const response = await axios.put(`/api/books/${bookId}`, formData);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
 })
 
 
@@ -125,12 +146,25 @@ const bookSlice = createSlice({
                 state.loading = false
                 state.error = action.payload as string
             })
+
+            .addCase(getBook.pending, state => {
+                state.loading = true
+            })
+            .addCase(getBook.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.book = action.payload
+            })
+            .addCase(getBook.rejected, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.error = action.payload as string
+            })
     },
 });
 
 export const selectBooks = (state: RootState) => state.book
 export const selectSubjectId = (state: RootState) => state.book.subjectId
 export const selectForYou = (state: RootState) => state.book.forYou
+export const selectBook = (state: RootState) => state.book.book
 
 export const { setSubject } = bookSlice.actions
 export default bookSlice.reducer;

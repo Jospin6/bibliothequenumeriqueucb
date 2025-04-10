@@ -3,10 +3,13 @@ import { BookForm } from "@/components/forms/bookForm";
 import { FacultyForm } from "@/components/forms/facultyForm";
 import { SubjectForm } from "@/components/forms/subjectForm";
 import { Navbar } from "@/components/navigation/navbar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import Popup from "@/components/ui/popup";
 import { fetchFaculty, selectFaculty } from "@/redux/faculty/facultySlice";
 import { AppDispatch } from "@/redux/store";
-import { Book, Paperclip, Star, User } from "lucide-react";
+import { Book, BookOpen, Paperclip, Star, User, Users } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -43,75 +46,108 @@ export default function App() {
 
     return (
         <>
+        <div className="mb-6 flex px-4 justify-between items-center border-dashed border-gray-600 border-y h-[60px]">
+                    <h1 className="text-2xl font-bold">{faculty?.name}</h1>
+                    <div className="flex">
+                        <Button onClick={() => handleAddDocPopup("book")} className="mr-4">Nouveau Livre</Button>
+                        <Button onClick={() => handleAddDocPopup("subject")} className="">Nouveau Matière</Button>
+                    </div>
+                </div>
             <div className="w-full px-4 m-auto">
-                <div className="text-2xl py-4 flex justify-between">
-                    <span>Faculté de {faculty?.name}</span>
-                    <div onClick={() => handleAddDocPopup("book")}>Add Book</div>
-                </div>
                 <div className="grid grid-cols-6 gap-4">
-                    <div className="col-span-2 flex items-center p-3 rounded-xl shadow-md">
-                        <Book size={30} className="text-green-500" />
-                        <div className="ml-4">
-                            <div className="font-semibold">{faculty?.books?.length}</div>
-                            <div className="text-md">Nombre de livres</div>
+                    <Card className="col-span-2 flex items-center">
+                        <div className="mr-2">
+                            <Users className=" w-10 h-10" />
                         </div>
-                    </div>
-                    <div className="col-span-2 flex items-center p-3 rounded-xl shadow-md">
-                        <IoMdPaper size={30} className="text-blue-500" />
-                        <div className="ml-4">
-                            <div className="font-semibold">{faculty?.subjects?.length}</div>
-                            <div className="text-md">Nombre de Matières</div>
+                        <div>
+                            <div className="text-lg font-medium">Etudiants</div>
+                            <div className="text-2xl font-bold">{faculty?.users?.length}</div>
                         </div>
-                    </div>
-                    <div className="col-span-2 flex items-center p-3 rounded-xl shadow-md">
-                        <User size={30} className="text-yellow-500" />
-                        <div className="ml-4">
-                            <div className="font-semibold">{faculty?.users?.length}</div>
-                            <div className="text-md">Nombre d'Etudiants</div>
+                    </Card>
+                    <Card className="col-span-2 flex items-center">
+                        <div className="mr-2">
+                            <Book className="w-10 h-10" />
                         </div>
-                    </div>
-                </div>
-                <div className="py-3 flex justify-end">
-                    <Link href={""} className="text-blue-600 ml-3" onClick={() => handleAddDocPopup("subject")}>cours</Link>
-                    <Link href={""} className="text-blue-600 ml-3">users</Link>
-                    <Link href={""} className="text-blue-600 ml-3">auth</Link>
+                        <div>
+                            <div className="text-lg font-medium">Livres</div>
+                            <div className="text-2xl font-bold">{faculty?.books?.length}</div>
+                        </div>
+                    </Card>
+                    <Card className="col-span-2 flex items-center">
+                        <div className="mr-2">
+                            <BookOpen className="w-10 h-10" />
+                        </div>
+                        <div>
+                            <div className="text-lg font-medium">Matières</div>
+                            <div className="text-2xl font-bold">{faculty?.subjects?.length}</div>
+                        </div>
+                    </Card>
                 </div>
 
-                <div>
-                    <div className="text-lg my-4 font-verdana">Livres disponible dans la bibliotheque</div>
-                    <table className="w-full text-center text-sm">
-                        <thead>
-                            <tr className="border-b border-gray-300">
-                                <th>Titre</th>
-                                <th>Matière</th>
-                                <th>Nombre de vues</th>
-                                <th>Nombre de favoris</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {faculty?.books?.map((book, index) => (
-                                <tr key={index} className="border-b border-gray-300">
-                                    <td>{book.title}</td>
-                                    <td>{book.subject.name}</td>
-                                    <td>{book.View.length}</td>
-                                    <td>{book.FavoriteBook.length}</td>
-                                    <td>
-                                        <Link href={`/books/${book.id}`} className="text-blue-600 hover:underline">
-                                            Voir
-                                        </Link>
-                                    </td>
-                                </tr>
+
+                <div className="grid grid-cols-8 gap-4 mt-5">
+                    <div className="col-span-5 h-64 rounded-2xl border">
+                        <div className="w-full px-3 flex text-gray-300 text-lg font-semibold items-center border-b h-[50px]">
+                            Frequentations par Faculté
+                        </div>
+                        <div></div>
+                    </div>
+                    <div className="col-span-3 h-64 rounded-2xl border">
+                        <div className="w-full px-3 flex text-gray-300 text-lg font-semibold items-center border-b h-[50px]">
+                            Livres
+                        </div>
+                        <div className="px-3">
+                        {faculty?.books?.map(book => (
+                            <div className="flex items-center mt-2" key={book.id}>
+                            <Avatar className="size-[40px] mr-2">
+                                <AvatarFallback className="font-medium text-gray-300">{book.title.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div className="">
+                                <div className="text-gray-300 text-[16px]">{book.title}</div>
+                                <div className="text-gray-500 text-sm">{book.subject.name}</div>
+                            </div>
+                        </div>
+                        ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-8 gap-4 mt-5">
+                    <div className="col-span-3 h-64 rounded-2xl border">
+                        <div className="w-full px-3 flex text-gray-300 text-lg font-semibold items-center border-b h-[50px]">
+                            Matières
+                        </div>
+                        <div className="px-3">
+                            {faculty?.subjects?.map(subject => (
+                                <div className="flex items-center mt-2" key={subject.id}>
+                                    <Avatar className="size-[40px] mr-2">
+                                        <AvatarFallback className="font-medium text-gray-300">{subject.name.charAt(0)}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="">
+                                        <div className="text-gray-300 text-[16px]">{subject.name}</div>
+                                        {/* <div className="text-gray-500 text-sm">{subject.name}</div> */}
+                                    </div>
+                                </div>
                             ))}
-                        </tbody>
-                    </table>
+
+                        </div>
+                    </div>
+                    <div className="col-span-5 h-64 rounded-2xl border">
+                        <div className="w-full px-3 flex text-gray-300 text-lg font-semibold items-center border-b h-[50px]">
+                            Band lectures par Faculté
+                        </div>
+                        <div></div>
+                    </div>
                 </div>
             </div>
             {
-                isOpen && (<Popup isOpen={isOpen} onClose={handleAddDocPopup}>
+                isOpen && (<Popup isOpen={isOpen} className="text-gray-950" onClose={handleAddDocPopup}>
                     {handleForms(formName!)}
                 </Popup>)
             }
+            <div className="w-full border-t text-sm text-center mt-5 text-gray-500 h-[50px] leading-[50px] border-dashed border-gray-600">
+                Bibliotheque numerique de l'UCB
+            </div>
         </>
     );
 }
