@@ -98,29 +98,29 @@ export default function Documents() {
 
     }, [bookId])
 
-      const onSubmit = async (data: any) => {
+    const onSubmit = async (data: any) => {
         setLoading(true);
-    
+
         const formData = new FormData();
         formData.append("title", data.title);
         if (data.subjectId) formData.append("subjectId", data.subjectId);
-    
+
         if (data.file) {
-          formData.append("file", data.file);
+            formData.append("file", data.file);
         } else {
-          console.error("Aucun fichier sélectionné !");
-          alert("Veuillez sélectionner un fichier.");
-          return;
+            console.error("Aucun fichier sélectionné !");
+            alert("Veuillez sélectionner un fichier.");
+            return;
         }
         if (bookId) {
-            dispatch(updateBook({bookId, formData}))
+            dispatch(updateBook({ bookId, formData }))
             reset()
-        
-            setLoading(false); 
+
+            setLoading(false);
         }
-        
-      };
-    
+
+    };
+
 
     return (
         <>

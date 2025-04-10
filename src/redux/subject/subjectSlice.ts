@@ -11,12 +11,14 @@ export interface Subject {
 interface BookState {
     loading: boolean;
     subjects: Subject[];
+    subject: Subject | null;
     error: string | null;
 }
 
 const initialState: BookState = {
     loading: false,
     subjects: [],
+    subject: null,
     error: null,
 };
 
@@ -47,6 +49,24 @@ export const fetchSubjects = createAsyncThunk("subject/fetchSubjects", async (fa
     }
 })
 
+export const getSubject = createAsyncThunk("subject/getSubject", async (subjectId: number) => {
+    try {
+        const response = await axios.get(`/api/subjects/${subjectId}`)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
+export const updateSubject = createAsyncThunk("subject/getSubject", async ({id, name}: {id: number, name: string}) => {
+    try {
+        const response = await axios.put(`/api/subjects/${id}`, {name})
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
 const userSlice = createSlice({
     name: "subject",
     initialState,
@@ -64,9 +84,15 @@ const userSlice = createSlice({
                 state.loading = false
                 state.error = action.payload
             })
+
+            .addCase(getSubject.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.subject = action.payload
+            })
     },
 });
 
 export const selectSubject = (state: RootState) => state.subject.subjects
+export const selectOneSubject = (state: RootState) => state.subject.subject
 
 export default userSlice.reducer;

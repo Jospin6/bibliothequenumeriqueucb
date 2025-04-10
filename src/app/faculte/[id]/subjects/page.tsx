@@ -11,12 +11,38 @@ import { Delete, Edit } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { getSubject, selectOneSubject, selectSubject, updateSubject } from "@/redux/subject/subjectSlice";
 
-export default function Subjects () {
+const formSchema = z.object({
+    name: z.string().min(1, "Title is required"),
+});
+
+type FormData = z.infer<typeof formSchema>;
+
+export default function Subjects() {
     const params = useParams();
     const id = params?.id
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch<AppDispatch>()
     const faculty = useSelector(selectFaculty)
+    const subject = useSelector(selectOneSubject)
+    const [subjectId, setSubjectId] = useState<number | null>(null)
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        reset,
+        formState: { errors },
+    } = useForm<FormData>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: "",
+        },
+    });
 
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [formName, setFormName] = useState<string>()
@@ -24,6 +50,14 @@ export default function Subjects () {
         setFormName(formName)
         setIsOpen(!isOpen)
     }
+
+    useEffect(() => {
+        if (subjectId) {
+            reset({
+                name: subject?.name,
+            });
+        }
+    }, [subjectId, reset]);
 
     const handleForms = (title: string = "subject") => {
         switch (title) {
@@ -33,6 +67,22 @@ export default function Subjects () {
                 return
         }
     }
+
+    const onSubmit = async (data: {name: string}) => {
+        setLoading(true);
+        if (subjectId) {
+            dispatch(updateSubject({ id: subjectId, name: data.name  }))
+            reset()
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (subjectId) {
+            dispatch(getSubject(subjectId))
+        }
+
+    }, [subjectId])
 
     useEffect(() => {
         dispatch(fetchFaculty(+id!))
@@ -57,29 +107,47 @@ export default function Subjects () {
                             <thead>
                                 <tr className="border-b h-[35px]">
                                     <th>Title</th>
-                                    <th>nombre des documents</th>
-                                    <th>Mail</th>
-                                    <th>Docs Consultés</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    faculty?.users?.map((student, index) => (
+                                    faculty?.subjects?.map((subject, index) => (
                                         <tr key={index} className="border-b">
-                                            <td>{student.name}</td>
-                                            <td>{student.postnom}</td>
-                                            <td>{student.email}</td>
-                                            <td></td>
+                                            <td>{subject.name}</td>
                                             <td className="flex justify-center">
-                                                <Edit size={17} className="text-blue-700" />
-                                                <Delete size={17} className="text-red-600 ml-2" />
+                                                <Edit onClick={() => setSubjectId(subject.id!)} size={17} className="text-blue-700 cursor-pointer" />
+                                                <Delete size={17} className="text-red-600 ml-2 cursor-pointer" />
                                             </td>
                                         </tr>
                                     ))
                                 }
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <div className="col-span-3 min-h-64 h-auto pb-4 rounded-2xl border">
+                    <div className="w-full px-3 flex text-gray-300 text-lg font-semibold items-center border-b h-[50px]">
+                        Mofifier une Matière
+                    </div>
+                    <div className="text-gray-900 px-3">
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div className="mt-4">
+                                <label className="block text-gray-300 text-sm font-medium">Nom</label>
+                                <input
+                                    type="text"
+                                    {...register("name")}
+                                    placeholder="Nom de la Matière"
+                                    className="w-full border text-gray-300 bg-transparent h-[40px] rounded p-2 mt-1"
+                                />
+                                {errors.name && (
+                                    <p className="text-red-500 text-sm">{errors.name.message}</p>
+                                )}
+                            </div>
+                            <button type="submit" disabled={loading} className="w-full mt-4 p-2 bg-blue-600 text-white rounded">
+                                {loading ? "Uploading..." : "Valider"}
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
