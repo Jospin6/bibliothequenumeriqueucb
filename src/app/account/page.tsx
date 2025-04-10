@@ -8,6 +8,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchUser, logoutUser } from "@/redux/user/userSlice";
 import {  BookIcon, Star } from "lucide-react";
+import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,7 +24,10 @@ export default function Account() {
         }
     }, [currentUser, dispatch])
 
-    const handleLogout = () => dispatch(logoutUser())
+    const handleLogout = () => {
+        dispatch(logoutUser())
+        redirect("/login")
+    }
 
     return <div className="">
         <Navbar />
