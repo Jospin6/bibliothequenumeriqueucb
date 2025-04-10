@@ -14,7 +14,7 @@ interface Props {
 const ViewsPerFacultyBarChart: React.FC<Props> = ({ data }) => {
   return (
     <div className="w-full h-96 p-4 bg-transparent rounded-2xl shadow-md">
-      <h2 className="text-xl font-semibold mb-4">📊 Vues des livres par faculté</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-300">📊 Vues des livres par faculté</h2>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />

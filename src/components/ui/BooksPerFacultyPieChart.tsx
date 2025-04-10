@@ -16,7 +16,7 @@ const COLORS = ['#6366F1', '#10B981', '#F59E0B', '#EF4444', '#3B82F6', '#8B5CF6'
 const BooksPerFacultyPieChart: React.FC<Props> = ({ data }) => {
   return (
     <div className="w-full h-96 p-4 bg-transparent rounded-2xl shadow-md">
-      <h2 className="text-xl font-semibold mb-4">📊 Répartition des livres par faculté</h2>
+      <h2 className="text-xl font-semibold text-gray-300 mb-4">📊 Répartition des livres par faculté</h2>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie

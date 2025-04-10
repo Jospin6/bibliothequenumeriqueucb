@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
 import { BookProps, ViewProps } from "../book/bookSlice";
-import { Subject } from "../subject/subjectSlice";
+import { SubjectProps } from "../subject/subjectSlice";
 
 interface Faculty {
     id: number
@@ -151,6 +151,16 @@ export const logoutUser = createAsyncThunk("user/logoutUser", async () => {
     }
 })
 
+export const fetchUsers = createAsyncThunk("user/fetchUsers", async () => {
+    try {
+        let url = `/api/users`
+        const response = await axios.get(url)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
 const userSlice = createSlice({
     name: "user",
     initialState,
@@ -165,6 +175,18 @@ const userSlice = createSlice({
                 state.currentUser = action.payload
             })
             .addCase(fetchcurrentUser.rejected, (state) => {
+                state.loading = false
+                state.error = "An error occured"
+            })
+
+            .addCase(fetchUsers.pending, state => {
+                state.loading = true
+            })
+            .addCase(fetchUsers.fulfilled, (state, action) => {
+                state.loading = false
+                state.users = action.payload
+            })
+            .addCase(fetchUsers.rejected, (state) => {
                 state.loading = false
                 state.error = "An error occured"
             })
@@ -184,5 +206,6 @@ const userSlice = createSlice({
 
 export const selectCurrentUser = (state: RootState) => state.user.currentUser
 export const selectUser = (state: RootState) => state.user.user
+export const selectUsers = (state: RootState) => state.user.users
 
 export default userSlice.reducer;

@@ -75,6 +75,18 @@ export const fetchBooks = createAsyncThunk(
     }
 );
 
+export const fetchAllBooks = createAsyncThunk(
+    "book/fetchAllBooks",
+    async () => {
+        try {
+            const response = await axios.get("/api/books");
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+);
+
 export const fetchForYou = createAsyncThunk("book/fetchForYou", async (faculteId?: number) => {
     let url = "/api/books/forYou";
     const params = new URLSearchParams();
@@ -133,6 +145,11 @@ const bookSlice = createSlice({
             .addCase(fetchBooks.rejected, (state, action: PayloadAction<any>) => {
                 state.loading = false
                 state.error = action.payload as string
+            })
+
+            .addCase(fetchAllBooks.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.books = action.payload
             })
 
             .addCase(fetchForYou.pending, state => {
