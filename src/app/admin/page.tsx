@@ -3,10 +3,12 @@ import { FacultyForm } from "@/components/forms/facultyForm";
 import { SubjectForm } from "@/components/forms/subjectForm";
 import { Navbar } from "@/components/navigation/navbar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import BooksPerFacultyPieChart from "@/components/ui/BooksPerFacultyPieChart";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Expansion from "@/components/ui/expansion";
 import Popup from "@/components/ui/popup";
+import ViewsPerFacultyBarChart from "@/components/ui/ViewsPerFacultyBarChart";
 import { fetchFaculties } from "@/redux/faculty/facultySlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Book, School, User, Users } from "lucide-react";
@@ -26,6 +28,14 @@ export default function Dashboard() {
     useEffect(() => {
         dispatch(fetchFaculties())
     }, [])
+
+    const MOCK_DATA = [
+        ...faculties.map(faculty => ({ faculty: faculty.name, bookCount: faculty.books?.length! }))
+    ];
+
+    const VIEWS_DATA = [
+        ...faculties.map(faculty => ({ faculty: faculty.name, viewCount: faculty.books?.reduce((acc, book) => acc + (book.View.length || 0), 0) || 0 }))
+    ];
 
     const handleForms = (title: string = "etudiant") => {
         switch (title) {
@@ -79,11 +89,8 @@ export default function Dashboard() {
                 </Card>
             </div>
             <div className="grid grid-cols-8 gap-4 mt-5">
-                <div className="col-span-5 h-64 rounded-2xl border">
-                    <div className="w-full px-3 flex text-gray-300 text-lg font-semibold items-center border-b h-[50px]">
-                        Frequentations par Faculté
-                    </div>
-                    <div></div>
+                <div className="col-span-5 h-auto rounded-2xl border">
+                    <BooksPerFacultyPieChart data={MOCK_DATA} />
                 </div>
                 <div className="col-span-3 h-64 rounded-2xl border">
                     <div className="w-full px-3 flex text-gray-300 text-lg font-semibold items-center border-b h-[50px]">
@@ -120,11 +127,8 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
-                <div className="col-span-5 h-64 rounded-2xl border">
-                    <div className="w-full px-3 flex text-gray-300 text-lg font-semibold items-center border-b h-[50px]">
-                        Band lectures par Faculté
-                    </div>
-                    <div></div>
+                <div className="col-span-5 pb-4 h-auto rounded-2xl border">
+                <ViewsPerFacultyBarChart data={VIEWS_DATA} />
                 </div>
             </div>
         </div>

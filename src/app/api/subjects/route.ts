@@ -25,7 +25,18 @@ export async function GET(req: Request) {
     const faculteId = searchParams.get("faculteId");
     if (faculteId) {
         const subject = await prisma.subject.findMany({
-            where: {faculteId: +faculteId}
+            where: {faculteId: +faculteId},
+            include: {
+                books: {
+                    include: {
+                        auteur: true,
+                        faculty: true,
+                        subject: true,
+                        FavoriteBook: true,
+                        View: true
+                    },
+                }
+            }
         })
         return NextResponse.json(subject)
     }

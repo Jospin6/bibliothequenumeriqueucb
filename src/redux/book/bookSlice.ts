@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
-import { Subject } from "../subject/subjectSlice";
+import { SubjectProps } from "../subject/subjectSlice";
 
 export interface FavoriteBook {
     userId: number;
@@ -19,7 +19,7 @@ export interface BookProps {
     file: File,
     FavoriteBook: FavoriteBook[]
     View: ViewProps[]
-    subject: Subject
+    subject: SubjectProps
     createdAt?: string;
 }
 

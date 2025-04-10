@@ -1,17 +1,19 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
+import { BookProps } from "../book/bookSlice";
 
-export interface Subject {
+export interface SubjectProps {
     id?: number;
     name: string;
     faculteId: number;
+    books?: BookProps[];
 }
 
 interface BookState {
     loading: boolean;
-    subjects: Subject[];
-    subject: Subject | null;
+    subjects: SubjectProps[];
+    subject: SubjectProps | null;
     error: string | null;
 }
 
@@ -24,7 +26,7 @@ const initialState: BookState = {
 
 export const addSubject = createAsyncThunk(
     "subject/addUser",
-    async (formData: Subject, { rejectWithValue }) => {
+    async (formData: SubjectProps, { rejectWithValue }) => {
         try {
             const response = await axios.post("/api/subjects", {
                 name: formData.name,
@@ -76,7 +78,7 @@ const userSlice = createSlice({
             .addCase(fetchSubjects.pending, state => {
                 state.loading = true
             })
-            .addCase(fetchSubjects.fulfilled, (state, action: PayloadAction<any>) => {
+            .addCase(fetchSubjects.fulfilled, (state, action: PayloadAction<SubjectProps[]>) => {
                 state.loading = false
                 state.subjects = action.payload
             })

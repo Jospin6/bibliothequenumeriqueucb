@@ -3,6 +3,7 @@ import { ChangeUserRole } from "@/components/forms/changeUserRole";
 import { Navbar } from "@/components/navigation/navbar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+
 import Popup from "@/components/ui/popup";
 import { fetchFaculties, selectFaculties } from "@/redux/faculty/facultySlice";
 import { AppDispatch } from "@/redux/store";
@@ -35,13 +36,12 @@ export default function Roles() {
     }, [dispatch])
 
     return <>
-        <Navbar />
-        <div className="w-8/12 m-auto">
+        <div className="w-full px-4 m-auto text-gray-300">
             <div className="mt-4 mb-6 flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Roles</h1>
             </div>
             {faculties.map(fac => (
-                <Accordion type="single" key={fac.id} collapsible className="text-gray-800 w-full border-b border-gray-700">
+                <Accordion type="single" key={fac.id} collapsible className="text-gray-300 w-full border-b border-gray-700">
                     <AccordionItem value="item-1">
                         <AccordionTrigger className="text-xl"> {fac.name} </AccordionTrigger>
                         <AccordionContent>
