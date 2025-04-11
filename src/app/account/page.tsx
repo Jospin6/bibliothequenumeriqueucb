@@ -30,7 +30,7 @@ export default function Account() {
     }
 
     return <div className="">
-        <Navbar />
+        {user && (<Navbar userFacId={user.faculteId!} />)}
         <div className="md:m-auto w-full px-2 md:w-10/12 py-6">
             <div className="mb-4 flex justify-between items-center shadow-md p-3 rounded-lg">
                 <div>

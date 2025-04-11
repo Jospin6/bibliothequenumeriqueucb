@@ -195,6 +195,7 @@ const userSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchUser.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false
                 state.user = action.payload
             })
             .addCase(fetchUser.rejected, (state, action: PayloadAction<any>) => {

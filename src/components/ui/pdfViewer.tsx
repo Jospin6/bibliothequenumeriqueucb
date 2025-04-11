@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface PdfViewerProps {
   bookId: number;
@@ -8,12 +8,14 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ bookId }) => {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const urlRef = useRef<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchPdf = async () => {
       try {
-        setLoading(true);
-        const response = await fetch(`http://localhost:3000/api/books/${bookId}`);
+        const response = await fetch(`http://localhost:3000/api/pdfDoc/${bookId}`);
 
         if (!response.ok) {
           throw new Error("Impossible de récupérer le PDF.");
@@ -21,19 +23,34 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ bookId }) => {
 
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
-        setPdfUrl(url);
+
+        if (isMounted) {
+          if (urlRef.current) {
+            URL.revokeObjectURL(urlRef.current);
+          }
+
+          urlRef.current = url;
+          setPdfUrl(url);
+          setError(null);
+          setLoading(false);
+        }
       } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        if (isMounted) {
+          setError(err.message);
+          setLoading(false);
+        }
       }
     };
 
+    setLoading(true);
     fetchPdf();
 
-    // Cleanup pour libérer l'URL
     return () => {
-      if (pdfUrl) URL.revokeObjectURL(pdfUrl);
+      isMounted = false;
+      if (urlRef.current) {
+        URL.revokeObjectURL(urlRef.current);
+        urlRef.current = null;
+      }
     };
   }, [bookId]);
 

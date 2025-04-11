@@ -1,59 +1,92 @@
-"use client"
+"use client";
+
 import { Navbar } from "@/components/navigation/navbar";
 import SubNavbar from "@/components/navigation/subNavbar";
 import { MainItem } from "@/components/ui/mainItem";
+import { MainItemSkeleton } from "@/components/ui/mainItemSkeleton";
 import { SideItem } from "@/components/ui/sideItem";
+import { SideItemSkeleton } from "@/components/ui/sideItemSkeleton";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { fetchBooks, fetchForYou, selectBooks, selectForYou, selectSubjectId } from "@/redux/book/bookSlice";
+import { BookProps, fetchBooks, fetchForYou, selectBooks, selectForYou, selectSubjectId } from "@/redux/book/bookSlice";
 import { AppDispatch } from "@/redux/store";
-import { fetchSubjects, selectSubject } from "@/redux/subject/subjectSlice";
+import { fetchSubjects, selectSubject, SubjectProps } from "@/redux/subject/subjectSlice";
 import { fetchUser, selectUser } from "@/redux/user/userSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+// 🧩 Sous-composant : contenu principal
+const MainContent = ({
+  loading,
+  books,
+  subjects,
+}: {
+  loading: boolean;
+  books: BookProps[];
+  subjects: SubjectProps[];
+}) => (
+  <>
+    <SubNavbar items={subjects} />
+    {loading
+      ? "ucb".split("").map(i => <MainItemSkeleton key={i} />)
+      : books.map((book) => <MainItem key={book.id} book={book} />)}
+  </>
+);
+
+// 🧩 Sous-composant : suggestions "Pour toi"
+const SideContent = ({ getForYou }: { getForYou: BookProps[] }) => (
+  <div className="h-[80px] w-[40%] hidden md:block px-[30px]">
+    <h1 className="mt-6 mb-4 font-semibold text-xl font-verdana">Pour toi</h1>
+    {getForYou.map((book) => (
+      <SideItem book={book} key={book.id} />
+    ))}
+  </div>
+);
+
 export default function Home() {
-  const dispatch = useDispatch<AppDispatch>()
-  const { loading, books } = useSelector(selectBooks)
-  const currentUser = useCurrentUser()
-  const user = useSelector(selectUser)
-  const subjects = useSelector(selectSubject)
-  const subjectId = useSelector(selectSubjectId)
-  const getForYou = useSelector(selectForYou)
+  const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    dispatch(fetchForYou())
-  }, [dispatch])
+  const currentUser = useCurrentUser();
+  const { loading, books } = useSelector(selectBooks);
+  const user = useSelector(selectUser);
+  const subjects = useSelector(selectSubject);
+  const subjectId = useSelector(selectSubjectId);
+  const getForYou = useSelector(selectForYou);
 
+  // ⚙️ Récupérer les suggestions "Pour toi" une seule fois
   useEffect(() => {
-    if (currentUser?.id) {
+    if (getForYou.length === 0) {
+      dispatch(fetchForYou());
+    }
+  }, [dispatch, getForYou.length]);
+
+  // ⚙️ Récupérer l'utilisateur si connecté
+  useEffect(() => {
+    if (currentUser?.id && !user?.id) {
       dispatch(fetchUser(currentUser.id));
     }
-  }, [currentUser?.id, dispatch]);
+  }, [currentUser?.id, user?.id, dispatch]);
 
+  // ⚙️ Charger livres et matières si faculté dispo
   useEffect(() => {
-    if (user?.faculty?.id) {
+    if (user?.faculty?.id && subjectId) {
       dispatch(fetchBooks({ faculteId: user.faculty.id, subjectId }));
-      dispatch(fetchSubjects(user.faculty.id));
     }
   }, [user?.faculty?.id, subjectId, dispatch]);
 
+  useEffect(() => {
+    if (user?.faculty?.id && subjects.length === 0) {
+      dispatch(fetchSubjects(user.faculty.id));
+    }
+  }, [user?.faculty?.id, subjects.length, dispatch]);
+
   return (
     <>
-      <Navbar />
+      {user && (<Navbar userFacId={user.faculteId!} />)}
       <div className="md:mx-[5%] mx-2 flex">
         <div className="h-auto md:w-[60%] w-full min-h-[calc(100vh-50px)] md:border-r-[1px] md:border-gray-200 md:px-[50px]">
-          <SubNavbar items={subjects} />
-
-          {loading
-            ? (<div className="text-black">Loading...</div>)
-            : books.map(book => <MainItem key={book.id} book={book} />)
-          }
+          <MainContent loading={loading} books={books} subjects={subjects} />
         </div>
-        <div className="h-[80px] w-[40%] hidden md:block px-[30px]">
-          <h1 className="mt-6 mb-4 font-semibold text-xl font-verdana">Pour toi</h1>
-          {getForYou.map(book => (<SideItem book={book} key={book.id} />))}
-        </div>
-
+        <SideContent getForYou={getForYou} />
       </div>
     </>
   );

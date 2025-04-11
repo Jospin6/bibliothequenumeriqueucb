@@ -2,13 +2,29 @@
 import { Navbar } from "@/components/navigation/navbar";
 import IASection from "@/components/ui/iaSection";
 import { MainItem } from "@/components/ui/mainItem";
+import { MainItemSkeleton } from "@/components/ui/mainItemSkeleton";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { AppDispatch, RootState } from "@/redux/store";
+import { fetchUser } from "@/redux/user/userSlice";
 import { Eye, Heart, Notebook, UserPen } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Lecture() {
+    const dispatch = useDispatch<AppDispatch>();
     const [books, setBooks] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    let faculteId = 1
+    const currentUser = useCurrentUser();
+    const { user } = useSelector((state: RootState) => state.user);
+
+    const [hasFetched, setHasFetched] = useState(false);
+
+    useEffect(() => {
+        if (currentUser && !hasFetched) {
+            dispatch(fetchUser(currentUser.id!));
+            setHasFetched(true);
+        }
+    }, [currentUser, hasFetched, dispatch]);
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -20,17 +36,17 @@ export default function Lecture() {
         };
 
         fetchBooks();
-    }, [faculteId]);
+    }, []);
 
     return <>
-        <Navbar />
+        {user && (<Navbar userFacId={user.faculteId!} />)}
 
         <div className="md:mx-[5%] mx-2 flex">
             <div className="h-auto md:w-[60%] w-full min-h-[calc(100vh-50px)] md:border-r-[1px] md:border-gray-200 md:px-[50px]">
                 <h2 className="text-2xl font-bold mb-5">Pour Toi</h2>
-                {loading && (<p>Loading books...</p>)}
+                {loading && "ucb".split("").map(i => <MainItemSkeleton key={i} />)}
                 {books.length === 0 ? (
-                    <p>No books found.</p>
+                    <MainItemSkeleton />
                 ) : (
                     <ul className="space-y-4">
                         {loading

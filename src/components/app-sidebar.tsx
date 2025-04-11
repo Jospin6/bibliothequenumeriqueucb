@@ -91,11 +91,8 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-2xl text-gray-200 h-[150px] bg-white/10 mb-4 font-bold">
-            <div className="flex h-[50px] items-center mb-4">
-              <Link href={"/"}><Image src={"/images/ucb_logo.jpg"} className="md:h-[70px] md:w-[70px] w-[35px] h-[35px]" alt={"ucb logo"} width={50} height={50} /></Link>
-              <div className="text-4xl font-bold">UCB</div>
-            </div>
+          <SidebarGroupLabel className="text-2xl px-0 rounded-xl text-gray-200 h-[200px] bg-white/10 mb-4 font-bold">
+          <Link href={"/"} className="w-full h-full rounded-xl"><Image src={"/images/ucb_logo.jpg"} className="w-[100%] rounded-xl h-[100%]" alt={"ucb logo"} width={100} height={150} /></Link>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

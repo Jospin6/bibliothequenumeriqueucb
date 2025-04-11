@@ -1,14 +1,14 @@
 "use client";  
 import { setSubject } from '@/redux/book/bookSlice';
 import { AppDispatch } from '@/redux/store';
-import { Subject } from '@/redux/subject/subjectSlice';
+import { SubjectProps } from '@/redux/subject/subjectSlice';
 import React, { useState, useRef } from 'react';  
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';  
 import { useDispatch } from 'react-redux';
 
 
 interface SubNavbarProps {  
-  items: Subject[];  
+  items: SubjectProps[];  
 }  
 
 const SubNavbar: React.FC<SubNavbarProps> = ({ items }) => {  
