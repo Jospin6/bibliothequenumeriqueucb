@@ -132,7 +132,7 @@ export default function Dashboard() {
                     </div>
                     <div className="px-3">
                         {faculties.map(fac => (
-                            <div className="flex items-center mt-2">
+                            <div className="flex items-center mt-2" key={fac.id}>
                                 <Avatar className="size-[40px] mr-2">
                                     <AvatarFallback className="font-medium text-gray-300">{fac.name.charAt(0)}</AvatarFallback>
                                 </Avatar>

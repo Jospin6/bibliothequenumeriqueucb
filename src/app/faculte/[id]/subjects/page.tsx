@@ -30,7 +30,6 @@ export default function Subjects() {
     const faculty = useSelector(selectFaculty)
     const subject = useSelector(selectOneSubject)
     const [subjectId, setSubjectId] = useState<number | null>(null)
-    console.log("ccccc", subject)
 
     const {
         register,
