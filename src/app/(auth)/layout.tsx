@@ -1,15 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
 
 export const metadata: Metadata = {
   title: "Bibliotheque",
@@ -23,11 +12,12 @@ export default function AuthLayout({
 }>) {
   return (
     <div
-      className={`bg-white fixed left-0 top-0 z-50 w-full h-screen`}
+      className={"bg-[url('/bg.jpg')] bg-center  bg-no-repeat bg-cover fixed left-0 top-0 z-50 w-full h-screen"}
     >
-      <div className="px-28 h-[60px] flex justify-start items-center text-3xl">UCB</div>
+      <div className="w-full h-screen bg-black/85 pt-10">
+        {children}
+      </div>
 
-      {children}
     </div>
   );
 }

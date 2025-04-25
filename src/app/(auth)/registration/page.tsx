@@ -72,7 +72,13 @@ export default function RegisterForm() {
           errors={errors} />
 
         <div className="flex justify-end">
-          <Button label={"Ajouter"} />
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white p-2 rounded"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Connexion..." : "S'inscrire"}
+        </button>
         </div>
       </form>
       <div className="mt-4 flex text-sm justify-center">
