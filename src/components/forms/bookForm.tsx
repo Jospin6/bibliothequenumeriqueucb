@@ -26,13 +26,12 @@ export const BookForm = ({ facId }: { facId?: number }) => {
   const subjects = useSelector(selectSubject)
   const faculties = useSelector(selectFaculties)
   const user = useCurrentUser()
-  console.log(user?.faculty)
 
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    dispatch(fetchSubjects())
+    dispatch(fetchSubjects(facId))
     dispatch(fetchFaculties())
   }, [dispatch]);
 

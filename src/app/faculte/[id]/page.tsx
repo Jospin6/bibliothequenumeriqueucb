@@ -78,7 +78,7 @@ export default function App() {
                         </div>
                         <div>
                             <div className="text-lg font-medium">Etudiants</div>
-                            <div className="text-2xl font-bold">{faculty?.users?.length}</div>
+                            <div className="text-2xl font-bold">{faculty?.users && faculty?.users?.length}</div>
                         </div>
                     </Card>
                     <Card className="col-span-2 flex items-center">
@@ -87,7 +87,7 @@ export default function App() {
                         </div>
                         <div>
                             <div className="text-lg font-medium">Livres</div>
-                            <div className="text-2xl font-bold">{faculty?.books?.length}</div>
+                            <div className="text-2xl font-bold">{faculty?.books && faculty?.books?.length}</div>
                         </div>
                     </Card>
                     <Card className="col-span-2 flex items-center">
@@ -96,7 +96,7 @@ export default function App() {
                         </div>
                         <div>
                             <div className="text-lg font-medium">Matières</div>
-                            <div className="text-2xl font-bold">{faculty?.subjects?.length}</div>
+                            <div className="text-2xl font-bold">{faculty?.subjects && faculty?.subjects?.length}</div>
                         </div>
                     </Card>
                 </div>
@@ -152,7 +152,7 @@ export default function App() {
                 </div>
             </div>
             {
-                isOpen && (<Popup isOpen={isOpen} onClose={handleAddDocPopup}>
+                isOpen && (<Popup isOpen={isOpen} className="text-gray-950" onClose={handleAddDocPopup}>
                     {handleForms(formName!)}
                 </Popup>)
             }
