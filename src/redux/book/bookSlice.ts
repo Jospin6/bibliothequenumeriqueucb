@@ -124,6 +124,15 @@ export const updateBook = createAsyncThunk("book/updateBook", async (
     }
 })
 
+export const deleteBook = createAsyncThunk("book/deleteBook", async (bookId: number) => {
+    try {
+        const response = await axios.delete(`/api/books/${bookId}`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+})
+
 
 const bookSlice = createSlice({
     name: "book",

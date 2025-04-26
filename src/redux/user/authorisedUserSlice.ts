@@ -53,6 +53,15 @@ export const fetchAuthorizedFacultyUsers = createAsyncThunk("authorisedUser/fetc
     }
 })
 
+export const deleteAuthorisation = createAsyncThunk("authorisedUser/deleteAuthorisation", async (id: number) => {
+    try {
+        const response = await axios.delete(`/api/authorisedUser/${id}`)
+        return response.data
+    } catch (error: any) {
+        console.error("Erreur: ", error.response?.data || error.message);
+    }
+})
+
 const authorisedUserSlice = createSlice({
     name: "authorisedUser",
     initialState,

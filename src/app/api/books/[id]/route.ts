@@ -66,3 +66,16 @@ export async function PUT(req: NextRequest) {
 }
 
 
+export async function DELETE(req: NextRequest) {
+  const url = new URL(req.url)
+  const id = url.pathname.split("/").pop() as string
+  try {
+    const book = await prisma.book.delete({
+      where: { id: +id },
+    });
+
+    return NextResponse.json(book, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

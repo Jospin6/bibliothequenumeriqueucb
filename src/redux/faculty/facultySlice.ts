@@ -2,14 +2,14 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
 import { User } from "@/types/user_type";
-import { Subject } from "../subject/subjectSlice";
+import { SubjectProps } from "../subject/subjectSlice";
 import { BookProps } from "../book/bookSlice";
 
 export interface Faculty {
     id?: number;
     name: string;
     users?: User[];
-    subjects?: Subject[];
+    subjects?: SubjectProps[];
     books?: BookProps[];
 }
 
@@ -55,6 +55,26 @@ export const fetchFaculties = createAsyncThunk("faculty/fetchFaculties", async (
 export const fetchFaculty = createAsyncThunk("faculty/fetchFaculty", async (id: number) => {
     try {
         const response = await axios.get(`/api/faculties/${id}`)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
+export const updateFaculty = createAsyncThunk("faculty/updateFaculty", async ({id, name}: {id: number, name: string}) => {
+    try {
+        const response = await axios.put(`/api/faculties/${id}`, {
+            name
+        })
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
+export const deleteFaculty = createAsyncThunk("faculty/deleteFaculty", async (id: number) => {
+    try {
+        const response = await axios.delete(`/api/faculties/${id}`)
         return response.data
     } catch (error) {
         throw new Error(error as string)

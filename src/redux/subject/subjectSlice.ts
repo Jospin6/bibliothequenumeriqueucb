@@ -69,6 +69,15 @@ export const updateSubject = createAsyncThunk("subject/getSubject", async ({id, 
     }
 })
 
+export const deleteSubject = createAsyncThunk("subject/deleteSubject", async (id: number) => {
+    try {
+        const response = await axios.delete(`/api/subjects/${id}`)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
 const userSlice = createSlice({
     name: "subject",
     initialState,

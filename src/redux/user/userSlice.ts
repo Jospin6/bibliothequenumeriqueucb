@@ -161,6 +161,16 @@ export const fetchUsers = createAsyncThunk("user/fetchUsers", async () => {
     }
 })
 
+export const deleteUser = createAsyncThunk("user/deleteUser", async (userId: number) => {
+    try {
+        let url = `/api/users/${userId}`
+        const response = await axios.delete(url)
+        return response.data
+    } catch (error) {
+        throw new Error(error as string)
+    }
+})
+
 const userSlice = createSlice({
     name: "user",
     initialState,
