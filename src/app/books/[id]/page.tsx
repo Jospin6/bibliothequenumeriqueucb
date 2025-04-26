@@ -1,41 +1,102 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import PdfViewer from "@/components/ui/pdfViewer";
+import { Document, Page } from 'react-pdf';
+import { loadPdfWorker } from "@/utils/pdfWorker";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
+
+loadPdfWorker()
 
 export default function BookPage() {
-  // const [book, setBook] = useState<any>(null);
-  // const [currentPage, setCurrentPage] = useState(0);
-  // const pageSize = 1000;
   const params = useParams();
   const id = params?.id
 
-  // useEffect(() => {
-  //   fetch(`http://localhost:3000/api/books/${id}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setBook(data));
-  // }, [params.id]);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const urlRef = useRef<string | null>(null);
 
-  // if (!book) return <p>Loading...</p>;
+  const [numPages, setNumPages] = useState<number>();
+  const [pageNumber, setPageNumber] = useState<number>(1);
 
-  // const text = atob(book.file).toString();
-  // const pages = text.match(/.{1,1000}/g) || [];
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
+    setPageNumber(1);
+  };
 
-  return <PdfViewer bookId={+id!}/>
-  // (
-  //   <div className="max-w-2xl mx-auto mt-10 p-5 bg-white rounded-lg shadow">
-  //     <h2 className="text-2xl font-bold mb-5">{book.title}</h2>
-  //     <p className="text-gray-600 mb-3">Page {currentPage + 1} of {pages.length}</p>
-  //     <p className="border p-3 rounded h-64 overflow-auto">{pages[currentPage]}</p>
-  //     <div className="flex justify-between mt-4">
-  //       <button onClick={() => setCurrentPage((p) => Math.max(0, p - 1))} disabled={currentPage === 0} className="p-2 bg-gray-300 rounded">
-  //         Previous
-  //       </button>
-  //       <button onClick={() => setCurrentPage((p) => Math.min(pages.length - 1, p + 1))} disabled={currentPage === pages.length - 1} className="p-2 bg-gray-300 rounded">
-  //         Next
-  //       </button>
-  //     </div>
-  //   </div>
-  // );
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchPdf = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/pdfDoc/${id}`);
+
+        if (!response.ok) {
+          throw new Error("Impossible de récupérer le PDF.");
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+
+        if (isMounted) {
+          if (urlRef.current) {
+            URL.revokeObjectURL(urlRef.current);
+          }
+
+          urlRef.current = url;
+          setPdfUrl(url);
+        }
+      } catch (err: any) {
+        if (isMounted) {
+        }
+      }
+    };
+
+    fetchPdf();
+
+    return () => {
+      isMounted = false;
+      if (urlRef.current) {
+        URL.revokeObjectURL(urlRef.current);
+        urlRef.current = null;
+      }
+    };
+  }, [id]);
+
+
+
+
+  const [numPage, setNumPage] = useState<number>(1)
+
+  const onDocumentSuccess = ({ numPage }: { numPage: number }) => {
+    setNumPage(numPage)
+  }
+
+  return <div style={{ width: '600px', margin: '0 auto' }}>
+    {/* <PDFWorkerConfig /> */}
+    <Document
+      file={pdfUrl}
+      onLoadSuccess={onDocumentLoadSuccess}
+    >
+      <Page pageNumber={pageNumber} />
+    </Document>
+    <div>
+      <button
+        onClick={() => setPageNumber((prev) => Math.max(1, prev - 1))}
+        disabled={pageNumber <= 1}
+      >
+        Précédent
+      </button>
+      <button
+        onClick={() => setPageNumber((prev) => (numPages ? Math.min(numPages, prev + 1) : prev))}
+        disabled={numPages ? pageNumber >= numPages : true}
+      >
+        Suivant
+      </button>
+      <p>
+        Page {pageNumber} sur {numPages}
+      </p>
+    </div>
+  </div>
+
 }
