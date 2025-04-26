@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { getSubject, selectOneSubject, selectSubject, updateSubject } from "@/redux/subject/subjectSlice";
+import { deleteSubject, getSubject, selectOneSubject, selectSubject, updateSubject } from "@/redux/subject/subjectSlice";
 
 const formSchema = z.object({
     name: z.string().min(1, "Title is required"),
@@ -68,6 +68,8 @@ export default function Subjects() {
         }
     }
 
+    const handleSubjectDelection = (id: number) => dispatch(deleteSubject(id))
+
     const onSubmit = async (data: {name: string}) => {
         setLoading(true);
         if (subjectId) {
@@ -117,7 +119,7 @@ export default function Subjects() {
                                             <td>{subject.name}</td>
                                             <td className="flex justify-center">
                                                 <Edit onClick={() => setSubjectId(subject.id!)} size={17} className="text-blue-700 cursor-pointer" />
-                                                <Delete size={17} className="text-red-600 ml-2 cursor-pointer" />
+                                                <Delete size={17} onClick={() => handleSubjectDelection(subject.id!)} className="text-red-600 ml-2 cursor-pointer" />
                                             </td>
                                         </tr>
                                     ))

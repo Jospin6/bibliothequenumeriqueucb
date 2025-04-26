@@ -13,7 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { createAuthorisation, fetchAuthorizedFacultyUsers, selectAuthorizedFacultyUsers } from "@/redux/user/authorisedUserSlice";
+import { createAuthorisation, deleteAuthorisation, fetchAuthorizedFacultyUsers, selectAuthorizedFacultyUsers } from "@/redux/user/authorisedUserSlice";
+import { deleteUser } from "@/redux/user/userSlice";
 
 const formSchema = z.object({
     email: z.string().min(1, "Title is required"),
@@ -59,6 +60,9 @@ export default function App() {
         }
     }
 
+    const handleUserDeletion = (id: number) => dispatch(deleteUser(id))
+    const handleAutorizedEmailDeletion = (id: number) => dispatch(deleteAuthorisation(id))
+
     useEffect(() => {
         dispatch(fetchFaculty(+id!))
         dispatch(fetchAuthorizedFacultyUsers(+id!))
@@ -94,7 +98,6 @@ export default function App() {
                                     <th>Nom</th>
                                     <th>Postnom</th>
                                     <th>Mail</th>
-                                    <th>Docs Consultés</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -105,9 +108,8 @@ export default function App() {
                                             <td>{student.name}</td>
                                             <td>{student.postnom}</td>
                                             <td>{student.email}</td>
-                                            <td></td>
                                             <td className="flex justify-center">
-                                                <Delete size={17} className="text-red-600 ml-2" />
+                                                <Delete size={17} onClick={() => handleUserDeletion(student.id!)} className="text-red-600 ml-2" />
                                             </td>
                                         </tr>
                                     ))
@@ -148,7 +150,7 @@ export default function App() {
                                                 Suspendu
                                             </span>)}</td>
                                             <td className="flex justify-center">
-                                                <Delete size={17} className="text-red-600 ml-2" />
+                                                <Delete size={17} onClick={() => handleAutorizedEmailDeletion(student.id!)} className="text-red-600 ml-2" />
                                             </td>
                                         </tr>
                                     ))

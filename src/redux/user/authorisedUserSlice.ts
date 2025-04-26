@@ -4,6 +4,7 @@ import { init } from "next/dist/compiled/webpack/webpack"
 import { RootState } from "../store"
 
 interface authorisedUser {
+    id?: number,
     email: string,
     isActive?: boolean,
     faculteId: number,

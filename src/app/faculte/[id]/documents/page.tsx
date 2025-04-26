@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { getBook, selectBook, updateBook } from "@/redux/book/bookSlice";
+import { deleteBook, getBook, selectBook, updateBook } from "@/redux/book/bookSlice";
 import { fetchSubjects, selectSubject } from "@/redux/subject/subjectSlice";
 
 // ✅ Schéma Zod
@@ -98,6 +98,8 @@ export default function Documents() {
 
     }, [bookId])
 
+    const handleBookDeletion = (id: number) => dispatch(deleteBook(id))
+
     const onSubmit = async (data: any) => {
         setLoading(true);
 
@@ -155,7 +157,7 @@ export default function Documents() {
                                             <td>{book.View.length} fois</td>
                                             <td className="flex justify-center">
                                                 <Edit onClick={() => setBookId(book.id!)} size={17} className="text-blue-700 cursor-pointer" />
-                                                <Delete size={17} className="text-red-600 ml-2 cursor-pointer" />
+                                                <Delete size={17} onClick={() => handleBookDeletion(book.id!)} className="text-red-600 ml-2 cursor-pointer" />
                                             </td>
                                         </tr>
                                     ))
