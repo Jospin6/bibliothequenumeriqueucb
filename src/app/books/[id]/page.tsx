@@ -10,7 +10,7 @@ import { Navbar } from "@/components/navigation/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { getBook, selectBook } from "@/redux/book/bookSlice";
-import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
+import { PowerPointViewer } from "@/components/ui/powerPointViewer";
 
 loadPdfWorker()
 
@@ -25,10 +25,6 @@ export default function BookPage() {
   const [numPages, setNumPages] = useState<number>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [htmlContent, setHtmlContent] = useState<string | null>(null);
-
-  const docs = [{
-    uri: pdfUrl!,
-  }];
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
@@ -149,7 +145,7 @@ export default function BookPage() {
   }, [id]);
 
 
-  return <div className="w-full relative h-auto bg-black/85">
+  return <div className="w-full relative min-h-[100vh] h-auto bg-black/85">
     <div className="sticky top-0 left-0 w-full z-50">
       <Navbar />
       <div className="bg-white flex justify-center text-xs h-[30px] items-center border-b border-gray-700">
@@ -192,12 +188,14 @@ export default function BookPage() {
               },
             }}
           /> */}
-          {htmlContent && (
+          {htmlContent ? (
             <div
               className="w-full h-auto bg-white p-3"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
-          )}
+          ): (<div>
+            <PowerPointViewer fileUrl={pdfUrl!}/>
+          </div>)}
         </div>
       )}
     </div>

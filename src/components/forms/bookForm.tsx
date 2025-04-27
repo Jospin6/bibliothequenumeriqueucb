@@ -105,7 +105,7 @@ export const BookForm = ({ facId }: { facId?: number }) => {
 
         <input
           type="file"
-          accept=".pdf,.docx"
+          accept=".pdf,.docx, .pptx"
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) {

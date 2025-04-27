@@ -71,7 +71,7 @@ export const Navbar = () => {
                 />
                 <NavbarItem
                     label="Faculté"
-                    href="/faculte"
+                    href={`/faculte/${user?.faculteId}`}
                     icon={<School size={18} />}
                 />
                 <NavbarItem
