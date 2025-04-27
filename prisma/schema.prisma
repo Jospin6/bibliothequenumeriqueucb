@@ -13,7 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
@@ -45,8 +44,8 @@ model View {
   userId    Int
   bookId    Int
   createdAt DateTime @default(now())
-  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  book      Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
 }
 
 enum UserRole {
@@ -56,34 +55,35 @@ enum UserRole {
 }
 
 model Faculty {
-  id   Int    @id @default(autoincrement())
-  name String @unique
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
   subjects Subject[]
-  users User[]
-  books Book[]
+  users    User[]
+  books    Book[]
 
   AuthorisedUser AuthorisedUser[]
 }
 
 model Subject {
-  id        Int    @id @default(autoincrement())
-  name      String @unique
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
   faculteId Int
   faculty   Faculty @relation(fields: [faculteId], references: [id], onDelete: Cascade)
   books     Book[]
 }
 
 model Book {
-  id          Int    @id @default(autoincrement())
-  title       String
-  auteurId    Int
-  faculteId   Int?
-  subjectId   Int?
-  file        Bytes
-  createdAt   DateTime @default(now())
-  auteur      User @relation(fields: [auteurId], references: [id], onDelete: Cascade)
-  faculty     Faculty? @relation(fields: [faculteId], references: [id], onDelete: Cascade)
-  subject     Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  title     String
+  auteurId  Int
+  faculteId Int?
+  subjectId Int?
+  fileType  String?
+  file      Bytes
+  createdAt DateTime @default(now())
+  auteur    User     @relation(fields: [auteurId], references: [id], onDelete: Cascade)
+  faculty   Faculty? @relation(fields: [faculteId], references: [id], onDelete: Cascade)
+  subject   Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
 
   FavoriteBook FavoriteBook[]
 
@@ -91,10 +91,10 @@ model Book {
 }
 
 model FavoriteBook {
-  userId  Int
-  bookId  Int
-  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  book    Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  userId Int
+  bookId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book   Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
-  @@id([userId, bookId]) 
+  @@id([userId, bookId])
 }

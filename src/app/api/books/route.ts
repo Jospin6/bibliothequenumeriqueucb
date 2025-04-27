@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
         const subjectId = formData.get("subjectId") ? Number(formData.get("subjectId")) : null;
         const categoryId = formData.get("categoryId") ? Number(formData.get("categoryId")) : null;
         const file = formData.get("file") as File;
+        const fileType = formData.get("fileType") as string;
 
         if (!file) {
             return NextResponse.json({ error: "File is required" }, { status: 400 });
@@ -25,6 +26,7 @@ export async function POST(req: NextRequest) {
                 title,
                 auteurId,
                 faculteId,
+                fileType,
                 subjectId,
                 file: buffer, // Stocker en BLOB ou Base64 selon la DB
             },

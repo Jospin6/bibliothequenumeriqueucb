@@ -65,11 +65,6 @@ export const Navbar = () => {
                     icon={<Search size={18} />}
                 />
                 <NavbarItem
-                    label="Pour toi"
-                    href="/books"
-                    icon={<Book size={18} />}
-                />
-                <NavbarItem
                     label="Admin"
                     href="/admin"
                     icon={<LayoutDashboard size={18} />}

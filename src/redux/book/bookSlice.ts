@@ -15,6 +15,7 @@ export interface ViewProps {
 export interface BookProps {
     id?: number;
     title: string;
+    fileType?: string;
     author: string;
     file: File,
     FavoriteBook: FavoriteBook[]

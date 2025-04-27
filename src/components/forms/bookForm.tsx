@@ -50,12 +50,26 @@ export const BookForm = ({ facId }: { facId?: number }) => {
     if (data.categoryId) formData.append("categoryId", data.categoryId);
 
     if (data.file) {
-      formData.append("file", data.file);
+      const file = data.file as File;
+    
+      // Récupérer l'extension du fichier
+      const fileName = file.name;
+      const extension = fileName.split('.').pop()?.toLowerCase();
+    
+      if (extension && ["pdf", "doc", "docx", "ppt", "pptx"].includes(extension)) {
+        formData.append("file", file);
+        formData.append("fileType", extension);
+      } else {
+        console.error("Extension de fichier non supportée !");
+        alert("Le fichier doit être un PDF, Word ou PowerPoint.");
+        return;
+      }
     } else {
       console.error("Aucun fichier sélectionné !");
       alert("Veuillez sélectionner un fichier.");
       return;
     }
+    
     dispatch(addBook(formData))
     reset()
 
