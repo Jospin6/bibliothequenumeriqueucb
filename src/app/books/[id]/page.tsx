@@ -6,6 +6,7 @@ import { Document, Page } from 'react-pdf';
 import { loadPdfWorker } from "@/utils/pdfWorker";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
+import { Navbar } from "@/components/navigation/navbar";
 
 loadPdfWorker()
 
@@ -63,40 +64,59 @@ export default function BookPage() {
     };
   }, [id]);
 
+  // const getPageWidth = () => {
+  //   if (window.innerWidth >= 640) return 595; // tablette ou plus → A4
+  //   return window.innerWidth * 0.9;            // mobile → 90% de l'écran
+  // };
 
-
-
-  const [numPage, setNumPage] = useState<number>(1)
-
-  const onDocumentSuccess = ({ numPage }: { numPage: number }) => {
-    setNumPage(numPage)
-  }
-
-  return <div style={{ width: '600px', margin: '0 auto' }}>
-    {/* <PDFWorkerConfig /> */}
-    <Document
-      file={pdfUrl}
-      onLoadSuccess={onDocumentLoadSuccess}
-    >
-      <Page pageNumber={pageNumber} />
-    </Document>
-    <div>
-      <button
-        onClick={() => setPageNumber((prev) => Math.max(1, prev - 1))}
-        disabled={pageNumber <= 1}
-      >
-        Précédent
-      </button>
-      <button
-        onClick={() => setPageNumber((prev) => (numPages ? Math.min(numPages, prev + 1) : prev))}
-        disabled={numPages ? pageNumber >= numPages : true}
-      >
-        Suivant
-      </button>
-      <p>
-        Page {pageNumber} sur {numPages}
-      </p>
+  return <div className="w-full relative h-auto bg-black/85">
+    <div className="sticky top-0 left-0 w-full z-50">
+      <Navbar />
+      <div className="bg-white flex justify-center text-xs h-[30px] items-center border-b border-gray-700">
+        <p>
+          Page {pageNumber} sur {numPages}
+        </p>
+      </div>
     </div>
+
+    <div className="w-[850px] m-auto">
+      <Document
+        file={pdfUrl}
+        onLoadSuccess={onDocumentLoadSuccess}
+      >
+        {
+          Array.from({ length: numPages || 0 }).map((_, index) => {
+            const pageNum = index + 1;
+            return (
+              <Page
+                key={`page_${pageNum}`}
+                pageNumber={pageNum}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+                width={850}
+                className={"mt-2"}
+              />
+            );
+          })
+        }
+      </Document>
+      <div>
+        {/* <button
+          onClick={() => setPageNumber((prev) => Math.max(1, prev - 1))}
+          disabled={pageNumber <= 1}
+        >
+          Précédent
+        </button>
+        <button
+          onClick={() => setPageNumber((prev) => (numPages ? Math.min(numPages, prev + 1) : prev))}
+          disabled={numPages ? pageNumber >= numPages : true}
+        >
+          Suivant
+        </button> */}
+
+      </div>
+    </div>
+
   </div>
 
 }

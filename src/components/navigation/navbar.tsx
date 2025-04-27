@@ -2,12 +2,6 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-
-import { AppDispatch } from "@/redux/store"
-import { fetchUser, selectUser } from "@/redux/user/userSlice"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 import { Searchbar } from "../ui/searchbar"
 import { NavbarItem } from "./navbarItem"
@@ -21,11 +15,25 @@ import {
     Search,
     UserCircle
 } from "lucide-react"
+import { useCurrentUser } from "@/hooks/useCurrentUser"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch } from "@/redux/store"
+import { fetchUser, selectUser } from "@/redux/user/userSlice"
 
-export const Navbar = ({ userFacId }: { userFacId: number }) => {
+export const Navbar = () => {
+    const dispatch = useDispatch<AppDispatch>()
+    const currentUser = useCurrentUser()
+    const user = useSelector(selectUser)
+
+    useEffect(() => {
+        if (currentUser?.id) {
+            dispatch(fetchUser(currentUser?.id))
+        }
+    }, [currentUser?.id])
 
     return (
-        <div className="w-full md:px-[5%] px-2 h-[50px] border-b border-gray-200 flex items-center justify-between">
+        <div className="w-full bg-white md:px-[5%] px-2 h-[50px] border-b border-gray-200 flex items-center justify-between">
             {/* Logo + Search */}
             <div className="flex items-center h-[50px]">
                 <Link href="/">
@@ -38,7 +46,7 @@ export const Navbar = ({ userFacId }: { userFacId: number }) => {
                     />
                 </Link>
                 <div className="hidden md:block w-[300px]">
-                    <Searchbar facId={userFacId} />
+                    <Searchbar facId={user?.faculteId!} />
                 </div>
             </div>
 

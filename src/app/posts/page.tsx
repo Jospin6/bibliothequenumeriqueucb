@@ -26,7 +26,7 @@ export default function Posts() {
     }, [currentUser, hasFetched, dispatch]);
 
     return <div>
-        {user && (<Navbar userFacId={user.faculteId!} />)}
+        <Navbar />
         <div className="mx-[5%] flex">
             <div className="h-auto w-[60%] border-r-[1px] border-gray-200 px-[50px]">
                 <h1 className="mt-6 mb-4 font-semibold text-xl font-verdana">Posts</h1>

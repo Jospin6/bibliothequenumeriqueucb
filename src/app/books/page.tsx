@@ -39,7 +39,7 @@ export default function Lecture() {
     }, []);
 
     return <>
-        {user && (<Navbar userFacId={user.faculteId!} />)}
+        <Navbar />
 
         <div className="md:mx-[5%] mx-2 flex">
             <div className="h-auto md:w-[60%] w-full min-h-[calc(100vh-50px)] md:border-r-[1px] md:border-gray-200 md:px-[50px]">
