@@ -6,7 +6,7 @@ import * as z from "zod";
 import { addFaculty } from "@/redux/faculty/facultySlice";
 import { InputField } from "../ui/inputField";
 import { TextAreaField } from "../ui/textAreaField";
-import { Button } from "../ui/button";
+import { Button } from "../ui/Button";
 import { facultySchema } from "@/lib/validationSchema"
 import { faculteFormValues } from "@/types/validation"
 

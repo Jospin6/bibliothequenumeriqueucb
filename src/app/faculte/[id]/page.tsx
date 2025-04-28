@@ -6,7 +6,7 @@ import { Navbar } from "@/components/navigation/navbar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import BooksPerSubjectChart from "@/components/ui/BooksPerSubjectChart";
 import BooksViewsPieChart from "@/components/ui/BooksViewsPieChart";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/card";
 import Popup from "@/components/ui/popup";
 import { fetchFaculty, selectFaculty } from "@/redux/faculty/facultySlice";

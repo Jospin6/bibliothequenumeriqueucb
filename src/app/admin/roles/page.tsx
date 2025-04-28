@@ -2,7 +2,7 @@
 import { ChangeUserRole } from "@/components/forms/changeUserRole";
 import { Navbar } from "@/components/navigation/navbar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 import Popup from "@/components/ui/popup";
 import { fetchFaculties, selectFaculties } from "@/redux/faculty/facultySlice";
