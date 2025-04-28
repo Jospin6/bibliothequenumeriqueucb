@@ -22,7 +22,7 @@ export default function Search() {
     }, [currentUser, hasFetched, dispatch]);
 
     return <>
-        {user && (<Navbar userFacId={user.faculteId!} />)}
+        <Navbar />
         <div className="w-full md:w-8/12 md:m-auto">
             <div className="mt-3 w-full flex justify-center px-4"><Searchbar facId={user?.faculteId!} /></div>
             <div className="mt-4 px-2">
