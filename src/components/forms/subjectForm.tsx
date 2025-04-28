@@ -26,7 +26,7 @@ export const SubjectForm = ({ id }: { id: number }) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <InputField name={"name"} placeholder={"Nom de la matière"} register={register} errors={errors} />
                 <div className="flex justify-end">
-                    <Button label={"Ajouter"} />
+                    <Button className="bg-black text-gray-200">Ajouter</Button>
                 </div>
             </form>
         </>

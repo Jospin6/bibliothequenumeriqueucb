@@ -73,7 +73,7 @@ export const ChangeUserRole = ({ facId }: { facId: number }) => {
                     />
                 </div>
                 <div className="flex justify-end">
-                    <Button label={"Ajouter"} />
+                    <Button className="bg-black text-gray-200">Ajouter</Button>
                 </div>
             </form>
         </div>

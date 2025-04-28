@@ -16,11 +16,11 @@ async function verifyToken(token: string) {
 
 // Routes nécessitant des rôles spécifiques
 const routePermissions: Record<string, ("USER" | "ADMIN" | "SUPERADMIN")[]> = {
-    "/admin": ["USER", "ADMIN", "SUPERADMIN"],
+    "/admin": ["ADMIN", "SUPERADMIN"],
     "/account": ["USER", "ADMIN", "SUPERADMIN"],
     "/books": ["USER", "ADMIN", "SUPERADMIN"],
-    "/posts": ["USER", "ADMIN", "SUPERADMIN"],
-    "/faculte": ["USER","ADMIN", "SUPERADMIN"],
+    "/posts": ["ADMIN", "SUPERADMIN"],
+    "/faculte": ["ADMIN", "SUPERADMIN"],
     "/favories": ["USER", "ADMIN", "SUPERADMIN"],
     "/home": ["USER", "ADMIN", "SUPERADMIN"],
     "/": ["USER", "ADMIN", "SUPERADMIN"],
