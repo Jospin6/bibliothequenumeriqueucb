@@ -40,7 +40,7 @@ export default function RegisterForm() {
       await dispatch(postUser(data)).unwrap();
 
     } catch (error) {
-      console.error("Erreur de connexion :", error);
+      console.log("Erreur lors de l'inscription de l'utilisateur :", error);
     }
     redirect("/");
   };

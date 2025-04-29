@@ -18,7 +18,7 @@ async function generateToken(user: any) {
   })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("2h")
+    .setExpirationTime(100 * 365 * 24 * 60 * 60)
     .sign(secret);
 
   return token;

@@ -35,7 +35,7 @@ export default function Login() {
         return
       }
     } catch (error) {
-      console.error("Erreur de connexion :", error);
+      console.log("Erreur de connexion de l'utilisateur :", error);
     }
     redirect("/");
   };
