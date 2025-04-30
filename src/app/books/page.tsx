@@ -1,21 +1,18 @@
 "use client"
 import { Navbar } from "@/components/navigation/navbar";
-import IASection from "@/components/ui/iaSection";
 import { MainItem } from "@/components/ui/mainItem";
 import { MainItemSkeleton } from "@/components/ui/mainItemSkeleton";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchUser } from "@/redux/user/userSlice";
-import { Eye, Heart, Notebook, UserPen } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function Lecture() {
     const dispatch = useDispatch<AppDispatch>();
     const [books, setBooks] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const currentUser = useCurrentUser();
-    const { user } = useSelector((state: RootState) => state.user);
 
     const [hasFetched, setHasFetched] = useState(false);
 
@@ -58,7 +55,6 @@ export default function Lecture() {
             </div>
             <div className="h-[80px] w-[40%] hidden md:block px-[30px]">
                 <h1 className="mt-6 mb-4 font-semibold text-xl font-verdana">Les Nouveau documents</h1>
-                {/* {getForYou.map(book => (<SideItem book={book} key={book.id} />))} */}
             </div>
 
         </div>

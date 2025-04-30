@@ -35,50 +35,6 @@ export default function BookPage() {
     dispatch(getBook(+id!))
   }, [])
 
-  // useEffect(() => {
-  //   let isMounted = true;
-
-  //   const fetchPdf = async () => {
-  //     try {
-  //       const response = await fetch(`/api/pdfDoc/${id}`);
-
-  //       if (!response.ok) {
-  //         throw new Error("Impossible de récupérer le PDF.");
-  //       }
-
-  //       const blob = await response.blob();
-  //       const url = URL.createObjectURL(blob);
-
-  //       if (isMounted) {
-  //         if (urlRef.current) {
-  //           URL.revokeObjectURL(urlRef.current);
-  //         }
-
-  //         urlRef.current = url;
-  //         setPdfUrl(url);
-  //       }
-  //     } catch (err: any) {
-  //       if (isMounted) {
-  //       }
-  //     }
-  //   };
-
-  //   fetchPdf();
-
-  //   return () => {
-  //     isMounted = false;
-  //     if (urlRef.current) {
-  //       URL.revokeObjectURL(urlRef.current);
-  //       urlRef.current = null;
-  //     }
-  //   };
-  // }, [id]);
-
-  // const getPageWidth = () => {
-  //   if (window.innerWidth >= 640) return 595; // tablette ou plus → A4
-  //   return window.innerWidth * 0.9;            // mobile → 90% de l'écran
-  // };
-
   useEffect(() => {
     let isMounted = true;
 
@@ -179,15 +135,6 @@ export default function BookPage() {
         </Document>
       ) : (
         <div>
-          {/* <DocViewer
-            documents={docs}
-            pluginRenderers={DocViewerRenderers}
-            config={{
-              header: {
-                disableHeader: true,
-              },
-            }}
-          /> */}
           {htmlContent ? (
             <div
               className="w-full h-auto bg-white p-3"

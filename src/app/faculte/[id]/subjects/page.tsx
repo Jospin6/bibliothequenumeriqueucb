@@ -1,9 +1,6 @@
 "use client"
-import { BookForm } from "@/components/forms/bookForm";
 import { SubjectForm } from "@/components/forms/subjectForm";
-import { Navbar } from "@/components/navigation/navbar";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/iaInput";
 import Popup from "@/components/ui/popup";
 import { fetchFaculty, selectFaculty } from "@/redux/faculty/facultySlice";
 import { AppDispatch } from "@/redux/store";
@@ -14,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { deleteSubject, getSubject, selectOneSubject, selectSubject, updateSubject } from "@/redux/subject/subjectSlice";
+import { deleteSubject, getSubject, selectOneSubject, updateSubject } from "@/redux/subject/subjectSlice";
 
 const formSchema = z.object({
     name: z.string().min(1, "Title is required"),

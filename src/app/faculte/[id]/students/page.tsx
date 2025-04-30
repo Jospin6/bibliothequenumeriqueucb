@@ -44,20 +44,7 @@ export default function App() {
     });
 
     const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [formName, setFormName] = useState<string>()
-    const handleAddDocPopup = (formName?: string) => {
-        setFormName(formName)
-        setIsOpen(!isOpen)
-    }
-
-    const handleForms = (title: string = "book") => {
-        switch (title) {
-            case "book":
-                return <BookForm facId={+id!} />
-            default:
-                return
-        }
-    }
+    const handleAddDocPopup = () => setIsOpen(!isOpen)
 
     const handleUserDeletion = (id: number) => dispatch(deleteUser(id))
     const handleAutorizedEmailDeletion = (id: number) => dispatch(deleteAuthorisation(id))
@@ -81,7 +68,7 @@ export default function App() {
             <div className="mb-6 flex px-4 justify-between items-center border-dashed border-gray-600 border-y h-[60px]">
                 <h1 className="text-2xl font-bold">{faculty?.name}</h1>
                 <div className="flex">
-                    <Button onClick={() => handleAddDocPopup("book")}>Nouveau Email</Button>
+                    <Button onClick={handleAddDocPopup}>Nouveau Email</Button>
                 </div>
             </div>
 

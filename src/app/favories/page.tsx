@@ -40,7 +40,7 @@ export default function App() {
                 </div>
 
                 <div className="h-[80px] w-[40%] hidden md:block px-[30px]">
-                    <h1 className="mt-6 mb-4 font-semibold text-xl font-verdana">Ça peut vous intéresser</h1>
+                    {/* <h1 className="mt-6 mb-4 font-semibold text-xl font-verdana">Ça peut vous intéresser</h1> */}
                     {/* Lazy-load ou suspense futur pour suggestions */}
                 </div>
             </div>
