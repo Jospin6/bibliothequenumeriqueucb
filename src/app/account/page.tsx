@@ -31,7 +31,7 @@ export default function Account() {
 
     return <div className="">
         <Navbar />
-        <div className="md:m-auto w-full px-2 md:w-10/12 py-6">
+        <div className="md:m-auto w-full px-2 md:w-8/12 py-6">
             <div className="mb-4 flex justify-between items-center shadow-md p-3 rounded-lg">
                 <div>
                     <div className="flex">

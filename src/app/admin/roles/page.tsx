@@ -14,22 +14,11 @@ export default function Roles() {
     const dispatch = useDispatch<AppDispatch>()
     const faculties = useSelector(selectFaculties)
     const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [formName, setFormName] = useState<string>()
-    const handleAddDocPopup = (id?: number, formName?: string) => {
-        setFormName(formName)
+    const handleAddDocPopup = (id?: number) => {
         setFacId(id)
         setIsOpen(!isOpen)
     }
     const [facId, setFacId] = useState<number>()
-
-    const handleForms = (title: string = "changeUserRole") => {
-        switch (title) {
-            case "changeUserRole":
-                return <ChangeUserRole facId={facId!} />
-            default:
-                return
-        }
-    }
 
     useEffect(() => {
         dispatch(fetchFaculties())
@@ -49,7 +38,7 @@ export default function Roles() {
                                 <div className="flex justify-between">
                                     <div className="text-[20px]">Gestionnaires de la faculté</div>
                                     <div>
-                                        <Button onClick={() => handleAddDocPopup(fac.id, "geschangeUserRoletRole")}>Add Gestionnaire</Button>
+                                        <Button onClick={() => handleAddDocPopup(fac.id)}>Add Gestionnaire</Button>
                                     </div>
                                 </div>
                                 {fac.users!.filter(user => user.role === "ADMIN").length > 0 ? (
@@ -73,7 +62,6 @@ export default function Roles() {
         </div>
         {
             isOpen && (<Popup isOpen={isOpen} onClose={handleAddDocPopup}>
-                {/* {handleForms(formName!)} */}
                 <ChangeUserRole facId={facId!} />
             </Popup>)
         }
