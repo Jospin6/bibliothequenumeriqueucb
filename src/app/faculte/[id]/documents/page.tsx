@@ -153,7 +153,7 @@ export default function Documents() {
                                     faculty?.books?.map((book, index) => (
                                         <tr key={index} className="border-b">
                                             <td>{book.title}</td>
-                                            <td>{book.subject.name}</td>
+                                            <td>{book.subject && book.subject.name}</td>
                                             <td>{book.View.length} fois</td>
                                             <td className="flex justify-center">
                                                 <Edit onClick={() => setBookId(book.id!)} size={17} className="text-blue-700 cursor-pointer" />

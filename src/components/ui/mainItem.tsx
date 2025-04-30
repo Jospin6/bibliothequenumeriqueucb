@@ -22,7 +22,7 @@ export const MainItem = ({ book }: MainItemProps) => {
         <div className="w-[75%] border-b-[1px] border-gray-200 pb-3 mt-2 h-[auto] pl-2">
             <div className="flex items-center text-gray-500">
                 <Notebook size={15} className="mr-2 text-teal-800" />
-                <span> <span className="text-gray-800 text-[12px]">{book.subject.name}</span></span>
+                <span> <span className="text-gray-800 text-[12px]">{book.subject && book.subject.name}</span></span>
             </div>
             <p className="font-semibold text-xl font-verdana py-2">
                 <Link href={`/books/${book.id}`} onClick={handleView}>

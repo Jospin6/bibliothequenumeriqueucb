@@ -118,7 +118,7 @@ export default function App() {
                                     </Avatar>
                                     <div className="">
                                         <div className="text-gray-300 text-[16px]">{book.title}</div>
-                                        <div className="text-gray-500 text-sm">{book.subject.name}</div>
+                                        <div className="text-gray-500 text-sm">{book.subject && book.subject.name}</div>
                                     </div>
                                 </div>
                             ))}

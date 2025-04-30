@@ -116,7 +116,7 @@ export default function Subjects() {
                                 {
                                     faculty?.subjects?.map((subject, index) => (
                                         <tr key={index} className="border-b">
-                                            <td>{subject.name}</td>
+                                            <td>{subject.name ?? ""}</td>
                                             <td className="flex justify-center">
                                                 <Edit onClick={() => setSubjectId(subject.id!)} size={17} className="text-blue-700 cursor-pointer" />
                                                 <Delete size={17} onClick={() => handleSubjectDelection(subject.id!)} className="text-red-600 ml-2 cursor-pointer" />

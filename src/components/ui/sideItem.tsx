@@ -9,7 +9,7 @@ export const SideItem = ({ book }: { book: BookProps }) => {
             <Notebook size={25} className="mr-2 text-teal-800" />
             <div>
                 <div className="w-full font-medium flex justify-center"><span>{book.title}</span></div>
-                <div className="md:text-[12px] text-[9px]">{book.subject.name}</div>
+                <div className="md:text-[12px] text-[9px]">{book.subject && book.subject.name}</div>
             </div>
         </Link>
     </div>
