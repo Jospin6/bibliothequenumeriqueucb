@@ -50,7 +50,7 @@ export const ChangeUserRole = ({ facId }: { facId: number }) => {
     return (
         <div>
             <div className="text-xl my-3">Changer le Rôle</div>
-            <div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>
+            {flashMesage && (<div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>)}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                     <Select

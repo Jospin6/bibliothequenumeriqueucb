@@ -95,7 +95,7 @@ export const EditBookForm = ({ bookId }: { bookId: number }) => {
         <div className="w-full px-3 flex text-gray-300 text-lg font-semibold items-center border-b h-[50px]">
             Mofifier un document
         </div>
-        <div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>
+        {flashMesage && (<div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>)}
         <div className="text-gray-900 px-3">
 
             <form onSubmit={handleSubmit(onSubmit)}>

@@ -26,7 +26,7 @@ export const SubjectForm = ({ id }: { id: number }) => {
     return (
         <>
             <div className="text-xl my-3">Ajouter une matière</div>
-            <div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>
+            {flashMesage && (<div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>)}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <InputField name={"name"} placeholder={"Nom de la matière"} register={register} errors={errors} />
                 <div className="flex justify-end">

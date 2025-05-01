@@ -27,7 +27,7 @@ export const FacultyForm = () => {
   return (
     <div>
       <div className="text-xl my-3">Ajouter une faculté</div>
-      <div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>
+      {flashMesage && (<div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>)}
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField name={"name"} placeholder={"Nom de la faculté"} register={register} errors={errors} />
         <div className="flex justify-end">

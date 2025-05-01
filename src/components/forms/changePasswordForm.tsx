@@ -46,7 +46,7 @@ export default function ChangePasswordForm() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4 border rounded-lg shadow-md w-full">
-            <div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>
+            {flashMesage && (<div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>)}
             <div>
                 <label className="block text-sm font-medium">Ancien mot de passe</label>
                 <input
