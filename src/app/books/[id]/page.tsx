@@ -31,6 +31,8 @@ export default function BookPage() {
     setPageNumber(1);
   };
 
+  const [scale, setScale] = useState(1.0);
+
   useEffect(() => {
     dispatch(getBook(+id!))
   }, [])
@@ -108,6 +110,11 @@ export default function BookPage() {
         <p>
           Page {pageNumber} sur {numPages}
         </p>
+        <div className="flex items-center space-x-2 ml-4">
+          <button onClick={() => setScale(prev => Math.max(prev - 0.1, 0.5))} className="bg-black text-white px-2 rounded-md">-</button>
+          <span>Zoom: {(scale * 100).toFixed(0)}%</span>
+          <button onClick={() => setScale(prev => Math.min(prev + 0.1, 3))} className="bg-black text-white px-2 rounded-md">+</button>
+        </div>
       </div>
     </div>
 
@@ -126,6 +133,7 @@ export default function BookPage() {
                   pageNumber={pageNum}
                   renderTextLayer={false}
                   renderAnnotationLayer={false}
+                  scale={scale}
                   width={850}
                   className={"mt-2"}
                 />
@@ -140,8 +148,8 @@ export default function BookPage() {
               className="w-full h-auto bg-white p-3"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
-          ): (<div>
-            <PowerPointViewer fileUrl={pdfUrl!}/>
+          ) : (<div>
+            <PowerPointViewer fileUrl={pdfUrl!} />
           </div>)}
         </div>
       )}
