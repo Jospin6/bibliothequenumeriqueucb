@@ -46,8 +46,13 @@ export async function GET(req: NextRequest) {
         const { searchParams } = new URL(req.url);
         const faculteId = searchParams.get("faculteId");
         const subjectId = searchParams.get("subjectId");
+        const page = parseInt(searchParams.get('page') || '1', 10);
+        const limit = parseInt(searchParams.get('limit') || '10', 10);
+        const skip = (page - 1) * limit;
 
         const books = await prisma.book.findMany({
+            skip,
+            take: limit,
             where: {
                 ...(faculteId ? { faculteId: Number(faculteId) } : {}),
                 ...(subjectId ? { subjectId: Number(subjectId) } : {}),

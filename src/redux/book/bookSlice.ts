@@ -29,6 +29,8 @@ interface BookState {
     books: BookProps[];
     book: BookProps | null;
     forYou: BookProps[];
+    page: number;
+    hasMore: boolean;
     subjectId: number | null
     error: string | null;
 }
@@ -38,6 +40,8 @@ const initialState: BookState = {
     books: [],
     book: null,
     forYou: [],
+    page: 1,
+    hasMore: true,
     subjectId: null,
     error: null,
 };
@@ -56,12 +60,14 @@ export const addBook = createAsyncThunk(
 
 export const fetchBooks = createAsyncThunk(
     "book/fetchBooks",
-    async ({ faculteId, subjectId }: { faculteId?: number; subjectId?: number | null }) => {
+    async ({ faculteId, subjectId, page = 1, limit = 10 }: { faculteId?: number; subjectId?: number | null, page: number; limit?: number }) => {
         let url = "/api/books";
 
         const params = new URLSearchParams();
         if (faculteId) params.append("faculteId", String(faculteId));
         if (subjectId) params.append("subjectId", String(subjectId));
+        if (page) params.append("page", String(page));
+        if (limit) params.append("limit", String(limit));
 
         if (params.toString()) {
             url += `?${params.toString()}`;
@@ -141,7 +147,13 @@ const bookSlice = createSlice({
     reducers: {
         setSubject: (state, action) => {
             state.subjectId = action.payload
-        }
+        },
+        resetJobs: (state) => {
+            state.books = [];
+            state.page = 1;
+            state.hasMore = true;
+            state.error = null;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -149,8 +161,15 @@ const bookSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchBooks.fulfilled, (state, action: PayloadAction<any>) => {
-                state.loading = false
-                state.books = action.payload
+                
+                const newBooks = action.payload.filter(
+                    (book: any) => !state.books.some((existingBook) => existingBook.id === book.id)
+                );
+
+                state.page += 1;
+                state.hasMore = newBooks.length > 0;
+                state.loading = false;
+                state.books.push(...newBooks);
             })
             .addCase(fetchBooks.rejected, (state, action: PayloadAction<any>) => {
                 state.loading = false

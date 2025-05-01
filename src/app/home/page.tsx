@@ -8,10 +8,10 @@ import { SideItem } from "@/components/ui/sideItem";
 import { SideItemSkeleton } from "@/components/ui/sideItemSkeleton";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { BookProps, fetchBooks, fetchForYou, selectBooks, selectForYou, selectSubjectId } from "@/redux/book/bookSlice";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { fetchSubjects, selectSubject, SubjectProps } from "@/redux/subject/subjectSlice";
 import { fetchUser, selectUser } from "@/redux/user/userSlice";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // 🧩 Sous-composant : contenu principal
@@ -46,11 +46,12 @@ export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
 
   const currentUser = useCurrentUser();
-  const { loading, books } = useSelector(selectBooks);
+  const { loading, books, page, hasMore } = useSelector((state: RootState) => state.book);
   const user = useSelector(selectUser);
   const subjects = useSelector(selectSubject);
   const subjectId = useSelector(selectSubjectId);
   const getForYou = useSelector(selectForYou);
+  const loaderRef = useRef<HTMLDivElement>(null);
 
   // ⚙️ Récupérer les suggestions "Pour toi" une seule fois
   useEffect(() => {
@@ -69,7 +70,10 @@ export default function Home() {
   // ⚙️ Charger livres et matières si faculté dispo
   useEffect(() => {
     if (user?.faculty?.id && subjectId) {
-      dispatch(fetchBooks({ faculteId: user.faculty.id, subjectId }));
+      dispatch(fetchBooks({
+        faculteId: user.faculty.id, subjectId,
+        page: 1
+      }));
     }
   }, [user?.faculty?.id, subjectId, dispatch]);
 
@@ -79,12 +83,33 @@ export default function Home() {
     }
   }, [user?.faculty?.id, subjects.length, dispatch]);
 
+  useEffect(() => {
+    if (!loaderRef.current || !hasMore || loading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && page > 1 && user?.faculty?.id && subjectId) {
+          dispatch(fetchBooks({
+            faculteId: user.faculty.id, subjectId,
+            page
+          }));
+        }
+      },
+      { threshold: 1 }
+    );
+
+    observer.observe(loaderRef.current);
+    return () => observer.disconnect();
+  }, [loaderRef, hasMore, loading, page, user?.faculty?.id, subjectId, dispatch]);
+
   return (
     <>
       <Navbar />
       <div className="md:mx-[5%] mx-2 flex">
         <div className="h-auto md:w-[60%] w-full min-h-[calc(100vh-50px)] md:border-r-[1px] md:border-gray-200 md:px-[50px]">
           <MainContent loading={loading} books={books} subjects={subjects} />
+          {loading && <p>Chargement...</p>}
+          <div ref={loaderRef} />
         </div>
         <SideContent getForYou={getForYou} />
       </div>
