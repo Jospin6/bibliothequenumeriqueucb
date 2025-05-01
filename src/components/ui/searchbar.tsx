@@ -16,7 +16,10 @@ export const Searchbar = ({ facId }: { facId: number }) => {
     const [showDropdown, setShowDropdown] = useState(false)
 
     useEffect(() => {
-        dispatch(fetchBooks({ faculteId: facId }))
+        dispatch(fetchBooks({
+            faculteId: facId,
+            page: 1000
+        }))
     }, [dispatch])
 
     useEffect(() => {
