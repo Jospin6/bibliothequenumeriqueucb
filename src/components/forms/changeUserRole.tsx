@@ -27,7 +27,7 @@ export const ChangeUserRole = ({ facId }: { facId: number }) => {
     });
     const dispatch = useDispatch<AppDispatch>()
     const faculty = useSelector(selectFaculty)
-
+    const [flashMesage, setFlashMessage] = useState<string>('')
     useEffect(() => {
         dispatch(fetchFaculty(facId))
     }, [dispatch])
@@ -44,11 +44,13 @@ export const ChangeUserRole = ({ facId }: { facId: number }) => {
     const onSubmit = async (data: ChangeUserRoleFormValues) => {
         dispatch(changeUserRole({ userId: +userId!, role: data.role }))
         reset()
+        setFlashMessage("Rôle modifié avec success") 
     };
 
     return (
         <div>
             <div className="text-xl my-3">Changer le Rôle</div>
+            <div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                     <Select

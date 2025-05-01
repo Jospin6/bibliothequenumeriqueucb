@@ -26,6 +26,7 @@ export const BookForm = ({ facId }: { facId?: number }) => {
   const subjects = useSelector(selectSubject)
   const faculties = useSelector(selectFaculties)
   const user = useCurrentUser()
+  const [flashMesage, setFlashMessage] = useState<string>('')
 
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>()
@@ -72,6 +73,7 @@ export const BookForm = ({ facId }: { facId?: number }) => {
     
     dispatch(addBook(formData))
     reset()
+    setFlashMessage("Ajout du livre avec success")
 
     setLoading(false);
   };
@@ -79,6 +81,7 @@ export const BookForm = ({ facId }: { facId?: number }) => {
   return (
     <div className=" mx-auto">
       <h1 className="text-xl my-4">Ajouter un document</h1>
+      <div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <input {...register("title")} placeholder="Title" className="w-full p-2 border rounded" />
         {errors.title && <p className="text-red-500">{String(errors.title.message)}</p>}

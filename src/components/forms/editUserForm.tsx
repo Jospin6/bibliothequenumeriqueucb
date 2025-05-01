@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { updateUser } from "@/redux/user/userSlice";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const schema = z.object({
     name: z.string().min(2, "Le nom doit avoir au moins 2 caractères"),
@@ -18,6 +18,7 @@ type FormValues = z.infer<typeof schema>;
 export default function EditUserForm() {
     const dispatch = useDispatch<AppDispatch>();
     const user = useCurrentUser()
+    const [flashMesage, setFlashMessage] = useState<string>('')
 
     const {
         register,
@@ -48,10 +49,12 @@ export default function EditUserForm() {
             postnom: data.postNom,
         }
         dispatch(updateUser(body));
+        setFlashMessage("Utilisateur modifié avec success") 
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4 border rounded-lg shadow-md w-full">
+            <div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>
             <div>
                 <label className="block text-sm font-medium">Nom</label>
                 <input

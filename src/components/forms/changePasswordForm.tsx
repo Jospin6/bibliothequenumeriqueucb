@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { updatePassword } from "@/redux/user/userSlice";
+import { useState } from "react";
 
 const schema = z
     .object({
@@ -22,6 +23,7 @@ type FormValues = z.infer<typeof schema>;
 export default function ChangePasswordForm() {
     const dispatch = useDispatch<AppDispatch>();
     const user = useCurrentUser()
+    const [flashMesage, setFlashMessage] = useState<string>('')
     const {
         register,
         handleSubmit,
@@ -38,11 +40,13 @@ export default function ChangePasswordForm() {
             newPassword: data.newPassword,
         }
         dispatch(updatePassword(body))
-        reset(); 
+        reset();
+        setFlashMessage("Mot de passe modifié avec success") 
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4 border rounded-lg shadow-md w-full">
+            <div className="py-2 rounded-xl bg-green-800 text-green-300">{flashMesage}</div>
             <div>
                 <label className="block text-sm font-medium">Ancien mot de passe</label>
                 <input
