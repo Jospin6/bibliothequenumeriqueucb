@@ -8,7 +8,7 @@ import { SubjectProps } from "@/redux/subject/subjectSlice";
 export const FacBooks = ({faculty, subjets }: {faculty: Faculty, subjets: SubjectProps[]}) => {
 
     const mockData = [
-        ...subjets.map(subject => ({ subject: subject.name, bookCount: subject.books!.length! }))
+        ...subjets.map(subject => subject && ({ subject: subject.name, bookCount: subject.books!.length! }))
     ];
 
 
@@ -29,7 +29,7 @@ export const FacBooks = ({faculty, subjets }: {faculty: Faculty, subjets: Subjec
                             </Avatar>
                             <div className="">
                                 <div className="text-gray-300 text-[16px]">{book.title}</div>
-                                <div className="text-gray-500 text-sm">{book.subject.name}</div>
+                                <div className="text-gray-500 text-sm">{book.subject ? book.subject.name: ""}</div>
                             </div>
                         </div>
                     ))}

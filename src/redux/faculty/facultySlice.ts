@@ -55,6 +55,7 @@ export const fetchFaculties = createAsyncThunk("faculty/fetchFaculties", async (
 export const fetchFaculty = createAsyncThunk("faculty/fetchFaculty", async (id: number) => {
     try {
         const response = await axios.get(`/api/faculties/${id}`)
+        console.log("response fac data", response.data)
         return response.data
     } catch (error) {
         throw new Error(error as string)
@@ -90,7 +91,7 @@ const facultySlice = createSlice({
             .addCase(fetchFaculties.pending, (state) => {
                 state.loading = true
             })
-            .addCase(fetchFaculties.fulfilled, (state, action: PayloadAction<any>) => {
+            .addCase(fetchFaculties.fulfilled, (state, action: PayloadAction<Faculty[]>) => {
                 state.loading = false
                 state.faculties = action.payload
             })
@@ -102,7 +103,7 @@ const facultySlice = createSlice({
             .addCase(fetchFaculty.pending, (state) => {
                 state.loading = true
             })
-            .addCase(fetchFaculty.fulfilled, (state, action: PayloadAction<any>) => {
+            .addCase(fetchFaculty.fulfilled, (state, action: PayloadAction<Faculty>) => {
                 state.loading = false
                 state.faculty = action.payload
             })

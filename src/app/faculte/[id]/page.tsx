@@ -28,7 +28,6 @@ export default function App() {
         setIsOpen(!isOpen)
     }
 
-    console.log("faculte", id)
 
     const handleForms = (title: string = "subject") => {
         switch (title) {
@@ -42,14 +41,17 @@ export default function App() {
     }
 
     useEffect(() => {
-        if (faculty) {
-            dispatch(fetchSubjects(faculty.id!))
-        }
-    }, [dispatch, faculty])
+        dispatch(fetchSubjects(+id!))
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(fetchFaculty(+id!))
     }, [dispatch])
+
+    
+    console.log("faculte", faculty)
+    console.log("SUBJECT", subjets)
+    console.log("putain id", id)
 
     return (
         <>
@@ -62,12 +64,12 @@ export default function App() {
             </div>
             <div className="w-full px-4 m-auto">
                 <div className="grid grid-cols-6 gap-4">
-                    <MainCard title={"Etudiants"} subTitle={`${faculty?.users ? faculty?.users?.length: '0'}`} Icon={Users} />
-                    <MainCard title={"Livres"} subTitle={`${faculty?.books ? faculty?.books?.length: '0'}`} Icon={Book} />
-                    <MainCard title={"Matières"} subTitle={`${faculty?.subjects ? faculty?.subjects?.length: '0'}`} Icon={BookOpen} />
+                    <MainCard title={"Etudiants"} subTitle={`${faculty?.users ? faculty?.users?.length : '0'}`} Icon={Users} />
+                    <MainCard title={"Livres"} subTitle={`${faculty?.books ? faculty?.books?.length : '0'}`} Icon={Book} />
+                    <MainCard title={"Matières"} subTitle={`${faculty?.subjects ? faculty?.subjects?.length : '0'}`} Icon={BookOpen} />
                 </div>
-                {faculty ? (<FacBooks faculty={faculty} subjets={subjets} />): (<span></span>)}
-                {faculty ? (<FacSubjects faculty={faculty} />): (<span></span>)}
+                {faculty ? (<FacBooks faculty={faculty} subjets={subjets} />) : (<span></span>)}
+                {faculty ? (<FacSubjects faculty={faculty} />) : (<span></span>)}
             </div>
             {
                 isOpen && (<Popup isOpen={isOpen} className="text-gray-950" onClose={handleAddDocPopup}>
