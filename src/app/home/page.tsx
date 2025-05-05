@@ -11,7 +11,7 @@ import { BookProps, fetchBooks, fetchForYou, selectBooks, selectForYou, selectSu
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchSubjects, selectSubject, SubjectProps } from "@/redux/subject/subjectSlice";
 import { fetchUser, selectUser } from "@/redux/user/userSlice";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // 🧩 Sous-composant : contenu principal
@@ -52,13 +52,16 @@ export default function Home() {
   const subjectId = useSelector(selectSubjectId);
   const getForYou = useSelector(selectForYou);
   const loaderRef = useRef<HTMLDivElement>(null);
+  const [filteredBooks, setFilteredBooks] = useState<BookProps[]>(books);
 
   // ⚙️ Récupérer les suggestions "Pour toi" une seule fois
   useEffect(() => {
     if (getForYou.length === 0) {
-      dispatch(fetchForYou());
+      if (user?.faculty?.id) {
+        dispatch(fetchForYou(user.faculty.id));
+      }
     }
-  }, [dispatch, getForYou.length]);
+  }, [dispatch, getForYou.length, user?.faculty?.id]);
 
   // ⚙️ Récupérer l'utilisateur si connecté
   useEffect(() => {
@@ -69,13 +72,21 @@ export default function Home() {
 
   // ⚙️ Charger livres et matières si faculté dispo
   useEffect(() => {
-    if (user?.faculty?.id && subjectId) {
+    if (user?.faculty?.id ) {
       dispatch(fetchBooks({
         faculteId: user.faculty.id, subjectId,
         page: 1
       }));
     }
-  }, [user?.faculty?.id, subjectId, dispatch]);
+  }, [user?.faculty?.id, dispatch]);
+
+  useEffect(() => {
+    if (subjectId) {
+      setFilteredBooks(books.filter(book => book.subject.id == subjectId));
+    } else {
+      setFilteredBooks(books);
+    }
+  }, [subjectId, books]);
 
   useEffect(() => {
     if (user?.faculty?.id && subjects.length === 0) {
@@ -107,7 +118,7 @@ export default function Home() {
       <Navbar />
       <div className="md:mx-[5%] mx-2 flex">
         <div className="h-auto md:w-[60%] w-full min-h-[calc(100vh-50px)] md:border-r-[1px] md:border-gray-200 md:px-[50px]">
-          <MainContent loading={loading} books={books} subjects={subjects} />
+          <MainContent loading={loading} books={filteredBooks} subjects={subjects} />
           {loading && <p>Chargement...</p>}
           <div ref={loaderRef} />
         </div>

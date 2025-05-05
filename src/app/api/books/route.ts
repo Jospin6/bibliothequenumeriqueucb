@@ -54,8 +54,8 @@ export async function GET(req: NextRequest) {
             skip,
             take: limit,
             where: {
-                ...(faculteId ? { faculteId: Number(faculteId) } : {}),
-                ...(subjectId ? { subjectId: Number(subjectId) } : {}),
+                ...(faculteId !== null && faculteId !== undefined ? { faculteId: Number(faculteId) } : {}),
+                ...(subjectId !== null && subjectId !== undefined ? { subjectId: Number(subjectId) } : {}),
             },
             include: {
                 auteur: true,

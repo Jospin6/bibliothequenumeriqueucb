@@ -20,6 +20,7 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "@/redux/store"
 import { fetchUser, selectUser } from "@/redux/user/userSlice"
+import { ADMIN, USER } from "@/lib/constants"
 
 export const Navbar = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -64,16 +65,20 @@ export const Navbar = () => {
                     href="/search"
                     icon={<Search size={18} />}
                 />
-                <NavbarItem
-                    label="Admin"
-                    href="/admin"
-                    icon={<LayoutDashboard size={18} />}
-                />
-                <NavbarItem
-                    label="Faculté"
-                    href={`/faculte/${user?.faculteId}`}
-                    icon={<School size={18} />}
-                />
+                {(user?.role !== USER && user?.role !== ADMIN) && (
+                    <NavbarItem
+                        label="Admin"
+                        href="/admin"
+                        icon={<LayoutDashboard size={18} />}
+                    />
+                )}
+                {user?.role != USER && (
+                    <NavbarItem
+                        label="Faculté"
+                        href={`/faculte/${user?.faculteId}`}
+                        icon={<School size={18} />}
+                    />
+                )}
                 <NavbarItem
                     label="Favories"
                     href="/favories"

@@ -28,6 +28,8 @@ export default function App() {
         setIsOpen(!isOpen)
     }
 
+    console.log("faculte", id)
+
     const handleForms = (title: string = "subject") => {
         switch (title) {
             case "subject":
@@ -52,7 +54,7 @@ export default function App() {
     return (
         <>
             <div className="mb-6 flex px-4 justify-between items-center border-dashed border-gray-600 border-y h-[60px]">
-                <h1 className="text-2xl font-bold">{faculty?.name}</h1>
+                <h1 className="text-2xl font-bold">{faculty?.name ? faculty?.name : ''}</h1>
                 <div className="flex">
                     <Button onClick={() => handleAddDocPopup("book")} className="mr-4">Nouveau Livre</Button>
                     <Button onClick={() => handleAddDocPopup("subject")} className="">Nouveau Matière</Button>
@@ -60,12 +62,12 @@ export default function App() {
             </div>
             <div className="w-full px-4 m-auto">
                 <div className="grid grid-cols-6 gap-4">
-                    <MainCard title={"Etudiants"} subTitle={`${faculty?.users && faculty?.users?.length}`} Icon={Users} />
-                    <MainCard title={"Livres"} subTitle={`${faculty?.books && faculty?.books?.length}`} Icon={Book} />
-                    <MainCard title={"Matières"} subTitle={`${faculty?.subjects && faculty?.subjects?.length}`} Icon={BookOpen} />
+                    <MainCard title={"Etudiants"} subTitle={`${faculty?.users ? faculty?.users?.length: '0'}`} Icon={Users} />
+                    <MainCard title={"Livres"} subTitle={`${faculty?.books ? faculty?.books?.length: '0'}`} Icon={Book} />
+                    <MainCard title={"Matières"} subTitle={`${faculty?.subjects ? faculty?.subjects?.length: '0'}`} Icon={BookOpen} />
                 </div>
-                {faculty && (<FacBooks faculty={faculty} subjets={subjets} />)}
-                {faculty && (<FacSubjects faculty={faculty} />)}
+                {faculty ? (<FacBooks faculty={faculty} subjets={subjets} />): (<span></span>)}
+                {faculty ? (<FacSubjects faculty={faculty} />): (<span></span>)}
             </div>
             {
                 isOpen && (<Popup isOpen={isOpen} className="text-gray-950" onClose={handleAddDocPopup}>
