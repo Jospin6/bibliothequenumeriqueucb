@@ -82,7 +82,9 @@ export default function Home() {
 
   useEffect(() => {
     if (subjectId) {
-      setFilteredBooks(books.filter(book => book.subject.id == subjectId));
+      setFilteredBooks(
+        books.filter(book => book.subject && book.subject.id == subjectId)
+      );
     } else {
       setFilteredBooks(books);
     }
